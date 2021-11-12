@@ -43,7 +43,9 @@ function SpawnVehiclesAtreides()
 end
 
 function GM:PostGamemodeLoaded()
-	SpawnVehiclesAtreides()
+	timer.Simple(1,function() 
+		SpawnVehiclesAtreides()
+	end)
 end
 
 -- Factions

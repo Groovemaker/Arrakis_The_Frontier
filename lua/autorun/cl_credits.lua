@@ -44,9 +44,9 @@ function credits()
 		  -webkit-transform: translateY(100%);
 		  transform: translateY(100%);
 		  
-		  -moz-animation: movenames 55s linear infinite;
-		  -webkit-animation: movenames 55s linear infinite;
-		  animation: movenames 55s linear infinite;
+		  -moz-animation: movenames 45s linear infinite;
+		  -webkit-animation: movenames 45s linear infinite;
+		  animation: movenames 45s linear infinite;
 		}
 		.credits span {
 		  display: block;
@@ -98,13 +98,15 @@ function credits()
 	    		NextKurome76TheSoldier<br /><br />
 	    		</span>
 	    		<h3>Snippets and additions by</h3>
-	    		<span>slownls - Blur Tricks</span>
-	    		<span>Kefta - Weapon Hud Basics</span>
-	    		<span>Fred-Tension - HUD Blur Tricks </span>
+	    		<span>slownls - Blur Tricks
+	    		<br />Kefta - Weapon Hud Basics
+	    		<br />Fred-Tension - HUD Blur Tricks</span>
 	    		<h3>Featuring Music and Sounds by</h3>
 	    		<span>ash19 - Land of Twists</span>
 	    		<h3>Special thanks to the testers</h3>
 	    		<span>
+	    		Payback<br />
+	    		Gō_Mifune_97<br />
 	    		Tzucas<br /><br />
 	    		</span>
 	    		<h3>Special thanks as well to</h3>
@@ -124,7 +126,7 @@ function credits()
 		</div>
 	]])
 
-	sound.PlayFile("arrakis_credits.mp3", "noblock", function(station)
+	sound.PlayFile("sound/arrakis_credits.mp3", "noblock", function(station,erid,err)
 		CredSnd = station
 		if (IsValid(CredSnd)) then
 			CredSnd:Play()

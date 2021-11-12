@@ -1,4 +1,4 @@
-
+if !CLIENT then return end
 
 -- Kefta Skeleton Weapon HUD
 
@@ -32,10 +32,15 @@ local BOX_COLOR_TEXT = Color(255, 255, 255, 255)
 local BOX_COLOR_TEXT_ACTIVE = Color(255, 255, 255, 255)
 local BOX_COLOR_TEXT_OUTLINE = Color(0, 255, 255, 255)
 
-local colTitleBox = Color(0, 0, 0, 150)
+
 local colTitleText = Color(255, 255, 255, 170)
 local colTitleTextOutline = Color(0, 255, 255, 5)
-local colLabelBox = Color(0, 0, 0, 150)
+local Div = 4
+local AtreidesCol = Color(111/Div,255/Div,200/Div,150)
+local HarkonnenCol = Color(255/Div,33/Div,1/Div,150)
+
+
+
 local colLabelTextActive = Color(255, 155, 11, 255)
 local colLabelTextInactive = Color(255, 255, 255, 255)
 local colLabelTextOutline = Color(0, 255, 255, 5)
@@ -58,7 +63,7 @@ end
 
 ResolutionChanged()
 
-hook.Add("OnScreenSizeChanged", "GS_WeaponSwitcher_Bevel", ResolutionChanged)
+hook.Add("OnScreenSizeChanged", "Dune_WeaponSwitcher_Bevel", ResolutionChanged)
 
 -- Fonts
 surface.CreateFont("Slot",{
@@ -134,6 +139,7 @@ local function DrawWeaponHUD()
 		iBlurHeight = iBlurHeight + iBoxHeight
 	end
 	DrawBoxBlur(x,y,iFrameWidth,(iBlurHeight-190),11,4,255)
+	surface.SetDrawColor(Color(111,255,200))
 	draw.RoundedBoxEx(BOX_CORNER_RADIUS, x, y, iFrameWidth, iBoxHeight, colTitleBox, true, false, false, false)
 	if LocalPlayer():Team() == 1 then
 		surface.SetDrawColor(Color(255,255,255))
@@ -250,6 +256,14 @@ end
 
 
 hook_Add("HUDPaint", "GS_WeaponSelector", function()
+
+	if LocalPlayer():Team() == 1 then
+		colLabelBox = AtreidesCol
+	elseif LocalPlayer():Team() == 2 then
+		colLabelBox = HarkonnenCol
+	end
+
+	colTitleBox = colLabelBox
 
 	CheckBounds()
 
