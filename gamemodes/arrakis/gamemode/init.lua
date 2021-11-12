@@ -16,7 +16,31 @@ function GM:PlayerLoadout(ply)
 	ply:SetArmor(100)
 	return true
 end
+function SpawnVehiclesAtreides()
+	SP_Vtols_Atreides = {
+		Vector(-457.007355, -3206.202881, -9667.136719),
+		Vector(-3442.346436, -2002.604614, -9699.133789),
+		Vector(672.592651, -226.586792, -9836.514648),
+	}
 
+	local OldVtols = ents.FindByName("combine_gunship")
+	for k, v in ipairs(OldVtols) do
+		if(IsValid(v)) then
+			v:Remove()
+		end
+	end
+
+	for k,v in pairs(SP_Vtols_Atreides) do
+		local VTOL = ents.Create("combine_gunship")
+		VTOL:SetPos(v)
+		VTOL:SetName("vtol_atreides")
+		VTOL:Spawn()
+	end
+end
+function GM:PostGamemodeLoaded()
+
+	SpawnVehiclesAtreides()
+end
 -- Factions
 function jAtreides( ply ) 
 	ply:StripAmmo()
@@ -72,7 +96,7 @@ hook.Add("PlayerInitialSpawn","Dune_JL",function(ply)
 	ply:ConCommand("dune_team")
 end)
 function GM:PlayerShouldTakeDamage(ply,attacker)
-	return ply == attacker || ply:Team() != attacker:Team()
+	return ply == attacker || attacker:IsPlayer() && ply:Team() != attacker:Team() || attacker:IsVehicle() && ply:Team() != attacker:GetDriver():Team()
 end
 function GM:PlayerSetModel(ply)
 

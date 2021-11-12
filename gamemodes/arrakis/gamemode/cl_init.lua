@@ -1,6 +1,7 @@
 -- Clientside
 include("shared.lua")
 
+
 -- Thanks to slownls
 DPANELBlurMat = Material("pp/blurscreen")
 function PanelDrawBlur(panel, amount) 
@@ -37,7 +38,7 @@ function set_team()
 	TeamFrame:SetTitle("")
 	TeamFrame:SetVisible(true) 
 	TeamFrame:SetDraggable(false) 
-	TeamFrame:ShowCloseButton(true) 
+	TeamFrame:ShowCloseButton(false) 
 	TeamFrame:MakePopup() 
 	InMenu = true
 	local html = vgui.Create("DHTML", TeamFrame)
