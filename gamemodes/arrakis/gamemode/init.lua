@@ -5,9 +5,9 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 -- Resources
-resource.AddFile( "materials/atreides.png" )
-resource.AddFile( "materials/harkonnen.png" )
-
+resource.AddFile("materials/atreides.png")
+resource.AddFile("materials/harkonnen.png")
+resource.AddFile("sound/arrakis_credits.mp3")
 -- Set Skyname
 RunConsoleCommand("sv_skyname", "sky_day01_06")
 
@@ -41,10 +41,11 @@ function SpawnVehiclesAtreides()
 		VTOL:Spawn()
 	end
 end
-function GM:PostGamemodeLoaded()
 
+function GM:PostGamemodeLoaded()
 	SpawnVehiclesAtreides()
 end
+
 -- Factions
 function jAtreides( ply ) 
 	ply:StripAmmo()
@@ -62,8 +63,10 @@ function jHarkonnen( ply )
     ChatAdd("TEAMCHANGE"," joined House Harkonnen!",{2,ply:Nick()})
 end 
 
-concommand.Add( "dune_join_atreides", jAtreides ) //Add the command to set the players team to team 3
-concommand.Add( "dune_join_harkonnen", jHarkonnen ) //Add the command to set the players team to team 4
+concommand.Add( "dune_join_atreides", jAtreides )
+concommand.Add( "dune_join_harkonnen", jHarkonnen )
+
+-- Chatlog Helper
 function ChatAdd(type,message,args)
 	if type == "JL" then
 		BroadcastLua([[chat.AddText(Color(255,155,50),"[SERVER]: ",Color(255,200,100),"]]..args..[[",Color(255,255,255),"]]..message..[[")]])
@@ -75,6 +78,8 @@ function ChatAdd(type,message,args)
 		end
 	end
 end
+
+-- Spawn
 hook.Add("PlayerSpawn","Dune_Spawn",function(ply)
 	SP_Atreides = {
 

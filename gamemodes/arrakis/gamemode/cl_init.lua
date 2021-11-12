@@ -1,8 +1,5 @@
 -- Clientside
 include("shared.lua")
-include("cl_weaponhud.lua")
-include("cl_hud.lua")
-include("cl_credits.lua")
 
 -- Thanks to slownls
 DPANELBlurMat = Material("pp/blurscreen")

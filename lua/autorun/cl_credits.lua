@@ -98,16 +98,14 @@ function credits()
 	    		NextKurome76TheSoldier<br /><br />
 	    		</span>
 	    		<h3>Snippets and additions by</h3>
-	    		<span>slownls</span>
+	    		<span>slownls - Blur Tricks</span>
+	    		<span>Kefta - Weapon Hud Basics</span>
+	    		<span>Fred-Tension - HUD Blur Tricks </span>
 	    		<h3>Featuring Music and Sounds by</h3>
 	    		<span>ash19 - Land of Twists</span>
 	    		<h3>Special thanks to the testers</h3>
 	    		<span>
 	    		Tzucas<br /><br />
-	    		</span>
-	    		<h3>Honorable Hall of Shamefame</h3>
-	    		<span>
-	    		DrVrej - making a great base, yet annoying with gmod adware<br /><br />
 	    		</span>
 	    		<h3>Special thanks as well to</h3>
 	    		<span>
@@ -117,13 +115,16 @@ function credits()
 	    		SpookyFM<br /><br />
 	    		Katsu, for some math basics<br /><br />
 	    		</span>
+	    		<br /><br />
+	    		<h2>Frank Herbert <br /> Denis Villeneuve <br /> and Warner Bros. Pictures <br /></h2>
+	    		<span>for their outstanding work in the DUNE franchise</span>
 	    		<br /><br /><br />
 	    		<h1>And YOU, for playing!</h1>
     		</div>
 		</div>
 	]])
 
-	sound.PlayURL ("https://raw.githubusercontent.com/Groovemaker/Arrakis_The_Frontier/main/gamemodes/arrakis/credits.mp3", "noblock", function(station)
+	sound.PlayFile("arrakis_credits.mp3", "noblock", function(station)
 		CredSnd = station
 		if (IsValid(CredSnd)) then
 			CredSnd:Play()
