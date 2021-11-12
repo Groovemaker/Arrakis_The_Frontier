@@ -95,7 +95,7 @@ function credits()
 	    		<h3>As well as Addons by</h3>
 	    		<span>
 	    		Cole<br /><br />
-	    		NextKurome76TheSoldier<br /><br />
+	    		NextKuromeThe76Soldier<br /><br />
 	    		</span>
 	    		<h3>Snippets and additions by</h3>
 	    		<span>slownls - Blur Tricks
