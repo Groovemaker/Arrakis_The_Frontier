@@ -1,3 +1,16 @@
+local function DrawBoxBlur( x, y, w, h, layers, density, alpha )
+	local blur = Material( "pp/blurscreen" )
+	surface.SetDrawColor( 255, 255, 255, alpha ) 
+	surface.SetMaterial( blur ) 
+	for i = 1, layers do 
+		blur:SetFloat( "$blur", ( i / layers ) * density ) 
+		blur:Recompute() 
+		render.UpdateScreenEffectTexture() 
+		render.SetScissorRect( x, y, x + w, y + h, true ) 
+		surface.DrawTexturedRect( 0, 0, ScrW(), ScrH() ) 
+		render.SetScissorRect( 0, 0, 0, 0, false ) 
+	end
+end
 hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 	if (InMenu == true) then return end
 	function GetAmmoForCurrentWeapon( ply )
@@ -39,13 +52,7 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 
 
 	-- main body
-	/*
-	draw.RoundedBox( 2, ScrW() / 60.08, ScrH() / 21, ScrW() / 4.6, ScrH() / 19 , Color(30,30,30,155) )
-
-	draw.RoundedBox( 0, ScrW() / 19.08 , ScrH() / 13, ScrW() * 100 / 709, ScrH() / 260, Color(130, 100, 0, 105) )
-	draw.RoundedBox( 0, ScrW() / 19.08 , ScrH() / 13, ScrW() * HP / 709, ScrH() / 260, Color(255, 200, 0, 155) )
-
-	draw.RoundedBox( 0, ScrW() / 19.08 , ScrH() / 11.8, ScrW() * 100 / 709, ScrH() / 260, Color(0, 100, 30, 105) )
-	draw.RoundedBox( 0, ScrW() / 19.08 , ScrH() / 11.8, ScrW() * Ammo / 709, ScrH() / 260, Color(0, 255, 100, 155) )
-	*/
+	
+	--draw.RoundedBox( 2, ScrW() / 60.08, ScrH() / 21, ScrW() / 4.6, ScrH() / 19 , Color(30,30,30,155) )
+	
 end )

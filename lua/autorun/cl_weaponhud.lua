@@ -138,17 +138,17 @@ local function DrawWeaponHUD()
 	for i = 1, iSlotWeapons do
 		iBlurHeight = iBlurHeight + iBoxHeight
 	end
-	DrawBoxBlur(x,y,iFrameWidth,(iBlurHeight-190),11,4,255)
+	DrawBoxBlur(x,y,iFrameWidth,(iBlurHeight-(ScrW()/10)),11,4,255)
 	surface.SetDrawColor(Color(111,255,200))
 	draw.RoundedBoxEx(BOX_CORNER_RADIUS, x, y, iFrameWidth, iBoxHeight, colTitleBox, true, false, false, false)
 	if LocalPlayer():Team() == 1 then
 		surface.SetDrawColor(Color(255,255,255))
 		surface.SetMaterial(Material("materials/atreides.png"))
-		surface.DrawTexturedRect(iFrameCenter/1.028, y*0.8, 100, 100)
+		surface.DrawTexturedRect(iFrameCenter/1.028, y*0.8, ScrW()/19, ScrH()/11)
 	elseif LocalPlayer():Team() == 2 then
 		surface.SetDrawColor(Color(255,255,255))
 		surface.SetMaterial(Material("materials/harkonnen.png"))
-		surface.DrawTexturedRect(iFrameCenter/1.028, y*0.8, 95, 110)
+		surface.DrawTexturedRect(iFrameCenter/1.028, y*0.8, ScrW()/22, ScrH()/10)
 	end
 	--draw.SimpleTextOutlined("Slot " .. iCurSlot, "Slot", iFrameCenter, y, colTitleText, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP, 0, colTitleTextOutline)
 	for i = 1, iSlotWeapons do
