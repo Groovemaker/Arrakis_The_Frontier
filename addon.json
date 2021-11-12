@@ -1,0 +1,11 @@
+{
+	"title"		:	"Arrakis: The Frontier",
+	"type"		:	"ServerContent",
+	"tags"		:	[ "scenic", "fun" ],
+	"ignore"	:
+	[
+		"*.psd",
+		"*.vcproj",
+		"*.svn*"
+	]
+}
