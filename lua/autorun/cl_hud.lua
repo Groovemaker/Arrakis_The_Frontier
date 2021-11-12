@@ -50,9 +50,17 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 	--Shield Bar
 	draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * Armor / 161, ScrH() / 73.5, Color(111, 155, 255, 155) )
 
-
+	local BGCol = Color(1,1,1,1)
 	-- main body
-	
-	--draw.RoundedBox( 2, ScrW() / 60.08, ScrH() / 21, ScrW() / 4.6, ScrH() / 19 , Color(30,30,30,155) )
+	if LocalPlayer():Team() == 1 then
+		BGCol = AtreidesCol
+	elseif LocalPlayer():Team() == 2 then
+		BGCol = HarkonnenCol
+	end
+	DrawBoxBlur(ScrW() / 60.08, ScrH() *0.89, ScrW() / 25, ScrH() / 15 ,11,4,255)
+	draw.RoundedBox( 0, ScrW() / 60.08, ScrH() *0.89, ScrW() / 25, ScrH() / 15 , BGCol)
+	surface.SetDrawColor(Color(155,155,155,255))
+	surface.SetMaterial(Material("materials/ability_grenade.png"))
+	surface.DrawTexturedRect(ScrW() / 40, ScrH() *0.9, ScrW()/44, ScrH()/23)
 	
 end )

@@ -7,7 +7,9 @@ include("shared.lua")
 -- Resources
 resource.AddFile("materials/atreides.png")
 resource.AddFile("materials/harkonnen.png")
+resource.AddFile("materials/ability_grenade.png")
 resource.AddFile("sound/arrakis_credits.mp3")
+
 -- Set Skyname
 RunConsoleCommand("sv_skyname", "sky_day01_06")
 

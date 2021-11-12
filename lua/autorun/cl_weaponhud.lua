@@ -36,8 +36,8 @@ local BOX_COLOR_TEXT_OUTLINE = Color(0, 255, 255, 255)
 local colTitleText = Color(255, 255, 255, 170)
 local colTitleTextOutline = Color(0, 255, 255, 5)
 local Div = 4
-local AtreidesCol = Color(111/Div,255/Div,200/Div,150)
-local HarkonnenCol = Color(255/Div,33/Div,1/Div,150)
+AtreidesCol = Color(111/Div,255/Div,200/Div,150)
+HarkonnenCol = Color(255/Div,33/Div,1/Div,150)
 
 
 
