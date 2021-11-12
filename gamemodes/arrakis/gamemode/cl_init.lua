@@ -155,9 +155,13 @@ function credits()
 
 		.credits {
 		  margin: 0 40%;
-		  -webkit-animation: movenames 10s linear infinite;  
-		  -moz-animation: movenames 10s linear infinite;  
-		  animation: movenames 10s linear infinite;  
+		  -moz-transform: translateY(100%);
+		  -webkit-transform: translateY(100%);
+		  transform: translateY(100%);
+		  
+		  -moz-animation: movenames 55s linear infinite;
+		  -webkit-animation: movenames 55s linear infinite;
+		  animation: movenames 55s linear infinite;
 		}
 		.credits span {
 		  display: block;
@@ -168,32 +172,50 @@ function credits()
 		   display: block;
 		   width: 100%;
 		}
-		@-webkit-keyframes movenames {
-			0% {margin-top: 400px;}
-			100% {margin-bottom: 150px;}
-		}
+		/* for Firefox */
 		@-moz-keyframes movenames {
-			0% {margin-top: 400px;}
-			100% {margin-bottom: 150px;}
+		  from { -moz-transform: translateY(31%); }
+		  to { -moz-transform: translateY(-100%); }
 		}
-		@-o-keyframes movenames {
-			0% {margin-top: 400px;}
-			100% {margin-bottom: 150px;}
+
+		/* for Chrome */
+		@-webkit-keyframes movenames {
+		  from { -webkit-transform: translateY(31%); }
+		  to { -webkit-transform: translateY(-100%); }
 		}
-		keyframes movenames {
-			0% {margin-top: 400px;}
-			100% {margin-bottom: 150px;}
+
+		@keyframes movenames {
+		  from {
+		    -moz-transform: translateY(31%);
+		    -webkit-transform: translateY(31%);
+		    transform: translateY(31%);
+		  }
+		  to {
+		    -moz-transform: translateY(-100%);
+		    -webkit-transform: translateY(-100%);
+		    transform: translateY(-100%);
+		  }
 		}
 		</style>
 		<div class="container">
     		<div class="credits">
     			<img id="image1" src="https://i.imgur.com/kBVrgZe.png"></img>
-	    		<h3>A Game By</h3>
+    			<h2>A Tribute to DUNE</h2>
+	    		<h3>A Fan Game By</h3>
 	    		<span>Runic</span>
-	    		<h3>Featuring Addons From</h3>
+	    		<h3>Featuring Addons powered by</h3>
 	    		<span>TFA</span>
+	    		<h3>Snippets and additions by</h3>
+	    		<span>slownls</span>
 	    		<h3>Featuring Music and Sounds by</h3>
-	    		<span>ash19 - Land of Twists</span>	    		
+	    		<span>ash19 - Land of Twists</span>	    
+	    		<h3>Special thanks to</h3>
+	    		Naki<br /><br />
+	    		My buddies at work<br /><br />
+	    		Mom & Dad<br /><br />
+	    		SpookyFM<br /><br />
+	    		Katsu, for some math basics<br /><br /></span><br /><br /><br />
+	    		<h1>And YOU, for playing!</h1>
     		</div>
 		</div>
 	]])
@@ -305,7 +327,32 @@ surface.CreateFont( "NameFont", {
 	additive = false,
 	outline = false,
 } )
+local function GraphicsModding()
+	local mat_dunevision = Material("engine/singlecolor")
+	mat_dunevision:SetFloat( "$alpha", 0 )
 
+	local colormod = {
+	    ["$pp_colour_addr"] = 0.05,
+	    ["$pp_colour_addg"] = 0.05,
+	    ["$pp_colour_addb"] = 0,
+	    ["$pp_colour_brightness"] = -0.03,
+	    ["$pp_colour_contrast"] = 0.8,
+	    ["$pp_colour_colour"] = 1.4,
+	    ["$pp_colour_mulr"] = 1,
+	    ["$pp_colour_mulg"] = 1,
+	    ["$pp_colour_mulb"] = 1
+	}
+
+		    
+    if BD_RENDERING_RTWORLD then return end
+    render.UpdateScreenEffectTexture()
+
+
+
+    DrawColorModify(colormod)
+    --DrawBloom( number Darken, number Multiply, number SizeX, number SizeY, number Passes, number ColorMultiply, number Red, number Green, number Blue )
+    DrawBloom( 0.85, 2.3, 9, 9, 1, 1, 1, 1, 1 )
+end
 hook.Add( "HUDPaint", "HUDPaint_DrawABox", function()
 	if (InMenu == true) then return end
 	function GetAmmoForCurrentWeapon( ply )
@@ -385,6 +432,9 @@ hook.Add( "HUDPaint", "HUDPaint_DrawABox", function()
 	end
 	surface.DrawTexturedRect( ScrW() / 53.08, ScrH() / 19, ScrW() / 45, ScrH() / 30, Color(255, 255, 255, 255) )
 	*/
-
 end )
 
+hook.Add("RenderScreenspaceEffects", "DuneGraphicsModifier", function()
+	GraphicsModding()
+end)
+DOF_Kill()

@@ -75,7 +75,7 @@ end
 function GM:PlayerHurt(victim, attacker)
 	timer.Stop("Recharge_"..victim:SteamID())
 	timer.Stop("Recharge_Starter_"..victim:SteamID())
-	timer.Create( "Recharge_Starter_"..victim:SteamID(), GetConVar("dune_sv_recharge_delay"):GetFloat(), 1, function() 
+	timer.Create( "Recharge_Starter_"..victim:SteamID(), 1, 1, function() 
 		if victim:Armor() == 0 then
 			timer.Create( "Recharge_"..victim:SteamID(), GetConVar("dune_sv_recharge_interval"):GetFloat(), 100, function() 
 				victim:SetArmor(victim:Armor()+1)
