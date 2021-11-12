@@ -1,3 +1,5 @@
+if not CLIENT then return end
+
 local function DrawBoxBlur( x, y, w, h, layers, density, alpha )
 	local blur = Material( "pp/blurscreen" )
 	surface.SetDrawColor( 255, 255, 255, alpha ) 
@@ -11,6 +13,24 @@ local function DrawBoxBlur( x, y, w, h, layers, density, alpha )
 		render.SetScissorRect( 0, 0, 0, 0, false ) 
 	end
 end
+surface.CreateFont("HP",{
+	font = "Helvetica",
+	extended = false,
+	size = 55,
+	weight = 1000,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = true,
+	additive = false,
+	outline = false,
+})
+
 hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 	if (InMenu == true) then return end
 	function GetAmmoForCurrentWeapon( ply )
@@ -57,6 +77,15 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 	elseif LocalPlayer():Team() == 2 then
 		BGCol = HarkonnenCol
 	end
+	draw.RoundedBox( 4, ScrW() / 16.08 , ScrH() / 1.07, ScrW() * 100 / 709, ScrH() / 77, Color(130, 100, 0, 105) )
+	draw.RoundedBox( 4, ScrW() / 16.08 , ScrH() / 1.07, ScrW() * HP / 709, ScrH() / 77, Color(200, 1, 1, 155) )
+
+	draw.RoundedBox( 0, ScrW() / 16.08 , ScrH() / 1.058, ScrW() * 100 / 709, ScrH() / 260, Color(130, 100, 0, 105) )
+	draw.RoundedBox( 0, ScrW() / 16.08 , ScrH() / 1.058, ScrW() * Armor / 709, ScrH() / 260, Color(255, 255, 255, 155) )
+
+	draw.RoundedBox( 0, ScrW() / 16.08 , ScrH() / 1.05, ScrW() * 100 / 709, ScrH() / 260, Color(0, 100, 30, 105) )
+	draw.RoundedBox( 0, ScrW() / 16.08 , ScrH() / 1.05, ScrW() * Ammo / 709, ScrH() / 260, Color(0, 255, 100, 155) )
+
 	DrawBoxBlur(ScrW() / 60.08, ScrH() *0.89, ScrW() / 25, ScrH() / 15 ,11,4,255)
 	draw.RoundedBox( 0, ScrW() / 60.08, ScrH() *0.89, ScrW() / 25, ScrH() / 15 , BGCol)
 	surface.SetDrawColor(Color(155,155,155,255))
