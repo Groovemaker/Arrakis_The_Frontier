@@ -16,17 +16,17 @@ end
 surface.CreateFont("HP",{
 	font = "Helvetica",
 	extended = false,
-	size = 55,
-	weight = 1000,
-	blursize = 0,
-	scanlines = 0,
+	size = 42,
+	weight = 500,
+	blursize = 0.5,
+	scanlines = 2,
 	antialias = true,
 	underline = false,
 	italic = false,
 	strikeout = false,
 	symbol = false,
 	rotary = false,
-	shadow = true,
+	shadow = false,
 	additive = false,
 	outline = false,
 })
@@ -64,11 +64,11 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 
 
 	--Health Bar
-	draw.RoundedBox( 4, ScrW() / 5.5, ScrH() / (1.1*35), ScrW() / 1.6, ScrH() / 55, Color(1,1,1,100) )
-	draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * HP / 161, ScrH() / 73.5, Color(255, 255, 255, 100) )	
+	--draw.RoundedBox( 4, ScrW() / 5.5, ScrH() / (1.1*35), ScrW() / 1.6, ScrH() / 55, Color(1,1,1,100) )
+	--draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * HP / 161, ScrH() / 73.5, Color(255, 255, 255, 100) )	
 
 	--Shield Bar
-	draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * Armor / 161, ScrH() / 73.5, Color(111, 155, 255, 155) )
+	--draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * Armor / 161, ScrH() / 73.5, Color(111, 155, 255, 155) )
 
 	local BGCol = Color(1,1,1,1)
 	-- main body
@@ -77,12 +77,17 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 	elseif LocalPlayer():Team() == 2 then
 		BGCol = HarkonnenCol
 	end
+
+	--Health Bar
+	draw.SimpleText("✙"..HP.."", "HP", ScrW() / 16.3 ,ScrH() / 1.10, Color(255,255,255,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)	
 	draw.RoundedBox( 4, ScrW() / 16.08 , ScrH() / 1.07, ScrW() * 100 / 709, ScrH() / 77, Color(130, 100, 0, 105) )
 	draw.RoundedBox( 4, ScrW() / 16.08 , ScrH() / 1.07, ScrW() * HP / 709, ScrH() / 77, Color(200, 1, 1, 155) )
 
+	--Armor Bar
 	draw.RoundedBox( 0, ScrW() / 16.08 , ScrH() / 1.058, ScrW() * 100 / 709, ScrH() / 260, Color(130, 100, 0, 105) )
 	draw.RoundedBox( 0, ScrW() / 16.08 , ScrH() / 1.058, ScrW() * Armor / 709, ScrH() / 260, Color(255, 255, 255, 155) )
-
+	
+	--Ammo Bar
 	draw.RoundedBox( 0, ScrW() / 16.08 , ScrH() / 1.05, ScrW() * 100 / 709, ScrH() / 260, Color(0, 100, 30, 105) )
 	draw.RoundedBox( 0, ScrW() / 16.08 , ScrH() / 1.05, ScrW() * Ammo / 709, ScrH() / 260, Color(0, 255, 100, 155) )
 
