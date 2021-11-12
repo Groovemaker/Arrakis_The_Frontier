@@ -206,17 +206,31 @@ function credits()
 	    		<h3>A Fan Game By</h3>
 	    		<span>Runic</span>
 	    		<h3>Featuring Addons powered by</h3>
-	    		<span>TFA</span>
+	    		<span>TFA<br /><br />
+	    		LFS<br /><br />
+	    		</span>
+	    		<h3>As well as Addons by</h3>
+	    		<span>
+	    		Cole<br /><br />
+	    		NextKurome76TheSoldier<br /><br />
+	    		</span>
 	    		<h3>Snippets and additions by</h3>
 	    		<span>slownls</span>
 	    		<h3>Featuring Music and Sounds by</h3>
-	    		<span>ash19 - Land of Twists</span>	    
-	    		<h3>Special thanks to</h3>
+	    		<span>ash19 - Land of Twists</span>
+	    		<h3>Special thanks to the testers</h3>
+	    		<span>
+	    		Tzucas<br /><br />
+	    		</span>
+	    		<h3>Special thanks as well to</h3>
+	    		<span>
 	    		Naki<br /><br />
 	    		My buddies at work<br /><br />
 	    		Mom & Dad<br /><br />
 	    		SpookyFM<br /><br />
-	    		Katsu, for some math basics<br /><br /></span><br /><br /><br />
+	    		Katsu, for some math basics<br /><br />
+	    		</span>
+	    		<br /><br /><br />
 	    		<h1>And YOU, for playing!</h1>
     		</div>
 		</div>
