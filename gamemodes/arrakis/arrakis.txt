@@ -14,9 +14,9 @@
 			"text"		"Shield recharge "
 			"help"		"Shield recharges every X seconds
 			"type"		"Float"
-			"default"	"0.3"
-		},
-		
+			"default"	"0.1"
+		}
+
 		2
 		{
 			"name"		"dune_sv_recharge_delay"

@@ -9,6 +9,7 @@ RunConsoleCommand("sv_skyname", "sky_day01_06")
 
 -- Loadout
 function GM:PlayerLoadout(ply)
+	ply:SetArmor(100)
 	return true
 end
 

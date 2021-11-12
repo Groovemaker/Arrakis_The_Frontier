@@ -39,7 +39,7 @@ function set_team()
 	TeamFrame:SetDraggable(false) 
 	TeamFrame:ShowCloseButton(true) 
 	TeamFrame:MakePopup() 
-
+	InMenu = true
 	local html = vgui.Create("DHTML", TeamFrame)
 	html:Dock(FILL)
 
@@ -107,7 +107,9 @@ function set_team()
 	]])
 
 	html:SetAllowLua(true)
-
+	function TeamFrame:OnClose()
+		InMenu = false
+	end
  	function TeamFrame:Paint(w,h)
  		PanelDrawBlur(self, 5)
  		DunePaint_DFrame(w,h)
@@ -394,7 +396,7 @@ hook.Add( "HUDPaint", "HUDPaint_DrawABox", function()
 
 	--Health Bar
 	draw.RoundedBox( 4, ScrW() / 5.5, ScrH() / (1.1*35), ScrW() / 1.6, ScrH() / 55, Color(1,1,1,100) )
-	draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * HP / 161, ScrH() / 73.5, Color(111, 255, 155, 100) )	
+	draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * HP / 161, ScrH() / 73.5, Color(255, 255, 155, 100) )	
 
 	--Shield Bar
 	draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * Armor / 161, ScrH() / 73.5, Color(111, 155, 255, 155) )
