@@ -124,8 +124,6 @@ function credits()
 
 	local html = vgui.Create("DHTML", CreditsFrame)
 	html:Dock(FILL)
-	-- Atreides Logo | https://i.imgur.com/OzBDqi0.png | Outlined: https://i.imgur.com/SY2LcM7.png
-	-- Harkonnen Logo | https://i.imgur.com/HGv0kj7.png | Outlined:  https://i.imgur.com/oSyzntH.png
 	html:SetHTML([[
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -148,7 +146,7 @@ function credits()
 		.container {
 		  margin: 0 auto;
 		  height: auto;
-		  width: 660px;
+		  width: 100%;
 		  text-align: center;
 		}
 
@@ -160,10 +158,13 @@ function credits()
 		}
 		.credits span {
 		  display: block;
-		  margin: 5px 0;
+		  margin: 0 0 15em;
 		  width: 100%;
 		}
-
+		#image1 {
+		   display: block;
+		   width: 100%;
+		}
 		@-webkit-keyframes movenames {
 			0% {margin-top: 400px;}
 			100% {margin-bottom: 150px;}
@@ -183,16 +184,28 @@ function credits()
 		</style>
 		<div class="container">
     		<div class="credits">
-
-	    		<h3>A gamemode by</h3>
+    			<img id="image1" src="https://i.imgur.com/kBVrgZe.png"></img>
+	    		<h3>A Game By</h3>
 	    		<span>Runic</span>
-
+	    		<h3>Featuring Addons From</h3>
+	    		<span>TFA</span>
+	    		<h3>Featuring Music and Sounds by</h3>
+	    		<span>ash19 - Land of Twists</span>	    		
     		</div>
 		</div>
 	]])
+	sound.PlayURL ("https://raw.githubusercontent.com/Groovemaker/Arrakis_The_Frontier/main/gamemodes/arrakis/credits.mp3", "noblock", function(station)
+		CredSnd = station
+		if (IsValid(CredSnd)) then
+			CredSnd:Play()
+		end
+	end )
 	html:SetAllowLua(true)
 	 function CreditsFrame:Paint(w,h)
  		draw.RoundedBox(0, 0, 0, w, h, Color(0,0,0,255))
+ 	end
+ 	function CreditsFrame:OnClose()
+ 		CredSnd:Stop()
  	end
 end 
 concommand.Add( "dune_team", set_team )
