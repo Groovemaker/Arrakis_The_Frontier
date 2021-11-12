@@ -4,26 +4,4 @@
 	"title"		"Arrakis: The Frontier"
 	"category"	"pvp"
 	"menusystem"	"1"
-
-	"settings"
-	{
-	
-		1
-		{
-			"name"		"dune_sv_recharge_interval"
-			"text"		"Shield recharge "
-			"help"		"Shield recharges every X seconds
-			"type"		"Numeric"
-			"default"	"0.1"
-		}
-
-		2
-		{
-			"name"		"dune_sv_recharge_delay"
-			"text"		"Shield recharge Delay"
-			"help"		"Shield recharge starts after X seconds"
-			"type"		"Numeric"
-			"default"	"1"
-		}
-	}
 }

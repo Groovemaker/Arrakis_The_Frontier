@@ -47,12 +47,33 @@ function ChatAdd(type,message,args)
 		end
 	end
 end
+hook.Add("PlayerSpawn","Dune_Spawn",function(ply)
+	SP_Atreides = {
+
+	}
+	SP_Harkonnen = {
+		Vector(-12395.594727, 11587.176758, -9147.045898),
+		Vector(-12814.399414, 10839.073242, -9256.389648),
+		Vector(-12302.385742, 10749.623047, -9257.607422),
+		Vector(-12859.300781, 10293.492188, -9312.452148),
+		Vector(-13258.383789, 10780.868164, -9239.381836),
+		Vector(-13702.872070, 10912.717773, -9183.007813)
+	}
+	if ply:Team() == 1 then
+
+	elseif ply:Team() == 2 then
+		ply:SetPos(table.Random(SP_Harkonnen))
+		ply:SetAngles(Angle(15.012362, -49.033779, 0))
+	end
+end)
 
 hook.Add("PlayerInitialSpawn","Dune_JL",function(ply)
 	ChatAdd("JL"," joined the Battlefield!",ply:Nick())
 	ply:ConCommand("dune_team")
 end)
-
+function GM:PlayerShouldTakeDamage(ply,attacker)
+	return ply == attacker || ply:Team() != attacker:Team()
+end
 function GM:PlayerSetModel(ply)
 
 	Atreides_PlyMDL = "models/player/swat.mdl"
@@ -71,7 +92,7 @@ function GM:PlayerSetModel(ply)
 	    ply:Give("tfeye_arra") --melee hammer
 	    ply:Give("tfeye_ka93") --pulse smg
 	    ply:Give("tfeye_huntr") -- carbine
-	    ply:Give("tfeye_cawham") --shotgun
+	  	ply:Give("tfeye_depez") --shotgun
 	    ply:Give("tfeye_excidium") --grenade launcher
 	    --ply:GiveAmmo(32, "357")
 	    ply:SetModel(Harkonnen_PlyMDL)

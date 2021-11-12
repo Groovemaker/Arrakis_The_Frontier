@@ -332,28 +332,55 @@ surface.CreateFont( "NameFont", {
 local function GraphicsModding()
 	local mat_dunevision = Material("engine/singlecolor")
 	mat_dunevision:SetFloat( "$alpha", 0 )
-
-	local colormod = {
+	local colormod_day2 = {
+	    ["$pp_colour_addr"] = 0.1,
+	    ["$pp_colour_addg"] = 0.1,
+	    ["$pp_colour_addb"] = 0,
+	    ["$pp_colour_brightness"] = -0.03,
+	    ["$pp_colour_contrast"] = 0.7,
+	    ["$pp_colour_colour"] = 1,
+	    ["$pp_colour_mulr"] = 0,
+	    ["$pp_colour_mulg"] = 0,
+	    ["$pp_colour_mulb"] = 0
+	}
+	local colormod_day = {
 	    ["$pp_colour_addr"] = 0.05,
 	    ["$pp_colour_addg"] = 0.05,
 	    ["$pp_colour_addb"] = 0,
 	    ["$pp_colour_brightness"] = -0.03,
-	    ["$pp_colour_contrast"] = 0.8,
+	    ["$pp_colour_contrast"] = 0.65,
 	    ["$pp_colour_colour"] = 1.4,
 	    ["$pp_colour_mulr"] = 1,
 	    ["$pp_colour_mulg"] = 1,
 	    ["$pp_colour_mulb"] = 1
+	}
+	local colormod_night = {
+	    ["$pp_colour_addr"] = 0.1,
+	    ["$pp_colour_addg"] = 0.05,
+	    ["$pp_colour_addb"] = 0.13,
+	    ["$pp_colour_brightness"] = -0.04,
+	    ["$pp_colour_contrast"] = 0.1,
+	    ["$pp_colour_colour"] = 1.4,
+	    ["$pp_colour_mulr"] = 1.1,
+	    ["$pp_colour_mulg"] = 1,
+	    ["$pp_colour_mulb"] = 2,
 	}
 
 		    
     if BD_RENDERING_RTWORLD then return end
     render.UpdateScreenEffectTexture()
 
+    Day = CVAR_DAYNIGHT:GetInt()
 
-
-    DrawColorModify(colormod)
+    if Day == 1 then
+    	DrawColorModify(colormod_day)
+    	DrawBloom( 0.85, 2.3, 9, 9, 1, 1, 1, 1, 1 )
+    else
+    	DrawColorModify(colormod_night)
+    end
+    
     --DrawBloom( number Darken, number Multiply, number SizeX, number SizeY, number Passes, number ColorMultiply, number Red, number Green, number Blue )
-    DrawBloom( 0.85, 2.3, 9, 9, 1, 1, 1, 1, 1 )
+    
 end
 hook.Add( "HUDPaint", "HUDPaint_DrawABox", function()
 	if (InMenu == true) then return end
@@ -396,7 +423,7 @@ hook.Add( "HUDPaint", "HUDPaint_DrawABox", function()
 
 	--Health Bar
 	draw.RoundedBox( 4, ScrW() / 5.5, ScrH() / (1.1*35), ScrW() / 1.6, ScrH() / 55, Color(1,1,1,100) )
-	draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * HP / 161, ScrH() / 73.5, Color(255, 255, 155, 100) )	
+	draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * HP / 161, ScrH() / 73.5, Color(255, 255, 255, 100) )	
 
 	--Shield Bar
 	draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * Armor / 161, ScrH() / 73.5, Color(111, 155, 255, 155) )

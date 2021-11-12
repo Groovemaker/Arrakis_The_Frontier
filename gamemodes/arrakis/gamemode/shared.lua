@@ -17,4 +17,7 @@ if SERVER then
 	AddCSLuaFile()
 end
 
+-- Replicated CVARs
+CVAR_DAYNIGHT = CreateConVar( "dune_sv_day", "1", FCVAR_REPLICATED, "Day/Night switch", 0,1)
+
 include("tfa/framework/tfa_loader.lua")
