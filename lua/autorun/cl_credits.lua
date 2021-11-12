@@ -86,7 +86,7 @@ function credits()
     		<div class="credits">
     			<img id="image1" src="https://i.imgur.com/kBVrgZe.png"></img>
     			<h2>A Tribute to DUNE</h2>
-	    		<h3>A Fan Game By</h3>
+	    		<h3>And a Fan Game By</h3>
 	    		<span>Runic</span>
 	    		<h3>Featuring Addons powered by</h3>
 	    		<span>TFA<br /><br />
@@ -99,15 +99,15 @@ function credits()
 	    		</span>
 	    		<h3>Snippets and additions by</h3>
 	    		<span>slownls - Blur Tricks
-	    		<br />Kefta - Weapon Hud Basics
-	    		<br />Fred-Tension - HUD Blur Tricks</span>
+	    		<br /><br />Kefta - Weapon Hud Basics
+	    		<br /><br />Fred-Tension - HUD Blur Tricks</span>
 	    		<h3>Featuring Music and Sounds by</h3>
 	    		<span>ash19 - Land of Twists</span>
 	    		<h3>Special thanks to the testers</h3>
 	    		<span>
-	    		Payback<br />
-	    		Gō_Mifune_97<br />
-	    		Tzucas<br /><br />
+	    		Payback<br /><br />
+	    		Gō_Mifune_97<br /><br />
+	    		Tzucas<br /><br /><br />
 	    		</span>
 	    		<h3>Special thanks as well to</h3>
 	    		<span>
