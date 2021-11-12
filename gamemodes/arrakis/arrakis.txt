@@ -1,0 +1,29 @@
+"arrakis"
+{
+	"base"		"base"
+	"title"		"Arrakis: The Frontier"
+	"category"	"pvp"
+	"menusystem"	"1"
+
+	"settings"
+	{
+		1
+		{
+			"name"		"dune_version"
+			"text"		"Arrakis Version"
+			"help"		"Arrakis Version"
+			"type"		"Float"
+			"default"	"20"
+		}
+
+		
+		2
+		{
+			"name"		"dune_testcvar"
+			"text"		"Where theres no fear, only i will remain."
+			"help"		"If enabled then god knows whatll happen. (Probably nothing at all!)"
+			"type"		"CheckBox"
+			"default"	"0"
+		}
+	}
+}

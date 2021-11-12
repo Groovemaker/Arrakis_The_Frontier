@@ -1,0 +1,30 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models\ixscifi\characters\TX_Helmet_ov_Dif"
+	"$bumpmap"	"models\ixscifi\characters\TX_Helmet_ov_n"
+	"$selfillum" 1
+	"$selfillummask" "models\ixscifi\characters\TX_Helmet_ov_illum"
+	"$halflambert" "1"
+	"$nocull" "1" 
+
+//	"$basetexturealphaenvmapmask" 1
+	"$envmap" "env_cubemap"
+	"$envmaptint" "[ 0.9 0.8 0.2 ]"
+	"$envmapsaturation" ".01"
+	"$envmapcontrast" "0.1"
+ 	"$envmapFresnel" "1"
+
+	"$phong" "1"
+	"$phongexponenttexture" "models\ixscifi\characters\TX_Helmet_ov_exp"
+//	"$phongexponent" 5
+	"$phongboost" ".8"
+	"$phongfresnelranges"	"[ .3 1.2 8]"
+	"$PhongAlbedoTint" "1"
+
+	"$rimlight" "1"						
+	"$rimlightexponent" "8"				
+	"$rimlightboost" ".3"
+	"$rimmask" "1"
+	
+
+}
