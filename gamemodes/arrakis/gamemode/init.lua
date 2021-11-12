@@ -7,6 +7,10 @@ include("shared.lua")
 -- Set Skyname
 RunConsoleCommand("sv_skyname", "sky_day01_06")
 
+-- Set up CVARs
+CVAR_ShieldInterval = CreateConVar( "dune_sv_recharge_interval", "0.1", FCVAR_NONE, "The lower, the faster the shield recharges", 0.01)
+CVAR_ShieldDelay = CreateConVar( "dune_sv_recharge_delay", "1", FCVAR_NONE, "The lower, the sooner the shield starts recharging", 0.1)
+
 -- Loadout
 function GM:PlayerLoadout(ply)
 	ply:SetArmor(100)
@@ -76,13 +80,13 @@ end
 function GM:PlayerHurt(victim, attacker)
 	timer.Stop("Recharge_"..victim:SteamID())
 	timer.Stop("Recharge_Starter_"..victim:SteamID())
-	timer.Create( "Recharge_Starter_"..victim:SteamID(), 1, 1, function() 
+	timer.Create( "Recharge_Starter_"..victim:SteamID(), CVAR_ShieldDelay:GetFloat(), 1, function() 
 		if victim:Armor() == 0 then
-			timer.Create( "Recharge_"..victim:SteamID(), GetConVar("dune_sv_recharge_interval"):GetFloat(), 100, function() 
+			timer.Create( "Recharge_"..victim:SteamID(), CVAR_ShieldInterval:GetFloat(), 100, function() 
 				victim:SetArmor(victim:Armor()+1)
 			end)
 		else
-			timer.Create( "Recharge_"..victim:SteamID(), GetConVar("dune_sv_recharge_interval"):GetFloat(), 100-victim:Armor(), function() 
+			timer.Create( "Recharge_"..victim:SteamID(), CVAR_ShieldInterval:GetFloat(), 100-victim:Armor(), function() 
 				victim:SetArmor(victim:Armor()+1)
 			end)
 		end
