@@ -1,8 +1,23 @@
 -- Clientside
 include("shared.lua")
- 
+
+-- Thanks to slownls
+DPANELBlurMat = Material("pp/blurscreen")
+function PanelDrawBlur(panel, amount) 
+	local x, y = panel:LocalToScreen(0, 0) 
+	local scrW, scrH = ScrW(), ScrH() 
+	surface.SetDrawColor(255, 255, 255) 
+	surface.SetMaterial(DPANELBlurMat) 
+	for i = 1, 3 do 
+		DPANELBlurMat:SetFloat("$blur", (i / 3) * (amount or 6)) 
+		DPANELBlurMat:Recompute() 
+		render.UpdateScreenEffectTexture() 
+		surface.DrawTexturedRect(x * -1, y * -1, scrW, scrH) 
+	end
+end
+
 function DunePaint_DFrame(w,h)
-	draw.RoundedBox(1, 0, 0, w, h, Color(0,0,0,155))
+	draw.RoundedBox(1, 0, 0, w, h, Color(0,0,0,222))
 end
 
 function D_JAtreides()
@@ -27,8 +42,10 @@ function set_team()
 
 	local html = vgui.Create("DHTML", TeamFrame)
 	html:Dock(FILL)
+
 	-- Atreides Logo | https://i.imgur.com/OzBDqi0.png | Outlined: https://i.imgur.com/SY2LcM7.png
 	-- Harkonnen Logo | https://i.imgur.com/HGv0kj7.png | Outlined:  https://i.imgur.com/oSyzntH.png
+
 	html:SetHTML([[
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -90,25 +107,9 @@ function set_team()
 	]])
 
 	html:SetAllowLua(true)
-	/*
-	TeamFrame_Join1 = vgui.Create("DButton", TeamFrame) 
-	TeamFrame_Join1:SetPos(30, 30)
-	TeamFrame_Join1:SetSize(100, 50) 
-	TeamFrame_Join1:SetText("Atreides") 
-	TeamFrame_Join1.DoClick = function()
-		D_JAtreides()
-	end 
-	
 
-	TeamFrame_Join2 = vgui.Create("DButton", TeamFrame) 
-	TeamFrame_Join2:SetPos(30, 85) //Place it next to our previous one 
-	TeamFrame_Join2:SetSize(100, 50) 
-	TeamFrame_Join2:SetText("Harkonnen") 
-	TeamFrame_Join2.DoClick = function()
-		D_JHarkonnen()
-	end 
-	*/
  	function TeamFrame:Paint(w,h)
+ 		PanelDrawBlur(self, 5)
  		DunePaint_DFrame(w,h)
  	end
 end 
@@ -123,7 +124,9 @@ function credits()
 	CreditsFrame:MakePopup() 
 
 	local html = vgui.Create("DHTML", CreditsFrame)
+
 	html:Dock(FILL)
+
 	html:SetHTML([[
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -194,6 +197,7 @@ function credits()
     		</div>
 		</div>
 	]])
+
 	sound.PlayURL ("https://raw.githubusercontent.com/Groovemaker/Arrakis_The_Frontier/main/gamemodes/arrakis/credits.mp3", "noblock", function(station)
 		CredSnd = station
 		if (IsValid(CredSnd)) then
@@ -201,12 +205,186 @@ function credits()
 		end
 	end )
 	html:SetAllowLua(true)
+
 	 function CreditsFrame:Paint(w,h)
  		draw.RoundedBox(0, 0, 0, w, h, Color(0,0,0,255))
  	end
+
  	function CreditsFrame:OnClose()
  		CredSnd:Stop()
  	end
 end 
-concommand.Add( "dune_team", set_team )
-concommand.Add( "dune_credits", credits ) 
+
+concommand.Add("dune_team", set_team)
+concommand.Add("dune_credits", credits)
+
+
+
+
+
+-- HUD
+if not CLIENT then return end
+local trace2ent = nil
+	InMenu = false
+local hide = {
+	["CHudHealth"] = true,
+	["CHudBattery"] = true,
+	["CHudAmmo"] = true,
+}
+
+hook.Add( "HUDShouldDraw", "HideHUD", function( name )
+	if ( hide[ name ] ) then return false end
+
+	-- Don't return anything here, it may break other addons that rely on this hook.
+end )
+surface.CreateFont( "EXPFont", {
+	font = "Helvetica", -- Use the font-name which is shown to you by your operating system Font Viewer, not the file name
+	extended = false,
+	size = 100,
+	weight = 1000,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+surface.CreateFont( "LVLFont", {
+	font = "Helvetica", -- Use the font-name which is shown to you by your operating system Font Viewer, not the file name
+	extended = false,
+	size = 20,
+	weight = 900,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+surface.CreateFont( "MoneyFont", {
+	font = "Helvetica", -- Use the font-name which is shown to you by your operating system Font Viewer, not the file name
+	extended = false,
+	size = 30,
+	weight = 600,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+surface.CreateFont( "NameFont", {
+	font = "Helvetica", -- Use the font-name which is shown to you by your operating system Font Viewer, not the file name
+	extended = false,
+	size = 25,
+	weight = 800,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
+hook.Add( "HUDPaint", "HUDPaint_DrawABox", function()
+	if (InMenu == true) then return end
+	function GetAmmoForCurrentWeapon( ply )
+		if ( !IsValid( ply ) ) then return -1 end
+
+		local wep = ply:GetActiveWeapon()
+		if ( !IsValid( wep ) ) then return -1 end
+	 	manastuff = wep:Clip1() * 5.6
+		return manastuff
+	end
+	function GetMax( ply )
+		if ( !IsValid( ply ) ) then return -1 end
+
+		local wep = ply:GetActiveWeapon()
+		if ( !IsValid( wep ) ) then return -1 end
+	 	maxclip = wep:GetMaxClip1()
+		return maxclip
+	end
+
+	local HP = LocalPlayer():Health()
+	local Ammo = GetAmmoForCurrentWeapon(LocalPlayer())
+
+	if(HP > 100) then HP = 100 end
+	if(Ammo == nil) then Ammo = 0 end
+	if(Ammo < 1) then Ammo = 0 end
+	if(Ammo >= 100) then Ammo = 100 end
+
+	local Armor = LocalPlayer():Armor()
+	if(Armor > 100) then Armor = 100 end
+
+
+
+	surface.SetFont( "EXPFont" )
+	surface.SetTextColor( 255, 255, 255 )
+	surface.SetTextPos( ScrW() / 10, ScrH() / 1.21 )
+	--surface.DrawText( "+" )
+
+
+
+	--Health Bar
+	draw.RoundedBox( 4, ScrW() / 5.5, ScrH() / (1.1*35), ScrW() / 1.6, ScrH() / 55, Color(1,1,1,100) )
+	draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * HP / 161, ScrH() / 73.5, Color(111, 255, 155, 100) )	
+
+	--Shield Bar
+	draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * Armor / 161, ScrH() / 73.5, Color(111, 155, 255, 155) )
+
+
+	-- main body
+	/*
+	draw.RoundedBox( 2, ScrW() / 60.08, ScrH() / 21, ScrW() / 4.6, ScrH() / 19 , Color(30,30,30,155) )
+
+
+
+	draw.RoundedBox( 0, ScrW() / 19.08 , ScrH() / 13, ScrW() * 100 / 709, ScrH() / 260, Color(130, 100, 0, 105) )
+
+	draw.RoundedBox( 0, ScrW() / 19.08 , ScrH() / 13, ScrW() * HP / 709, ScrH() / 260, Color(255, 200, 0, 155) )
+	draw.RoundedBox( 0, ScrW() / 19.08 , ScrH() / 11.8, ScrW() * 100 / 709, ScrH() / 260, Color(0, 100, 30, 105) )
+	draw.RoundedBox( 0, ScrW() / 19.08 , ScrH() / 11.8, ScrW() * Ammo / 709, ScrH() / 260, Color(0, 255, 100, 155) )
+
+	
+	surface.SetFont( "NameFont" )
+	surface.SetTextColor( 255, 255, 255 )
+	surface.SetTextPos( ScrW() / 20.08, ScrH() / 19 )
+	surface.DrawText( "".. LocalPlayer():Nick())
+
+	surface.SetFont( "LVLFont" )
+	surface.SetTextColor( 255, 255, 255 )
+	surface.SetTextPos( ScrW() / 5.9, ScrH() / 18.1 )
+	surface.DrawText( "TEAM")
+
+	-- team icon
+	surface.SetDrawColor(Color(255,255,255,255))
+	if LocalPlayer():Team() == 1 then -- atreides
+		surface.SetMaterial(Material("gui/progress_cog.png"))
+	elseif LocalPlayer():Team() == 2 then -- harkonnen
+		surface.SetMaterial(Material("gui/progress_cog.png"))
+	end
+	surface.DrawTexturedRect( ScrW() / 53.08, ScrH() / 19, ScrW() / 45, ScrH() / 30, Color(255, 255, 255, 255) )
+	*/
+
+end )
+
