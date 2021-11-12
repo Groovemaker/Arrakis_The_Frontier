@@ -20,6 +20,30 @@ function GM:PlayerLoadout(ply)
 	ply:SetArmor(100)
 	return true
 end
+
+-- Vehicles
+function SpawnVehiclesHarkonnen()
+	SP_Vtols_Harkonnen = {
+		Vector(-12988.833984, 10670.055664, -9134.481445),
+		Vector(-11978.709961, 10691.329102, -9112.096680),
+		Vector(-11006.250000, 11011.807617, -9030.311523),
+	}
+
+	local OldHarkonnenVtols = ents.FindByName("vtol_atreides")
+	for k, v in ipairs(OldHarkonnenVtols) do
+		if(IsValid(v)) then
+			v:Remove()
+		end
+	end
+	
+	for k,v in pairs(SP_Vtols_Harkonnen) do
+		local VTOL = ents.Create("lfs_crysis_vtol")
+		VTOL:SetPos(v)
+		VTOL:SetName("vtol_Harkonnen")
+		VTOL:Spawn()
+	end
+end
+
 function SpawnVehiclesAtreides()
 	SP_Vtols_Atreides = {
 		Vector(-457.007355, -3206.202881, -9667.136719),
@@ -27,13 +51,13 @@ function SpawnVehiclesAtreides()
 		Vector(672.592651, -226.586792, -9836.514648),
 	}
 
-	local OldVtols = ents.FindByName("combine_gunship")
-	for k, v in ipairs(OldVtols) do
+	local OldAtreidesVtols = ents.FindByName("combine_gunship")
+	for k, v in ipairs(OldAtreidesVtols) do
 		if(IsValid(v)) then
 			v:Remove()
 		end
 	end
-
+	
 	for k,v in pairs(SP_Vtols_Atreides) do
 		local VTOL = ents.Create("combine_gunship")
 		VTOL:SetPos(v)
@@ -45,6 +69,7 @@ end
 function GM:PostGamemodeLoaded()
 	timer.Simple(1,function() 
 		SpawnVehiclesAtreides()
+		SpawnVehiclesHarkonnen()
 	end)
 end
 
