@@ -1,5 +1,5 @@
 # Arrakis: The Frontier
-A GMod (Garry's Mod) gamemode entirely from scratch as a tribute to DUNE. I claim NO RIGHTS in the DUNE franchise. This is a mere fan creation and is not monetized.
+A GMod (Garry's Mod) gamemode entirely from scratch as a tribute to DUNE.
 
 # Needed Addons:
 - The Map, GM_Disten: https://steamcommunity.com/sharedfiles/filedetails/?id=705480409
