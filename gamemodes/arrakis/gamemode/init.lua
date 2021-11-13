@@ -208,9 +208,32 @@ function GM:PostGamemodeLoaded()
 	timer.Create("Dune_VehicleLoop",3,0,function()
 		for ix=1,3 do
 			RespawnVehiclesAtreides(ix)
+			RespawnVehiclesHarkonnen(ix)
 		end
 	end)
+	-- Spice Smokestack
+	if IsValid(Spicestack) then 
+		Spicestack:Remove()
+	end
+	Spicestack = ents.Create("env_smokestack")
+	Spicestack:SetKeyValue("SmokeMaterial","particle/smokesprites_0002.vmt")
+	Spicestack:SetKeyValue("StartSize","11595")
+	Spicestack:SetKeyValue("EndSize","11510")
+	Spicestack:SetKeyValue("Rate","1")
+	Spicestack:SetKeyValue("Speed","680")
+	Spicestack:SetKeyValue("SpreadSpeed","11600")
+	Spicestack:SetKeyValue("JetLength","19500")
+	Spicestack:SetKeyValue("Twist","33")
+	Spicestack:SetKeyValue("InitialState","1")
+	Spicestack:SetKeyValue("rendercolor","155 155 111")
+	Spicestack:SetKeyValue("renderamt","44")
+
+	Spicestack:Spawn()
+	Spicestack:Activate()
+	Spicestack:SetPos(Vector(0, 0, -9000))
+	Spicestack:Fire("TurnOn")
 end
+
 
 -- Factions
 function jAtreides( ply ) 
