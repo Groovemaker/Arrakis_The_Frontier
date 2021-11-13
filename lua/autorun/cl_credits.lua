@@ -108,6 +108,8 @@ function credits()
 	    		Payback<br /><br />
 	    		Gō_Mifune_97<br /><br />
 	    		Tzucas<br /><br /><br />
+	    		Rankinjra<br /><br /><br />
+	    		Vee<br /><br /><br />
 	    		</span>
 	    		<h3>Special thanks as well to</h3>
 	    		<span>

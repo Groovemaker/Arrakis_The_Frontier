@@ -65,7 +65,7 @@ hook.Add("PlayerButtonDown", "Dune_Ability_Grenade", function(ply, button)
 			
 		end
 	else
-		if button == 16 then
+		if button == 16 && !ply:InVehicle() then
 			Abilities.Grenade(ply)
 		end
 	end
