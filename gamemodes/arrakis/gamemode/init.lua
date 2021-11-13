@@ -31,6 +31,13 @@ end
 
 -- Vehicles
 
+-- Simfphys compatibility
+function GM:PlayerButtonDown( ply, btn )
+	numpad.Activate( ply, btn )
+end
+function GM:PlayerButtonUp( ply, btn )
+	numpad.Deactivate( ply, btn )
+end
 -- When Hotfixing
 local OldHarkonnenVtols = ents.FindByName("vtol_harkonnen")
 for k, v in ipairs(OldHarkonnenVtols) do
@@ -46,19 +53,37 @@ for k, v in ipairs(OldAtreidesVtols) do
 	end
 end
 
+local OldAtreidesAPCs = ents.FindByName("apc_atreides")
+for k, v in ipairs(OldAtreidesAPCs) do
+	if(IsValid(v)) then
+		v:Remove()
+	end
+end
+
 -- Spawners
-AtreidesVtolEntIndexes = {}
 HarkonnenVtolEntIndexes = {}
+
+AtreidesVtolEntIndexes = {}
+AtreidesAPCEntIndexes = {}
+
 SP_Vtols_Harkonnen = {
 	Vector(-12988.833984, 10670.055664, -9034.481445),
 	Vector(-11978.709961, 10691.329102, -9012.096680),
 	Vector(-11006.250000, 11011.807617, -8930.311523),
 }
+
 SP_Vtols_Atreides = {
 	Vector(11965.055664, -6706.582520, -9968.274414),
 	Vector(11477.743164, -7800.555176, -9969.972656),
 	Vector(12658.222656, -8133.210938, -9965.285156),
 }
+
+SP_APC_Atreides = {
+	Vector(11891.732422, -6082.339355, -10317.850586),
+	Vector(12891.853516, -6182.138184, -10342.645508),
+	Vector(14891.222656, -8282.210938, -9935.285156),
+}
+
 function SpawnVehiclesHarkonnen()
 	local OldHarkonnenVtols = ents.FindByName("vtol_harkonnen")
 	for k, v in ipairs(OldHarkonnenVtols) do
@@ -99,8 +124,20 @@ function SpawnVehiclesAtreides()
 end
 
 function RespawnVehiclesAtreides(vIndex)
+	--sim_fphys_cogtank
+	
 	local OldAtreidesVtols = ents.FindByName("vtol_atreides")
 	iCurAtreidesVtols = table.Count(OldAtreidesVtols)
+
+	local OldAtreidesAPCs = ents.FindByName("apc_atreides")
+	iCurAtreidesAPCs = table.Count(OldAtreidesAPCs)
+
+	if !IsValid(AtreidesAPCEntIndexes[vIndex]) then
+		local APC = simfphys.SpawnVehicleSimple("sim_fphys_tank_cell_apc", SP_APC_Atreides[vIndex], Angle(0, 170, 0))
+		APC:SetNWInt("apc_spawnpoint", k)
+		APC:SetName("apc_atreides")
+		AtreidesAPCEntIndexes[vIndex] = APC
+	end
 
 	if !IsValid(AtreidesVtolEntIndexes[vIndex]) then
 		local VTOL = ents.Create("lfs_crysis_vtol")
