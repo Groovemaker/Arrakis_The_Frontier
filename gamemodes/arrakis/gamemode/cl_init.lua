@@ -280,7 +280,36 @@ local function GraphicsModding()
 
 end
 
+function DSetupWorldFog()
 
+	render.FogMode( MATERIAL_FOG_LINEAR )
+	render.FogStart( 0 )
+	render.FogEnd( 4000 )
+	render.FogMaxDensity(0.55)
+
+	local col = Vector( 1, 1, 0.95 )
+	render.FogColor( col.x * 255, col.y * 255, col.z * 255 )
+
+	return true
+
+end
+
+function DSetupSkyFog(skyboxscale)
+
+	render.FogMode( MATERIAL_FOG_LINEAR )
+	render.FogStart( 0 * skyboxscale)
+	render.FogEnd( 0 * skyboxscale )
+	render.FogMaxDensity(0.55)
+
+	local col = Vector( 1, 1, 0.95 )
+	render.FogColor( col.x * 255, col.y * 255, col.z * 255 )
+
+	return true
+
+end
+
+hook.Add( "SetupWorldFog", "fog1", DSetupWorldFog )
+hook.Add( "SetupSkyboxFog", "fog2", DSetupSkyFog )
 
 hook.Add("RenderScreenspaceEffects", "DuneGraphicsModifier", function()
 	GraphicsModding()

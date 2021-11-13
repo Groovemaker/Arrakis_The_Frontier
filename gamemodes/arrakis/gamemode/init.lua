@@ -112,7 +112,7 @@ function SpawnVehiclesHarkonnen()
 		VTOL:SetNWInt("vtol_spawnpoint", k)
 		VTOL:SetName("vtol_harkonnen")
 		VTOL:Spawn()
-		VTOL:SetColor(Color(77,55,44))
+		VTOL:SetColor(Color(255,249,244))
 		VTOL:SetAngles(Angle(0, -50, 0))
 		HarkonnenVtolEntIndexes[k] = VTOL
 	end
@@ -175,7 +175,7 @@ function RespawnVehiclesHarkonnen(vIndex)
 		local APC = simfphys.SpawnVehicleSimple("sim_fphys_tank_cell_apc", SP_APC_Harkonnen[vIndex], Angle(0, 170, 0))
 		APC:SetNWInt("apc_spawnpoint", k)
 		APC:SetName("apc_atreides")
-		APC:SetColor(Color(155,70,43))
+		APC:SetColor(Color(155,122,111))
 		HarkonnenAPCEntIndexes[vIndex] = APC
 	end
 
