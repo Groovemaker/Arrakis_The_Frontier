@@ -13,6 +13,14 @@ resource.AddFile("materials/ability_grenade.png")
 resource.AddFile("sound/arrakis_credits.mp3")
 resource.AddFile("sound/arrakis_ambience.wav")
 
+-- Spice Points
+SPP = {
+	Vector(-2523.754150, 3018.725342, -10246.272461),
+	Vector(-2523.754150, 3018.725342, -10246.272461),
+}
+SPH = {}
+
+
 -- Set Skyname
 RunConsoleCommand("sv_skyname", "sky_day01_06")
 
@@ -200,10 +208,32 @@ timer.Create("Dune_VehicleLoop",11,0,function()
 	end
 end)
 
+-- Spawning Spice Harvesters
+function SpawnHarvesters()
+	for k,v in pairs(SPP) do
+		if IsValid(SPH[k]) then
+			SPH[k]:Remove()
+		end
+	end
+	for k,v in pairs(SPP) do
+		SPH[k] = ents.Create("prop_thumper")
+		SPH[k]:SetRenderMode(RENDERMODE_TRANSALPHA)
+		SPH[k]:SetColor(Color(255,255,255,255))
+		SPH[k]:SetAngles(Angle(0,-120,0))
+		SPH[k]:Fire("Enable")
+		SPH[k]:SetSolid(1)
+		local Harvester = SPH[k]
+		Harvester:SetModelScale(5, 0)
+		Harvester:SetPos(v)
+		Harvester:Spawn()
+	end
+end
+
 function GM:PostGamemodeLoaded()
 	timer.Simple(1,function() 
 		SpawnVehiclesAtreides()
 		SpawnVehiclesHarkonnen()
+		SpawnHarvesters()
 	end)
 	timer.Create("Dune_VehicleLoop",3,0,function()
 		for ix=1,3 do
@@ -217,8 +247,8 @@ function GM:PostGamemodeLoaded()
 	end
 	Spicestack = ents.Create("env_smokestack")
 	Spicestack:SetKeyValue("SmokeMaterial","particle/smokesprites_0002.vmt")
-	Spicestack:SetKeyValue("StartSize","11595")
-	Spicestack:SetKeyValue("EndSize","11510")
+	Spicestack:SetKeyValue("StartSize","7595")
+	Spicestack:SetKeyValue("EndSize","9110")
 	Spicestack:SetKeyValue("Rate","1")
 	Spicestack:SetKeyValue("Speed","680")
 	Spicestack:SetKeyValue("SpreadSpeed","11600")
@@ -231,7 +261,7 @@ function GM:PostGamemodeLoaded()
 	Spicestack:Spawn()
 	Spicestack:Activate()
 	Spicestack:SetPos(Vector(0, 0, -9000))
-	Spicestack:Fire("TurnOn")
+	Spicestack:Fire("TurnOn")	
 end
 
 
@@ -321,7 +351,11 @@ function GM:PlayerShouldTakeDamage(ply,attacker)
 	return attacker:GetClass() == "npc_grenade_frag" || ply == attacker || attacker:IsPlayer() && ply:Team() != attacker:Team() || attacker:IsVehicle() && ply:Team() != attacker:GetDriver():Team()
 end
 function GM:PlayerSetModel(ply)
-
+	if ply:Team() != 1 && ply:Team() != 2 then 
+		ply:SetModel("models/effects/teleporttrail_alyx.mdl")
+		ply:SetPos(Vector(0,0,-31110))
+		--ply:Lock()
+	end
 	Atreides_PlyMDL = "models/player/swat.mdl"
 	Harkonnen_PlyMDL = "models/player/combine_soldier.mdl"
 
@@ -333,7 +367,6 @@ function GM:PlayerSetModel(ply)
 	    ply:Give("tfeye_ovum") -- grenade launcher
 	    --ply:GiveAmmo(32, "357")
 	    ply:SetModel(Atreides_PlyMDL)
-
 	elseif ply:Team() == Harkonnen then
 	    ply:Give("tfeye_arra") --melee hammer
 	    ply:Give("tfeye_ka93") --pulse smg
