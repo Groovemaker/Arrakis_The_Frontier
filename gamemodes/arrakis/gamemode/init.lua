@@ -20,6 +20,7 @@ RunConsoleCommand("sv_skyname", "sky_day01_06")
 RunConsoleCommand("sv_tfa_cmenu",0)
 
 -- Set up CVARs
+CVAR_GrenadeCooldown = CreateConVar( "dune_sv_grenade_cooldown", "7", FCVAR_NONE, "The lower, the faster the Grenade recharges", 0.01)
 CVAR_ShieldInterval = CreateConVar( "dune_sv_recharge_interval", "0.1", FCVAR_NONE, "The lower, the faster the shield recharges", 0.01)
 CVAR_ShieldDelay = CreateConVar( "dune_sv_recharge_delay", "1", FCVAR_NONE, "The lower, the sooner the shield starts recharging", 0.1)
 
@@ -260,6 +261,9 @@ hook.Add("OnRequestFullUpdate", "Dune_JL2", function(t)
 	if not PInit[t.userid] then
 		PInit[t.userid] = true
 		Player(t.userid):SendLua([[surface.PlaySound("arrakis_ambience.wav")]])
+		Player(t.userid).CanGrenade = true
+		Player(t.userid):SendLua([[Player(]]..Player(t.userid):UserID()..[[).CanGrenade = true]])
+		Player(t.userid):SendLua([[Abilities.GrenadeCoolBar = 1]])
 	else
 		return
 	end
@@ -267,7 +271,7 @@ end)
 
 
 function GM:PlayerShouldTakeDamage(ply,attacker)
-	return ply == attacker || attacker:IsPlayer() && ply:Team() != attacker:Team() || attacker:IsVehicle() && ply:Team() != attacker:GetDriver():Team()
+	return attacker:GetClass() == "npc_grenade_frag" || ply == attacker || attacker:IsPlayer() && ply:Team() != attacker:Team() || attacker:IsVehicle() && ply:Team() != attacker:GetDriver():Team()
 end
 function GM:PlayerSetModel(ply)
 

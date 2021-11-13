@@ -93,7 +93,11 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 
 	DrawBoxBlur(ScrW() / 60.08, ScrH() *0.89, ScrW() / 25, ScrH() / 15 ,11,4,255)
 	draw.RoundedBox( 0, ScrW() / 60.08, ScrH() *0.89, ScrW() / 25, ScrH() / 15 , BGCol)
-	surface.SetDrawColor(Color(155,155,155,255))
+	if Abilities.GrenadeCoolBar == 0 then
+		surface.SetDrawColor(Color(111,111,111,200))
+	elseif Abilities.GrenadeCoolBar == 1 then
+		surface.SetDrawColor(Color(200,200,200,200))
+	end
 	surface.SetMaterial(Material("materials/ability_grenade.png"))
 	surface.DrawTexturedRect(ScrW() / 40, ScrH() *0.9, ScrW()/44, ScrH()/23)
 	
