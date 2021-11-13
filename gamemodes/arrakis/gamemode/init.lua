@@ -112,7 +112,7 @@ function SpawnVehiclesHarkonnen()
 		VTOL:SetNWInt("vtol_spawnpoint", k)
 		VTOL:SetName("vtol_harkonnen")
 		VTOL:Spawn()
-		VTOL:SetColor(Color(255,249,244))
+		VTOL:SetColor(Color(77,55,44))
 		VTOL:SetAngles(Angle(0, -50, 0))
 		HarkonnenVtolEntIndexes[k] = VTOL
 	end
