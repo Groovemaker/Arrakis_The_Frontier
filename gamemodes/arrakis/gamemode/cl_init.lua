@@ -208,7 +208,21 @@ surface.CreateFont( "NameFont", {
 	additive = false,
 	outline = false,
 } )
+local function SunBeamMod()
+	if ( !render.SupportsPixelShaders_2_0() ) then return end
 
+	local sun = util.GetSunInfo()
+
+	if ( !sun ) then return end
+	if ( sun.obstruction == 0 ) then return end
+
+	local sunpos = EyePos() + sun.direction * 4096
+	local scrpos = sunpos:ToScreen()
+
+	local dot = ( sun.direction:Dot( EyeVector() ) - 0.8 ) * 5
+	if ( dot <= 0 ) then return end
+	DrawSunbeams( 0.6, 0.4 * dot * sun.obstruction, 0.15, scrpos.x / ScrW(), scrpos.y / ScrH() )
+end
 local function GraphicsModding()
 	local mat_dunevision = Material("engine/singlecolor")
 	mat_dunevision:SetFloat( "$alpha", 0 )
@@ -226,13 +240,13 @@ local function GraphicsModding()
 	local colormod_day = {
 	    ["$pp_colour_addr"] = 0.05,
 	    ["$pp_colour_addg"] = 0.05,
-	    ["$pp_colour_addb"] = 0,
-	    ["$pp_colour_brightness"] = -0.03,
-	    ["$pp_colour_contrast"] = 0.65,
-	    ["$pp_colour_colour"] = 1.4,
-	    ["$pp_colour_mulr"] = 1,
-	    ["$pp_colour_mulg"] = 1,
-	    ["$pp_colour_mulb"] = 1
+	    ["$pp_colour_addb"] = 0.01,
+	    ["$pp_colour_brightness"] = 0.01,
+	    ["$pp_colour_contrast"] = 0.6,
+	    ["$pp_colour_colour"] = 1.5,
+	    ["$pp_colour_mulr"] = 0.3,
+	    ["$pp_colour_mulg"] = 0.3,
+	    ["$pp_colour_mulb"] = 0
 	}
 	local colormod_night = {
 	    ["$pp_colour_addr"] = 0.1,
@@ -253,8 +267,9 @@ local function GraphicsModding()
     Day = CVAR_DAYNIGHT:GetInt()
 
     if Day == 1 then
+    	SunBeamMod()
     	DrawColorModify(colormod_day)
-    	DrawBloom( 0.85, 2.3, 9, 9, 1, 1, 1, 1, 1 )
+    	DrawBloom( 0.5, 1.1, 9, 9, 1, 1, 1, 1, 1 )
     else
     	DrawColorModify(colormod_night)
     end

@@ -3,15 +3,21 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 
 include("shared.lua")
+-- When Hotfixing, tell people
+BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(111,155,255),"init.lua ",Color(255,255,255),"reloaded!")]])
 
 -- Resources
 resource.AddFile("materials/atreides.png")
 resource.AddFile("materials/harkonnen.png")
 resource.AddFile("materials/ability_grenade.png")
 resource.AddFile("sound/arrakis_credits.mp3")
+resource.AddFile("sound/arrakis_ambience.wav")
 
 -- Set Skyname
 RunConsoleCommand("sv_skyname", "sky_day01_06")
+
+-- Disable C Menu of TFA
+RunConsoleCommand("sv_tfa_cmenu",0)
 
 -- Set up CVARs
 CVAR_ShieldInterval = CreateConVar( "dune_sv_recharge_interval", "0.1", FCVAR_NONE, "The lower, the faster the shield recharges", 0.01)
@@ -24,17 +30,34 @@ function GM:PlayerLoadout(ply)
 end
 
 -- Vehicles
+
+-- When Hotfixing
+local OldHarkonnenVtols = ents.FindByName("vtol_harkonnen")
+for k, v in ipairs(OldHarkonnenVtols) do
+	if(IsValid(v)) then
+		v:Remove()
+	end
+end
+
+local OldAtreidesVtols = ents.FindByName("vtol_atreides")
+for k, v in ipairs(OldAtreidesVtols) do
+	if(IsValid(v)) then
+		v:Remove()
+	end
+end
+
+-- Spawners
 AtreidesVtolEntIndexes = {}
 HarkonnenVtolEntIndexes = {}
 SP_Vtols_Harkonnen = {
-	Vector(-12988.833984, 10670.055664, -9134.481445),
-	Vector(-11978.709961, 10691.329102, -9112.096680),
-	Vector(-11006.250000, 11011.807617, -9030.311523),
+	Vector(-12988.833984, 10670.055664, -9034.481445),
+	Vector(-11978.709961, 10691.329102, -9012.096680),
+	Vector(-11006.250000, 11011.807617, -8930.311523),
 }
 SP_Vtols_Atreides = {
-	Vector(-457.007355, -3206.202881, -9667.136719),
-	Vector(-3442.346436, -2002.604614, -9699.133789),
-	Vector(672.592651, -226.586792, -9836.514648),
+	Vector(11965.055664, -6706.582520, -9968.274414),
+	Vector(11477.743164, -7800.555176, -9969.972656),
+	Vector(12658.222656, -8133.210938, -9965.285156),
 }
 function SpawnVehiclesHarkonnen()
 	local OldHarkonnenVtols = ents.FindByName("vtol_harkonnen")
@@ -50,6 +73,8 @@ function SpawnVehiclesHarkonnen()
 		VTOL:SetNWInt("vtol_spawnpoint", k)
 		VTOL:SetName("vtol_harkonnen")
 		VTOL:Spawn()
+		VTOL:SetColor(Color(77,55,44))
+		VTOL:SetAngles(Angle(0, -50, 0))
 		HarkonnenVtolEntIndexes[k] = VTOL
 	end
 end
@@ -63,11 +88,12 @@ function SpawnVehiclesAtreides()
 	end
 	
 	for k,v in pairs(SP_Vtols_Atreides) do
-		local VTOL = ents.Create("combine_gunship")
+		local VTOL = ents.Create("lfs_crysis_vtol")
 		VTOL:SetPos(v)
 		VTOL:SetNWInt("vtol_spawnpoint", k)
 		VTOL:SetName("vtol_atreides")
 		VTOL:Spawn()
+		VTOL:SetAngles(Angle(0, 170, 0))
 		AtreidesVtolEntIndexes[k] = VTOL
 	end
 end
@@ -77,11 +103,12 @@ function RespawnVehiclesAtreides(vIndex)
 	iCurAtreidesVtols = table.Count(OldAtreidesVtols)
 
 	if !IsValid(AtreidesVtolEntIndexes[vIndex]) then
-		local VTOL = ents.Create("combine_gunship")
+		local VTOL = ents.Create("lfs_crysis_vtol")
 		VTOL:SetPos(SP_Vtols_Atreides[vIndex])
 		VTOL:SetNWInt("vtol_spawnpoint", k)
 		VTOL:SetName("vtol_atreides")
 		VTOL:Spawn()
+		VTOL:SetAngles(Angle(0, 170, 0))
 		AtreidesVtolEntIndexes[vIndex] = VTOL
 	end
 end
@@ -96,6 +123,8 @@ function RespawnVehiclesHarkonnen(vIndex)
 		VTOL:SetNWInt("vtol_spawnpoint", k)
 		VTOL:SetName("vtol_harkonnen")
 		VTOL:Spawn()
+		VTOL:SetColor(Color(77,55,44))
+		VTOL:SetAngles(Angle(0, -50, 0))
 		HarkonnenVtolEntIndexes[vIndex] = VTOL
 	end
 end
@@ -157,6 +186,12 @@ end
 -- Spawn
 hook.Add("PlayerSpawn","Dune_Spawn",function(ply)
 	SP_Atreides = {
+		Vector(12408.885742, -7528.326660, -10543.968750),
+		Vector(12517.307617, -7696.805176, -10551.283203),
+		Vector(12313.879883, -8009.676758, -10550.638672),
+		Vector(11923.995117, -7815.384766, -10501.597656),
+		Vector(11804.260742, -7461.417969, -10472.499023),
+		Vector(11974.820313, -7199.516602, -10497.281250),
 
 	}
 	SP_Harkonnen = {
@@ -168,10 +203,11 @@ hook.Add("PlayerSpawn","Dune_Spawn",function(ply)
 		Vector(-13702.872070, 10912.717773, -9183.007813)
 	}
 	if ply:Team() == 1 then
-
+		ply:SetPos(table.Random(SP_Atreides))
+		ply:SetEyeAngles(Angle(0, 170, 0))
 	elseif ply:Team() == 2 then
 		ply:SetPos(table.Random(SP_Harkonnen))
-		ply:SetAngles(Angle(15.012362, -49.033779, 0))
+		ply:SetEyeAngles(Angle(0, -50, 0))
 	end
 end)
 
@@ -179,6 +215,20 @@ hook.Add("PlayerInitialSpawn","Dune_JL",function(ply)
 	ChatAdd("JL"," joined the Battlefield!",ply:Nick())
 	ply:ConCommand("dune_team")
 end)
+local PInit = {}
+
+gameevent.Listen("OnRequestFullUpdate")
+
+hook.Add("OnRequestFullUpdate", "Dune_JL2", function(t)
+	if not PInit[t.userid] then
+		PInit[t.userid] = true
+		Player(t.userid):SendLua([[surface.PlaySound("arrakis_ambience.wav")]])
+	else
+		return
+	end
+end)
+
+
 function GM:PlayerShouldTakeDamage(ply,attacker)
 	return ply == attacker || attacker:IsPlayer() && ply:Team() != attacker:Team() || attacker:IsVehicle() && ply:Team() != attacker:GetDriver():Team()
 end
