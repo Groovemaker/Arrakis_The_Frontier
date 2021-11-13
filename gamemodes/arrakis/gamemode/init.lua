@@ -175,7 +175,7 @@ function RespawnVehiclesHarkonnen(vIndex)
 		local APC = simfphys.SpawnVehicleSimple("sim_fphys_tank_cell_apc", SP_APC_Harkonnen[vIndex], Angle(0, 170, 0))
 		APC:SetNWInt("apc_spawnpoint", k)
 		APC:SetName("apc_atreides")
-		APC:SetColor(Color(255,155,133))
+		APC:SetColor(Color(155,70,43))
 		HarkonnenAPCEntIndexes[vIndex] = APC
 	end
 

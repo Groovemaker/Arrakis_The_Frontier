@@ -10,6 +10,7 @@ Abilities.GrenadeClassname = "weapon_frag"
 
 if CLIENT then
 	function Abilities.Grenade(ply)
+		print(ply)
 		ply:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_HL2MP_GESTURE_RANGE_ATTACK_GRENADE, true)
 	end
 end
@@ -35,7 +36,7 @@ if SERVER then
 			aimvec:Mul( 1001 )
 			aimvec:Add( VectorRand( -10, 10 ) ) -- Add a random vector with elements [-10, 10)
 			phys:ApplyForceCenter( aimvec )
-			ply:SendLua([[Abilities.Grenade(Player(]]..ply:UserID()..[[))]])
+			BroadcastLua([[Abilities.Grenade(Player(]]..ply:UserID()..[[))]])
 			ply:SendLua([[Abilities.GrenadeCoolBar = 0]])
 			ply.CanGrenade = false
 			timer.Simple(CVAR_GrenadeCooldown:GetFloat(), function()

@@ -2,13 +2,7 @@
 include("shared.lua")
 
 function SPlayAmbience()
-	sound.PlayFile("sound/arrakis_ambience.wav", "noblock", function(station,erid,err)
-		Ambience = station
-		if (IsValid(Ambience)) then
-			Ambience:SetVolume(0.4)
-			Ambience:Play()
-		end
-	end )
+	surface.PlaySound("arrakis_ambience.wav")
 end
 
 -- Thanks to slownls
