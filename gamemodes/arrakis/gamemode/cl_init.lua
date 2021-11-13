@@ -1,6 +1,16 @@
 -- Clientside
 include("shared.lua")
 
+function PlayAmbience()
+	sound.PlayFile("sound/arrakis_ambience.wav", "noblock", function(station,erid,err)
+		Ambience = station
+		if (IsValid(Ambience)) then
+			Ambience:SetVolume(0.4)
+			Ambience:Play()
+		end
+	end )
+end
+
 -- Thanks to slownls
 DPANELBlurMat = Material("pp/blurscreen")
 DPANELBlurMat2 = Material("pp/blurscreen")
