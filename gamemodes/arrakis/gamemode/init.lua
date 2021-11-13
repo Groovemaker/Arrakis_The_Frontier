@@ -284,7 +284,7 @@ gameevent.Listen("OnRequestFullUpdate")
 hook.Add("OnRequestFullUpdate", "Dune_JL2", function(t)
 	if not PInit[t.userid] then
 		PInit[t.userid] = true
-		Player(t.userid):SendLua([[surface.PlaySound("arrakis_ambience.wav")]])
+		Player(t.userid):SendLua([[SPlayAmbience()]])
 		Player(t.userid).CanGrenade = true
 		Player(t.userid):SendLua([[Player(]]..Player(t.userid):UserID()..[[).CanGrenade = true]])
 		Player(t.userid):SendLua([[Abilities.GrenadeCoolBar = 1]])

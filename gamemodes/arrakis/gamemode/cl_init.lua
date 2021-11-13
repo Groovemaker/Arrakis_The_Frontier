@@ -1,7 +1,7 @@
 -- Clientside
 include("shared.lua")
 
-function PlayAmbience()
+function SPlayAmbience()
 	sound.PlayFile("sound/arrakis_ambience.wav", "noblock", function(station,erid,err)
 		Ambience = station
 		if (IsValid(Ambience)) then
