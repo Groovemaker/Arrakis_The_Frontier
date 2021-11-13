@@ -111,10 +111,12 @@ function credits()
 	    		</span>
 	    		<h3>Special thanks as well to</h3>
 	    		<span>
-	    		Naki<br /><br />
+	    		Naki - Advice<br /><br />
 	    		My buddies at work<br /><br />
-	    		Mom & Dad<br /><br />
+	    		Mom & Dad - Moral Support<br /><br />
 	    		SpookyFM<br /><br />
+	    		Ham - Moral Support<br /><br />
+	    		Death - Moral Support<br /><br />
 	    		Katsu, for some math basics<br /><br />
 	    		</span>
 	    		<br /><br />
