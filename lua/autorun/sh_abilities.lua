@@ -61,7 +61,7 @@ end )
 hook.Add("PlayerButtonDown", "Dune_Ability_Grenade", function(ply, button)
 	if CLIENT then
 		if input.GetKeyName(button) == "f" then
-			--Abilities.Grenade(ply)
+			
 		end
 	else
 		if button == 16 then

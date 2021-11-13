@@ -61,11 +61,18 @@ for k, v in ipairs(OldAtreidesAPCs) do
 	end
 end
 
+local OldHarkonnenAPCs = ents.FindByName("apc_atreides")
+for k, v in ipairs(OldHarkonnenAPCs) do
+	if(IsValid(v)) then
+		v:Remove()
+	end
+end
 -- Spawners
 HarkonnenVtolEntIndexes = {}
-
 AtreidesVtolEntIndexes = {}
+
 AtreidesAPCEntIndexes = {}
+HarkonnenAPCEntIndexes = {}
 
 SP_Vtols_Harkonnen = {
 	Vector(-12988.833984, 10670.055664, -9034.481445),
@@ -83,6 +90,12 @@ SP_APC_Atreides = {
 	Vector(11891.732422, -6082.339355, -10317.850586),
 	Vector(12891.853516, -6182.138184, -10342.645508),
 	Vector(14891.222656, -8282.210938, -9935.285156),
+}
+
+SP_APC_Harkonnen ={
+	Vector(-12966.287109, 12066.671875, -9060.109375),
+	Vector(-12759.865234, 11695.660156, -9118.357422),
+	Vector(-12230.449219, 11506.187500, -9137.444336),
 }
 
 function SpawnVehiclesHarkonnen()
@@ -154,6 +167,17 @@ end
 function RespawnVehiclesHarkonnen(vIndex)
 	local OldHarkonnenVtols = ents.FindByName("vtol_harkonnen")
 	iCurHarkonnenVtols = table.Count(OldHarkonnenVtols)
+
+	local OldHarkonnenAPCs = ents.FindByName("apc_harkonnen")
+	iCurHarkonnenAPCs = table.Count(OldHarkonnenAPCs)
+
+	if !IsValid(HarkonnenAPCEntIndexes[vIndex]) then
+		local APC = simfphys.SpawnVehicleSimple("sim_fphys_tank_cell_apc", SP_APC_Harkonnen[vIndex], Angle(0, 170, 0))
+		APC:SetNWInt("apc_spawnpoint", k)
+		APC:SetName("apc_atreides")
+		APC:SetColor(Color(255,155,133))
+		HarkonnenAPCEntIndexes[vIndex] = APC
+	end
 
 	if !IsValid(HarkonnenVtolEntIndexes[vIndex]) then
 		local VTOL = ents.Create("lfs_crysis_vtol")
