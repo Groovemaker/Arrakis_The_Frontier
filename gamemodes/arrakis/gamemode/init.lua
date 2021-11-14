@@ -283,7 +283,7 @@ function RespawnVehiclesAtreides(vIndex)
 	iCurAtreidesAPCs = table.Count(OldAtreidesAPCs)
 
 	if !IsValid(AtreidesAPCEntIndexes[vIndex]) then
-		local APC = simfphys.SpawnVehicleSimple("sim_fphys_tank_cell_apc", SP_APC_Atreides[vIndex], Angle(0, 170, 0))
+		local APC = simfphys.SpawnVehicleSimple("sim_fphys_conscriptapc_armed", SP_APC_Atreides[vIndex], Angle(0, 170, 0))
 		APC:SetNWInt("apc_spawnpoint", k)
 		APC:SetName("apc_atreides")
 		AtreidesAPCEntIndexes[vIndex] = APC
@@ -308,7 +308,7 @@ function RespawnVehiclesHarkonnen(vIndex)
 	iCurHarkonnenAPCs = table.Count(OldHarkonnenAPCs)
 
 	if !IsValid(HarkonnenAPCEntIndexes[vIndex]) then
-		local APC = simfphys.SpawnVehicleSimple("sim_fphys_tank_cell_apc", SP_APC_Harkonnen[vIndex], Angle(0, 170, 0))
+		local APC = simfphys.SpawnVehicleSimple("sim_fphys_conscriptapc_armed", SP_APC_Harkonnen[vIndex], Angle(0, 170, 0))
 		APC:SetNWInt("apc_spawnpoint", k)
 		APC:SetName("apc_atreides")
 		APC:SetColor(Color(155,122,111))
