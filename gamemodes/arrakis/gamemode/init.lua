@@ -515,7 +515,7 @@ function GM:PlayerSetModel(ply)
 	    ply:Give("tfa_bcry2_gauss") --sniper
 	    ply:Give("tfa_bcry2_hammer") --pistol
 	  	ply:Give("tfa_bcry2_hmg") --heavy
-	    ply:Give("tfa_bcry2_scarab") --rifle
+	    ply:Give("tfa_bcry2_scar") --rifle
 	    --ply:GiveAmmo(32, "357")
 	    ply:SetModel(Harkonnen_PlyMDL)
 	end
