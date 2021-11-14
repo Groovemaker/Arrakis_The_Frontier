@@ -315,9 +315,10 @@ hook.Add("RenderScreenspaceEffects", "DuneGraphicsModifier", function()
 	GraphicsModding()
 end)
 DOF_Kill()
-
 local GM = GM or GAMEMODE or gmod.GetGamemode()
-
+function DrawToyTown()
+	print("0")
+end
 function GM:DrawDeathNotice(x, y)
 	return false
 end

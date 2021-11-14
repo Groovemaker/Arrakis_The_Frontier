@@ -5,6 +5,7 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 -- When Hotfixing, tell people
 BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(111,155,255),"init.lua ",Color(255,255,255),"reloaded!")]])
+TFA_BASE_VERSION = 1337
 
 -- Netstrings
 util.AddNetworkString("ScoreManip")
@@ -20,6 +21,11 @@ resource.AddFile("sound/arrakis_credits.mp3")
 resource.AddFile("sound/arrakis_ambience.wav")
 resource.AddFile("sound/grenade_recharged.wav")
 
+resource.AddWorkshop( "1622006977" ) -- Harkonnen VTOL
+resource.AddWorkshop( "2209704927" ) --  Cell Simfphys APC
+resource.AddWorkshop( "2334354896" ) -- Atreides/Fremen VTOLs
+resource.AddWorkshop( "491266286" ) -- EYE Weapons
+resource.AddWorkshop( "415143062" ) --  TFA Redux
 -- Spice Points
 SPP = {
 	Vector(-2523.754150, 3018.725342, -10246.272461),

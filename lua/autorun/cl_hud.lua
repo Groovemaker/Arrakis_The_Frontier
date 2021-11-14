@@ -363,7 +363,6 @@ hook.Add("HUDPaint", "Dune_DrawHUD", function()
 
 	surface.SetMaterial(Material("materials/ability_grenade.png"))
 	surface.DrawTexturedRect(ScrW() / 40, ScrH() *0.9, ScrW()/44, ScrH()/23)
-	
 end)
 
 function WinRound(iTeam)

@@ -294,7 +294,7 @@ function IdleCloser()
 	timer.Create("GS_IdleCloser",1,0,function()
 		iCurSlot = 0
 		iCurPos = 1
-		
+
 		flSelectTime = RealTime()
 	end)
 end
@@ -320,6 +320,7 @@ hook_Add("PlayerBindPress", "GS_WeaponSelector", function(pPlayer, sBind, bPress
 
 	-- Close the menu
 	if (sBind == "cancelselect") then
+		IdleCloser()
 		if (bPressed and iCurSlot ~= 0) then
 			iCurSlot = 0
 			iCurPos = 1
@@ -471,6 +472,7 @@ hook_Add("PlayerBindPress", "GS_WeaponSelector", function(pPlayer, sBind, bPress
 
 	-- Keys 1-6
 	if (string_sub(sBind, 1, 4) == "slot") then
+		IdleCloser()
 		local iSlot = tonumber(string_sub(sBind, 5))
 
 		-- If the command is slot#, use it for the weapon HUD
