@@ -16,6 +16,6 @@ I claim NO RIGHTS in the DUNE franchise. This is a mere fan creation and is not 
 # Screenshots:
 ![image](https://user-images.githubusercontent.com/63636914/141677357-95e1ae00-5849-4b23-974b-c3a2ca99abba.png)
 ![image](https://i.imgur.com/lwr8ThQ.png)
-![image](https://user-images.githubusercontent.com/63636914/141677408-f6a76308-75e4-4d6c-8aa3-d40909bcb5eb.png)
+![image](https://user-images.githubusercontent.com/63636914/141681821-76ee00a0-9330-4ce7-956b-94610ac8e6d4.png)
 ![image](https://user-images.githubusercontent.com/63636914/141681788-5154b875-d4a6-425f-965f-34695cd8d575.png)
 
