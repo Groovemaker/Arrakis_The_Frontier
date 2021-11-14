@@ -408,7 +408,7 @@ end)
 
 
 local function MESPCheck(v)
-	if v:Alive() == true && v:Health() ~= 0 && v:Health() >= 0 && LocalPlayer():Alive() && v:Team() == LocalPlayer():Team() then
+	if v:Alive() == true && v:Health() ~= 0 && v:Health() >= 0 && LocalPlayer():Alive() && v:Team() == LocalPlayer():Team() && v != LocalPlayer() then
 		return true
 	else
 		return false

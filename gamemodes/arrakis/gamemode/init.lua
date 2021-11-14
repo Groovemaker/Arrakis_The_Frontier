@@ -293,10 +293,21 @@ function SpawnVehiclesHarkonnen()
 		VTOL:Spawn()
 		VTOL:SetColor(Color(77,55,44))
 		VTOL:SetAngles(Angle(0, -50, 0))
+		VTOL:SetAI( true )
 		HarkonnenVtolEntIndexes[k] = VTOL
 	end
 end
 
+function MakeVtolAI()
+	local AllVtols = ents.FindByClass("lfs_crysis_vtol")
+	for k, v in ipairs(AllVtols) do
+		if(IsValid(v)) then
+			v:SetAI(true)
+			v:SetAITEAM(3)
+		end
+	end
+
+end
 function SpawnVehiclesAtreides()
 	local OldAtreidesVtols = ents.FindByName("vtol_atreides")
 	for k, v in ipairs(OldAtreidesVtols) do
