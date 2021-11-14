@@ -23,5 +23,8 @@ CVAR_DAYNIGHT = CreateConVar( "dune_sv_day", "1", FCVAR_REPLICATED, "Day/Night s
 
 ScoreAtreides = 0
 ScoreHarkonnen = 0
-
+Scores = {
+	ScoreAtreides,
+	ScoreHarkonnen
+}
 include("tfa/framework/tfa_loader.lua")

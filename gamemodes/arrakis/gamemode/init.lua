@@ -153,6 +153,10 @@ AtreidesAPCEntIndexes = {}
 HarkonnenAPCEntIndexes = {}
 
 hook.Add("Think","HarvesterScan", function()
+	Scores = {
+		ScoreAtreides,
+		ScoreHarkonnen
+	}
 	if CVAR_Gamemode:GetInt() != 2 then return end
 	-- number 1
 	A1 = Vector(-2686.226318, 3014.056885, -10185.661133)
@@ -171,8 +175,6 @@ hook.Add("Think","HarvesterScan", function()
 end)
 
 -- Spawners
-
-
 SP_Vtols_Harkonnen = {
 	Vector(-12988.833984, 10670.055664, -9034.481445),
 	Vector(-11978.709961, 10691.329102, -9012.096680),
@@ -496,4 +498,14 @@ function GM:PlayerHurt(victim, attacker)
 		end
 	end)
 end
---
+
+-- Spice Counter
+timer.Create("SP_Countspice",0.5,0,function()
+	if HarvesterWinners[1] == 1 || HarvesterWinners[1] == 2 then
+		if Scores[HarvesterWinners[1]] < 5000 then
+			ManipScore(HarvesterWinners[1],Scores[HarvesterWinners[1]]+50)
+		else
+
+		end
+	end
+end)
