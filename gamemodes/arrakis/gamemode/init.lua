@@ -10,6 +10,7 @@ BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(
 util.AddNetworkString("ScoreManip")
 util.AddNetworkString("Capture")
 util.AddNetworkString("Decapture")
+util.AddNetworkString("HarvesterManip")
 
 -- Resources
 resource.AddFile("materials/atreides.png")
@@ -123,8 +124,8 @@ function Decapture(iTeam,iHarvester)
 	net.Broadcast()
 end
 
-function ScanHarvester( vCorner1, vCorner2 )
-	local tEntities = ents.FindInBox( vCorner1, vCorner2 )
+function ScanHarvester(vCorner1,radius1)
+	local tEntities = ents.FindInSphere(vCorner1,radius1)
 	local tPlayers = {}
 	local iPlayers = 0
 	
@@ -146,12 +147,10 @@ HarkonnenAPCEntIndexes = {}
 
 hook.Add("Think","HarvesterScan", function()
 	-- number 1
-
-	A1 = Vector(-3189.384033, 1778.129395, -10118.06250)
-	B1 = Vector(-1882.491089, 3653.623291, -9443.968750)
-	People1 = ScanHarvester(A1,B1)
+	A1 = Vector(-2686.226318, 3014.056885, -10185.661133)
+	People1 = ScanHarvester(A1,1500)
 	--PrintTable(People1)
-	if table.Count(People1) > 0 && People1[1]:Team() != HarvesterWinners[1] then
+	if table.Count(People1) > 0 && People1[1]:Team() != HarvesterWinners[1] && People1[1]:Alive() then
 		if CapturingInProgress[1] == 0 then
 			CapturingInProgress[1] = 1
 			Capture(People1[1]:Team(),1)

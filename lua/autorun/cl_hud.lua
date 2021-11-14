@@ -59,6 +59,16 @@ net.Receive("ScoreManip", function()
 	end
 end)
 
+net.Receive("HarvesterManip", function()
+	iTeam = net.ReadInt(32)
+	iHarvesters = net.ReadInt(32)
+	if iTeam == 1 then
+		HarvAtreides = iHarvesters
+	elseif iTeam == 2 then
+		HarvAtreides = iHarvesters
+	end
+end)
+
 CaptureMessage = "We are capturing Harvester [1]"
 
 net.Receive("Capture", function()
