@@ -530,8 +530,8 @@ end
 -- Round End
 function WinRound(iTeam)
 	BroadcastLua("WinRound("..iTeam..")")
-	timer.Create("EndRound",7,1,function()
-		RunConsoleCommand("changelevel", "gm_disten")
+	timer.Create("EndRound",5,1,function()
+		game.ConsoleCommand( "changelevel " .. "gm_disten" ..  "\n" )
 	end)
 end
 
@@ -548,6 +548,7 @@ timer.Create("SP_Countspice",0.5,0,function()
 			if Scores[v] < 5000 then
 				ManipScore(v,Scores[v]+SpiceProduction[v])
 			else
+				Scores[v] = 5000
 				WinRound(1)
 			end
 		end
@@ -560,6 +561,7 @@ timer.Create("SP_Countspice",0.5,0,function()
 			if Scores[v] < 5000 then
 				ManipScore(v,Scores[v]+SpiceProduction[v])
 			else
+				Scores[v] = 5000
 				WinRound(2)
 			end
 		end
