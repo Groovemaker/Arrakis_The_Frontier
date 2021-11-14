@@ -529,7 +529,11 @@ timer.Create("SP_Countspice",0.5,0,function()
 	local SpiceProduction = {0,0}
 	for k,v in pairs(HarvesterWinners) do
 		if v == 1 then
-			SpiceProduction[v] = SpiceProduction[v] + 5
+			if SpiceProduction[v] == 0 then 
+				SpiceProduction[v] = 5
+			else
+				SpiceProduction[v] = SpiceProduction[v] *2
+			end
 			if Scores[v] < 5000 then
 				ManipScore(v,Scores[v]+SpiceProduction[v])
 			else
@@ -537,7 +541,11 @@ timer.Create("SP_Countspice",0.5,0,function()
 			end
 		end
 		if v == 2 then
-			SpiceProduction[v] = SpiceProduction[v] + 5
+			if SpiceProduction[v] == 0 then 
+				SpiceProduction[v] = 5
+			else
+				SpiceProduction[v] = SpiceProduction[v] *2
+			end
 			if Scores[v] < 5000 then
 				ManipScore(v,Scores[v]+SpiceProduction[v])
 			else
