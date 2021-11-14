@@ -526,10 +526,20 @@ end
 
 -- Spice Counter
 timer.Create("SP_Countspice",0.5,0,function()
+	local SpiceProduction = {0,0}
 	for k,v in pairs(HarvesterWinners) do
-		if v == 1 || v == 2 then
-			if Scores[HarvesterWinners[k]] < 5000 then
-				ManipScore(HarvesterWinners[k],Scores[HarvesterWinners[k]]+5)
+		if v == 1 then
+			SpiceProduction[v] = SpiceProduction[v] + 5
+			if Scores[v] < 5000 then
+				ManipScore(v,Scores[v]+SpiceProduction[v])
+			else
+
+			end
+		end
+		if v == 2 then
+			SpiceProduction[v] = SpiceProduction[v] + 5
+			if Scores[v] < 5000 then
+				ManipScore(v,Scores[v]+SpiceProduction[v])
 			else
 
 			end
