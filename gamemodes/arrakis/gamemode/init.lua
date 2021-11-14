@@ -183,11 +183,16 @@ timer.Create("HarvesterScan",0.3,0,function()
 				end
 			else
 				CapturingInProgress[k] = 0
-				table.remove(CapturingTable,k)
+				CapturingTable[k] = 0
 				timer.Stop("CaptureStarter"..k)
 			end
 		end
-		if table.IsEmpty(CapturingTable) then
+
+		local Empties = 0
+		for xk,xv in pairs(CapturingTable) do
+			if xv < 1 then Empties = Empties + 1 end
+		end
+		if Empties == table.Count(SPP) then
 			Decapture(1,1)
 		end
 end)
@@ -521,18 +526,13 @@ end
 
 -- Spice Counter
 timer.Create("SP_Countspice",0.5,0,function()
-	if HarvesterWinners[1] == 1 || HarvesterWinners[1] == 2 then
-		if Scores[HarvesterWinners[1]] < 5000 then
-			ManipScore(HarvesterWinners[1],Scores[HarvesterWinners[1]]+5)
-		else
+	for k,v in pairs(HarvesterWinners) do
+		if v == 1 || v == 2 then
+			if Scores[HarvesterWinners[k]] < 5000 then
+				ManipScore(HarvesterWinners[k],Scores[HarvesterWinners[k]]+5)
+			else
 
-		end
-	end
-	if HarvesterWinners[2] == 1 || HarvesterWinners[2] == 2 then
-		if Scores[HarvesterWinners[2]] < 5000 then
-			ManipScore(HarvesterWinners[2],Scores[HarvesterWinners[2]]+5)
-		else
-
+			end
 		end
 	end
 end)
