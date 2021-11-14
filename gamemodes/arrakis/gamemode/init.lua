@@ -163,7 +163,10 @@ hook.Add("Think","HarvesterScan", function()
 	A1 = Vector(-2686.226318, 3014.056885, -10185.661133)
 	People1 = ScanHarvester(A1,1500)
 	--PrintTable(People1)
-	if table.Count(People1) > 0 && People1[1]:Team() != HarvesterWinners[1] && People1[1]:Alive() then
+	if People1[1] && People1[1]:Team() != HarvesterWinners[1] && People1[1]:Alive() then
+		if People1[2] && People1[2]:Team() == HarvesterWinners[1] && People1[2]:Alive() then
+			return
+		end
 		if CapturingInProgress[1] == 0 then
 			CapturingInProgress[1] = 1
 			Capture(People1[1]:Team(),1)
