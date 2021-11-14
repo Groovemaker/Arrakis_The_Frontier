@@ -32,10 +32,12 @@ RunConsoleCommand("sv_skyname", "sky_day01_06")
 RunConsoleCommand("sv_tfa_cmenu",0)
 
 -- Set up CVARs
+CVAR_CaptureTime = CreateConVar( "dune_sv_capture_time", "5", FCVAR_NONE, "Time needed to capture harvesters", 0.01)
 CVAR_GrenadeCooldown = CreateConVar( "dune_sv_grenade_cooldown", "7", FCVAR_NONE, "The lower, the faster the Grenade recharges", 0.01)
 CVAR_ShieldInterval = CreateConVar( "dune_sv_recharge_interval", "0.1", FCVAR_NONE, "The lower, the faster the shield recharges", 0.01)
 CVAR_ShieldDelay = CreateConVar( "dune_sv_recharge_delay", "1", FCVAR_NONE, "The lower, the sooner the shield starts recharging", 0.1)
-CVAR_Gamemode = CreateConVar( "dune_sv_gamemode", "1", FCVAR_NONE, "1 - DM; 2 - Spice Harvest", 1)
+CVAR_Gamemode = CreateConVar( "dune_sv_gamemode", "1", FCVAR_NONE, "1 - DM; 2 - Spice Harvest", 1,2)
+
 -- Loadout
 function GM:PlayerLoadout(ply)
 	ply:SetArmor(100)
@@ -94,11 +96,24 @@ function ManipScore(iTeam,iScore)
 end
 
 -- Capturing Net Messages
+HarvesterWinners = {}
+CapturingInProgress = {}
+CapturingInProgress[1] = 0
+function WinHarvester(iTeam,iHarvester)
+	HarvesterWinners[iHarvester] = iTeam
+	Decapture(1,1)
+end
+
 function Capture(iTeam,iHarvester)
 	net.Start("Capture")
 		net.WriteInt(iTeam,32)
 		net.WriteInt(iHarvester,32)
 	net.Broadcast()
+
+	timer.Stop("CaptureStarter"..iHarvester)
+	timer.Create("CaptureStarter"..iHarvester, CVAR_CaptureTime:GetFloat(), 1, function()
+		WinHarvester(iTeam,iHarvester)
+	end)
 end
 
 function Decapture(iTeam,iHarvester)
@@ -108,12 +123,48 @@ function Decapture(iTeam,iHarvester)
 	net.Broadcast()
 end
 
--- Spawners
+function ScanHarvester( vCorner1, vCorner2 )
+	local tEntities = ents.FindInBox( vCorner1, vCorner2 )
+	local tPlayers = {}
+	local iPlayers = 0
+	
+	for i = 1, #tEntities do
+		if ( tEntities[ i ]:IsPlayer() ) then
+			iPlayers = iPlayers + 1
+			tPlayers[ iPlayers ] = tEntities[ i ]
+		end
+	end
+	
+	return tPlayers, iPlayers
+end
+
 HarkonnenVtolEntIndexes = {}
 AtreidesVtolEntIndexes = {}
 
 AtreidesAPCEntIndexes = {}
 HarkonnenAPCEntIndexes = {}
+
+hook.Add("Think","HarvesterScan", function()
+	-- number 1
+
+	A1 = Vector(-3189.384033, 1778.129395, -10118.06250)
+	B1 = Vector(-1882.491089, 3653.623291, -9443.968750)
+	People1 = ScanHarvester(A1,B1)
+	--PrintTable(People1)
+	if table.Count(People1) > 0 && People1[1]:Team() != HarvesterWinners[1] then
+		if CapturingInProgress[1] == 0 then
+			CapturingInProgress[1] = 1
+			Capture(People1[1]:Team(),1)
+		end
+	else
+		CapturingInProgress[1] = 0
+		timer.Stop("CaptureStarter1")
+		Decapture(1,1)
+	end
+end)
+
+-- Spawners
+
 
 SP_Vtols_Harkonnen = {
 	Vector(-12988.833984, 10670.055664, -9034.481445),
