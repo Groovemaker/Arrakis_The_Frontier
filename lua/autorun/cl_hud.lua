@@ -13,7 +13,7 @@ local function DrawBoxBlur( x, y, w, h, layers, density, alpha )
 	end
 end
 surface.CreateFont("HP",{
-	font = "Helvetica",
+	font = "Trebuchet24",
 	extended = false,
 	size = 42,
 	weight = 500,
@@ -31,7 +31,7 @@ surface.CreateFont("HP",{
 })
 
 surface.CreateFont("Capturer",{
-	font = "Helvetica",
+	font = "Trebuchet24",
 	extended = false,
 	size = 26,
 	weight = 500,
@@ -49,12 +49,12 @@ surface.CreateFont("Capturer",{
 })
 
 surface.CreateFont("Scorer",{
-	font = "Helvetica",
+	font = "Trebuchet24",
 	extended = false,
 	size = 26,
 	weight = 500,
-	blursize = 0,
-	scanlines = 0,
+	blursize = 1.1,
+	scanlines = 2,
 	antialias = true,
 	underline = false,
 	italic = false,
@@ -65,6 +65,26 @@ surface.CreateFont("Scorer",{
 	additive = false,
 	outline = false,
 })
+
+surface.CreateFont("Harvesters",{
+	font = "Trebuchet24",
+	extended = false,
+	size = 32,
+	weight = 500,
+	blursize = 1.3,
+	scanlines = 2,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+
+HarvesterClaims = {0,0}
 
 net.Receive("ScoreManip", function()
 	iTeam = net.ReadInt(32)
@@ -77,20 +97,17 @@ net.Receive("ScoreManip", function()
 end)
 
 net.Receive("HarvesterManip", function()
-	iTeam = net.ReadInt(32)
-	iHarvesters = net.ReadInt(32)
-	if iTeam == 1 then
-		HarvAtreides = iHarvesters
-	elseif iTeam == 2 then
-		HarvAtreides = iHarvesters
-	end
+	local iTeam = net.ReadInt(32)
+	local iHarvester = net.ReadInt(32)
+	HarvesterClaims[iHarvester] = iTeam
+	print("Harvester: "..iHarvester.." -- ".."Team: "..iTeam)
 end)
 
 CaptureMessage = ""
 
 net.Receive("Capture", function()
-	iTeam = net.ReadInt(32)
-	iHarvester = net.ReadInt(32)
+	local iTeam = net.ReadInt(32)
+	local iHarvester = net.ReadInt(32)
 	if iTeam == 1 then
 		if(LocalPlayer():Team() == iTeam) then
 			CaptureMessage = "We are capturing Harvester ["..iHarvester.."]"
@@ -107,11 +124,11 @@ net.Receive("Capture", function()
 end)
 
 net.Receive("Decapture", function()
-	iTeam = net.ReadInt(32)
-	iHarvester = net.ReadInt(32)
+	local iTeam = net.ReadInt(32)
+	local iHarvester = net.ReadInt(32)
 	CaptureMessage = ""
 end)
-print(ScoreAtreides)
+
 hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 	if (InMenu == true) then return end
 	function GetAmmoForCurrentWeapon( ply )
@@ -147,7 +164,7 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 	local Mult = 2.5
 	local Mult2 = 3.7
 	local Mult3 = 4.1
-	local Aleph = 111
+	local Aleph = 99
 	DrawBoxBlur(ScrW() / 11 , ScrH() * 0.025, ScrW() / 15, ScrH() / 20,11,4,255)
 	draw.RoundedBox( 4, ScrW() / 11 , ScrH() * 0.025, ScrW() / 15, ScrH() / 20, Color(5,5,5,Aleph/1.8) )
 
@@ -208,6 +225,31 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 
 	DrawBoxBlur(ScrW() / 60.08, ScrH() *0.89, ScrW() / 25, ScrH() / 15 ,11,4,255)
 	draw.RoundedBox( 0, ScrW() / 60.08, ScrH() *0.89, ScrW() / 25, ScrH() / 15 , BGCol)
+
+	draw.RoundedBox( 4, ScrW() / 11 , ScrH() * 0.095, ScrW() / 15, ScrH() / 25, Color(5,5,5,Aleph/1.8) )
+
+	if HarvesterClaims[1] == 1 then
+		draw.SimpleText("1", "Harvesters", ScrW() / 10 ,ScrH() * 0.1125, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	else
+		draw.SimpleText("1", "Harvesters", ScrW() / 10 ,ScrH() * 0.1125, Color(144,144,144,111), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	end
+
+	if HarvesterClaims[2] == 1 then
+		draw.SimpleText("2", "Harvesters", ScrW() / 8 ,ScrH() * 0.1125, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	else
+		draw.SimpleText("2", "Harvesters", ScrW() / 8 ,ScrH() * 0.1125, Color(144,144,144,111), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	end
+
+	if HarvesterClaims[3] == 1 then
+		draw.SimpleText("3", "Harvesters", ScrW() / 6.8 ,ScrH() * 0.1125, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	else
+		draw.SimpleText("3", "Harvesters", ScrW() / 6.8 ,ScrH() * 0.1125, Color(144,144,144,111), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	end
+	 	
+	--draw.SimpleText("3", "Harvesters", ScrW() / 6.8 ,ScrH() * 0.1125, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)	
+
+
+	--draw.SimpleText("1", "Harvesters", ScrW() / 16.3 ,ScrH() * 0.1, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
 	if Abilities.GrenadeCoolBar == 0 then
 		surface.SetDrawColor(Color(111,111,111,200))

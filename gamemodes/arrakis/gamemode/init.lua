@@ -106,6 +106,8 @@ CapturingTable = {}
 
 function WinHarvester(iTeam,iHarvester)
 	HarvesterWinners[iHarvester] = iTeam
+	HarvesterManip(iHarvester,iTeam)
+	print("Harvester: "..iHarvester.." -- ".."Team: "..iTeam)
 	Decapture(1,1)
 end
 
@@ -131,10 +133,10 @@ function Decapture(iTeam,iHarvester)
 	net.Broadcast()
 end
 
-function HarvesterManip(iTeam,iCount)
+function HarvesterManip(iTeam,iHarvester)
 	net.Start("HarvesterManip")
+		net.WriteInt(iHarvester,32)
 		net.WriteInt(iTeam,32)
-		net.WriteInt(iCount,32)
 	net.Broadcast()
 end
 
