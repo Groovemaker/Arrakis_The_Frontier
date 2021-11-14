@@ -322,3 +322,4 @@ end
 function GM:DrawDeathNotice(x, y)
 	return false
 end
+

@@ -41,9 +41,6 @@ RoundHasEnded = 0
 -- Set Skyname
 RunConsoleCommand("sv_skyname", "sky_day01_06")
 
--- Disable C Menu of TFA
-RunConsoleCommand("sv_tfa_cmenu",0)
-
 -- Set up CVARs
 CVAR_CaptureTime = CreateConVar( "dune_sv_capture_time", "5", FCVAR_NONE+FCVAR_NOTIFY, "Time needed to capture harvesters", 0.01)
 CVAR_GrenadeCooldown = CreateConVar( "dune_sv_grenade_cooldown", "7", FCVAR_NONE+FCVAR_NOTIFY, "The lower, the faster the Grenade recharges", 0.01)
@@ -53,7 +50,6 @@ CVAR_Gamemode = CreateConVar( "dune_sv_gamemode", "2", FCVAR_NONE+FCVAR_NOTIFY, 
 
 -- Loadout
 function GM:PlayerLoadout(ply)
-	ply:ShouldDropWeapon(1)
 	ply:SetArmor(100)
 	return true
 end
@@ -549,6 +545,8 @@ function GM:PlayerSetModel(ply)
 	    ply:Give("tfa_bcry2_hmg") --heavy
 	    --ply:GiveAmmo(32, "357")
 	    ply:SetModel(Atreides_PlyMDL)
+	    ply:GetWeapon("tfa_bcry2_gauss").StatCache_Blacklist["VElements.sniperscope.bodygroup.0"] = true
+	    TFAUpdateAttachments()
 	elseif ply:Team() == Harkonnen then
 	    ply:Give("tfa_kf2_pulverizer") --melee hammer
 	    ply:Give("tfa_bcry2_gauss") --sniper
