@@ -503,7 +503,7 @@ end
 timer.Create("SP_Countspice",0.5,0,function()
 	if HarvesterWinners[1] == 1 || HarvesterWinners[1] == 2 then
 		if Scores[HarvesterWinners[1]] < 5000 then
-			ManipScore(HarvesterWinners[1],Scores[HarvesterWinners[1]]+50)
+			ManipScore(HarvesterWinners[1],Scores[HarvesterWinners[1]]+5)
 		else
 
 		end
