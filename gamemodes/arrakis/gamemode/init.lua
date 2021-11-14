@@ -24,8 +24,9 @@ resource.AddFile("sound/grenade_recharged.wav")
 resource.AddWorkshop( "1622006977" ) -- Harkonnen VTOL
 resource.AddWorkshop( "2209704927" ) --  Cell Simfphys APC
 resource.AddWorkshop( "2334354896" ) -- Atreides/Fremen VTOLs
-resource.AddWorkshop( "491266286" ) -- EYE Weapons
+resource.AddWorkshop( "2211859288" ) -- Crysis Weapons
 resource.AddWorkshop( "415143062" ) --  TFA Redux
+resource.AddWorkshop( "848490709" ) -- TFA KF2 Melee
 -- Spice Points
 SPP = {
 	Vector(-2523.754150, 3018.725342, -10246.272461),
@@ -502,19 +503,19 @@ function GM:PlayerSetModel(ply)
 	Harkonnen_PlyMDL = "models/player/combine_soldier.mdl"
 
 	if ply:Team() == Atreides then
-		ply:Give("tfeye_damo") --melee sword
-	    ply:Give("tfeye_s6000") --pulse ar
-	    ply:Give("tfeye_rotten") --pulse carbine
-	    ply:Give("tfeye_depez") -- shotgun
-	    ply:Give("tfeye_ovum") -- grenade launcher
+		ply:Give("tfa_kf2_katana") --melee sword
+	    ply:Give("tfa_bcry2_nova") --pistol
+	    ply:Give("tfa_bcry2_fy71") --rifle
+	    ply:Give("tfa_bcry2_gauss") --sniper
+	    ply:Give("tfa_bcry2_hmg") --heavy
 	    --ply:GiveAmmo(32, "357")
 	    ply:SetModel(Atreides_PlyMDL)
 	elseif ply:Team() == Harkonnen then
-	    ply:Give("tfeye_arra") --melee hammer
-	    ply:Give("tfeye_ka93") --pulse smg
-	    ply:Give("tfeye_huntr") -- carbine
-	  	ply:Give("tfeye_depez") --shotgun
-	    ply:Give("tfeye_excidium") --grenade launcher
+	    ply:Give("tfa_kf2_pulverizer") --melee hammer
+	    ply:Give("tfa_bcry2_gauss") --sniper
+	    ply:Give("tfa_bcry2_hammer") --pistol
+	  	ply:Give("tfa_bcry2_hmg") --heavy
+	    ply:Give("tfa_bcry2_scarab") --rifle
 	    --ply:GiveAmmo(32, "357")
 	    ply:SetModel(Harkonnen_PlyMDL)
 	end
