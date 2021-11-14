@@ -40,7 +40,7 @@ CVAR_CaptureTime = CreateConVar( "dune_sv_capture_time", "5", FCVAR_NONE+FCVAR_N
 CVAR_GrenadeCooldown = CreateConVar( "dune_sv_grenade_cooldown", "7", FCVAR_NONE+FCVAR_NOTIFY, "The lower, the faster the Grenade recharges", 0.01)
 CVAR_ShieldInterval = CreateConVar( "dune_sv_recharge_interval", "0.1", FCVAR_NONE+FCVAR_NOTIFY, "The lower, the faster the shield recharges", 0.01)
 CVAR_ShieldDelay = CreateConVar( "dune_sv_recharge_delay", "1", FCVAR_NONE+FCVAR_NOTIFY, "The lower, the sooner the shield starts recharging", 0.1)
-CVAR_Gamemode = CreateConVar( "dune_sv_gamemode", "1", FCVAR_NONE+FCVAR_NOTIFY, "1 - DM; 2 - Spice Harvest", 1,2)
+CVAR_Gamemode = CreateConVar( "dune_sv_gamemode", "2", FCVAR_NONE+FCVAR_NOTIFY, "1 - DM; 2 - Spice Harvest", 1,2)
 
 -- Loadout
 function GM:PlayerLoadout(ply)
