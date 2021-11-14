@@ -530,7 +530,7 @@ end
 -- Round End
 function WinRound(iTeam)
 	BroadcastLua("WinRound("..iTeam..")")
-	timer.Simple(5,function()
+	timer.Simple(7,function()
 		game.ConsoleCommand("changelevel " .. "gm_disten" ..  "\n")
 	end)
 end
