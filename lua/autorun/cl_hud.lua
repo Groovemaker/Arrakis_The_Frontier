@@ -196,14 +196,14 @@ function NameTag()
 						if v:Team() == 1 then
 							surface.SetMaterial(Material("materials/atreides.png"))
 							surface.SetDrawColor(team.GetColor(v:Team()))
-							surface.DrawTexturedRect( pos.x, pos.y - 75, 32, 32 )	
+							surface.DrawTexturedRect( pos.x-15, pos.y - 75, 32, 32 )	
 						end						
 						if v:Team() == 2 then
 							surface.SetMaterial(Material("materials/harkonnen.png"))
 							surface.SetDrawColor(team.GetColor(v:Team()))
-							surface.DrawTexturedRect( pos.x, pos.y - 75, 25, 32 )	
+							surface.DrawTexturedRect( pos.x-15, pos.y - 75, 25, 32 )	
 						end
-						draw.DrawText(v:Name(), "Scorer", pos.x - 10, pos.y -38, team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+						draw.DrawText(v:Name(), "Scorer", pos.x, pos.y -38, team.GetColor(v:Team()), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 						--draw.DrawText(v:GetMoney(), "Trebuchet24", pos.x - 10, pos.y -23, team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
 						
 

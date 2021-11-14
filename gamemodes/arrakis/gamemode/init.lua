@@ -40,6 +40,8 @@ RoundHasEnded = 0
 
 -- Set Skyname
 RunConsoleCommand("sv_skyname", "sky_day01_06")
+RunConsoleCommand("sv_tfa_cmenu_key","75")
+RunConsoleCommand("sv_tfa_attachments_enabled","1")
 
 -- Set up CVARs
 CVAR_CaptureTime = CreateConVar( "dune_sv_capture_time", "5", FCVAR_NONE+FCVAR_NOTIFY, "Time needed to capture harvesters", 0.01)
@@ -51,6 +53,7 @@ CVAR_Gamemode = CreateConVar( "dune_sv_gamemode", "2", FCVAR_NONE+FCVAR_NOTIFY, 
 -- Loadout
 function GM:PlayerLoadout(ply)
 	ply:SetArmor(100)
+	ply:ShouldDropWeapon(1)
 	return true
 end
 
@@ -173,6 +176,21 @@ function HarvesterManip(iTeam,iHarvester)
 		net.WriteInt(iHarvester,32)
 		net.WriteInt(iTeam,32)
 	net.Broadcast()
+end
+
+function ScanSpawnpoint(ply, vCorner1,radius1)
+	local tEntities = ents.FindInSphere(vCorner1,radius1)
+	local tPlayers = {}
+	local iPlayers = 0
+	
+	for i = 1, #tEntities do
+		if (tEntities[i]:IsPlayer() && tEntities[i] != ply ) then
+			iPlayers = iPlayers + 1
+			tPlayers[iPlayers] = tEntities[i]
+		end
+	end
+	
+	return tPlayers, iPlayers
 end
 
 function ScanHarvester(vCorner1,radius1)
@@ -483,16 +501,50 @@ hook.Add("PlayerSpawn","Dune_Spawn",function(ply)
 		Vector(-12302.385742, 10749.623047, -9257.607422),
 		Vector(-12859.300781, 10293.492188, -9312.452148),
 		Vector(-13258.383789, 10780.868164, -9239.381836),
-		Vector(-13702.872070, 10912.717773, -9183.007813)
+		Vector(-13702.872070, 10912.717773, -9183.007813),
+		Vector(-12408.049805, 10871.522461, -9248.912109),
+		Vector(-12563.242188, 11068.190430, -9227.535156),
+		Vector(-12549.751953, 11282.626953, -9200.519531),
+		Vector(-12720.125977, 11307.676758, -9165.694336),
+		Vector(-13018.564453, 11271.451172, -9183.962891),
+		Vector(-13161.046875, 11465.410156, -9145.323242),
+		Vector(-13338.786133, 11562.385742, -9094.348633),
+		Vector(-13520.049805, 11406.763672, -9115.936523),
+		Vector(-13667.384766, 11332.346680, -9134.194336),
+		Vector(-13763.358398, 11487.126953, -9108.458984),
+		Vector(-13955.588867, 11483.173828, -9074.961914),
+		Vector(-13925.430664, 10776.501953, -9143.361328),
+		Vector(-14028.125000, 10598.075195, -9125.335938),
+		Vector(-14209.570313, 10552.143555, -9111.168945),
+		Vector(-14374.747070, 10536.320313, -9100.752930),
+		Vector(-14480.989258, 10395.667969, -9104.253906),
+		Vector(-14447.816406, 10211.727539, -9128.330078),
+		Vector(-14326.656250, 10104.264648, -9152.002930),
+		Vector(-14246.605469, 9908.385742, -9181.653320),
+		Vector(-14072.329102, 9926.375000, -9205.023438),
 	}
 	if ply:Team() == 1 then
-		ply:SetPos(table.Random(SP_Atreides))
+		Reposition1(ply)
 		ply:SetEyeAngles(Angle(0, 170, 0))
 	elseif ply:Team() == 2 then
-		ply:SetPos(table.Random(SP_Harkonnen))
+		Reposition2(ply)
 		ply:SetEyeAngles(Angle(0, -50, 0))
 	end
 end)
+
+function Reposition1(ply)
+	ply:SetPos(SP_Atreides[math.random(#SP_Atreides)])
+	if ScanSpawnpoint(ply,ply:GetPos(),5)[1] then
+		ply:SetPos(ply:GetPos()+Vector(math.random(-200, 200),math.random(-200, 200),100))
+	end
+end
+
+function Reposition2(ply)
+	ply:SetPos(SP_Harkonnen[math.random(#SP_Harkonnen)])
+	if ScanSpawnpoint(ply,ply:GetPos(),5)[1] then
+		ply:SetPos(ply:GetPos()+Vector(math.random(-200, 200),math.random(-200, 200),100))
+	end
+end
 
 hook.Add("PlayerInitialSpawn","Dune_JL",function(ply)
 	ChatAdd("JL"," joined the Battlefield!",ply:Nick())
@@ -545,7 +597,6 @@ function GM:PlayerSetModel(ply)
 	    ply:Give("tfa_bcry2_hmg") --heavy
 	    --ply:GiveAmmo(32, "357")
 	    ply:SetModel(Atreides_PlyMDL)
-	    ply:GetWeapon("tfa_bcry2_gauss").StatCache_Blacklist["VElements.sniperscope.bodygroup.0"] = true
 	    TFAUpdateAttachments()
 	elseif ply:Team() == Harkonnen then
 	    ply:Give("tfa_kf2_pulverizer") --melee hammer
