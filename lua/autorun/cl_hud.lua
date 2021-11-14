@@ -31,6 +31,60 @@ surface.CreateFont("HP",{
 	outline = false,
 })
 
+surface.CreateFont("Capturer",{
+	font = "Helvetica",
+	extended = false,
+	size = 26,
+	weight = 500,
+	blursize = 1.3,
+	scanlines = 2,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+
+net.Receive("ScoreManip", function()
+	iTeam = net.ReadInt(32)
+	iScore = net.ReadInt(32)
+	if iTeam == 1 then
+		ScoreAtreides = iScore
+	elseif iTeam == 2 then
+		ScoreHarkonnen = iScore
+	end
+end)
+
+CaptureMessage = "We are capturing Harvester [1]"
+
+net.Receive("Capture", function()
+	iTeam = net.ReadInt(32)
+	iHarvester = net.ReadInt(32)
+	if iTeam == 1 then
+		if(LocalPlayer():Team() == iTeam) then
+			CaptureMessage = "We are capturing Harvester ["..iHarvester.."]"
+		else
+			CaptureMessage = "Enemy is capturing harvester ["..iHarvester.."]"
+		end
+	elseif iTeam == 2 then
+		if(LocalPlayer():Team() == iTeam) then
+			CaptureMessage = "We are capturing Harvester ["..iHarvester.."]"
+		else
+			CaptureMessage = "Enemy is capturing harvester ["..iHarvester.."]"
+		end
+	end
+end)
+
+net.Receive("Decapture", function()
+	iTeam = net.ReadInt(32)
+	iHarvester = net.ReadInt(32)
+	CaptureMessage = ""
+end)
+print(ScoreAtreides)
 hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 	if (InMenu == true) then return end
 	function GetAmmoForCurrentWeapon( ply )
@@ -64,30 +118,29 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 	--Objectives
 
 	--Atreides
-
-
-	SpiceAtreides = 0
 	local Mult = 2.5
 	local Mult2 = 3.7
 	local Mult3 = 4.1
 	local Aleph = 111
 	DrawBoxBlur(ScrW() / 6 , ScrH() * 0.04, ScrW() * 5000 / 18000, ScrH() / 55,11,4,255)
 	draw.RoundedBox( 4, ScrW() / 6 , ScrH() * 0.04, ScrW() * 5000 / 18000, ScrH() / 55, Color(5,5,5,Aleph/1.8) )
-	draw.RoundedBox( 4, ScrW() / 6 , ScrH() * 0.04, ScrW() * SpiceAtreides / 18000, ScrH() / 55, Color( (AtreidesCol.r*Mult), (AtreidesCol.g*Mult), (AtreidesCol.b*Mult), Aleph/1.3 ))
+	draw.RoundedBox( 4, ScrW() / 6 , ScrH() * 0.04, ScrW() * ScoreAtreides / 18000, ScrH() / 55, Color( (AtreidesCol.r*Mult), (AtreidesCol.g*Mult), (AtreidesCol.b*Mult), Aleph/1.3 ))
 
 	surface.SetDrawColor(Color( (AtreidesCol.r*Mult3), (AtreidesCol.g*Mult3), (AtreidesCol.b*Mult3), Aleph*1.9 ))
 	surface.SetMaterial(Material("materials/atreides.png"))
 	surface.DrawTexturedRect(ScrW() * 0.42 , ScrH() * 0.0065, ScrW()/22, ScrH()/14)
 
 	--Harkonnen
-	SpiceHarkonnen = 0
 	DrawBoxBlur(ScrW() * 0.55 , ScrH() * 0.04, ScrW() * 5000 / 18000, ScrH() / 55,11,4,255)
 	draw.RoundedBox( 4, ScrW() * 0.55 , ScrH() * 0.04, ScrW() * 5000 / 18000, ScrH() / 55, Color(5,5,5,Aleph/1.8) )
-	draw.RoundedBox( 4, ScrW() * 0.55 , ScrH() * 0.04, ScrW() * SpiceHarkonnen / 18000, ScrH() / 55, Color( (HarkonnenCol.r*Mult), (HarkonnenCol.g*Mult), (HarkonnenCol.b*Mult), Aleph/1.3 ))
+	draw.RoundedBox( 4, ScrW() * 0.55 , ScrH() * 0.04, ScrW() * ScoreHarkonnen / 18000, ScrH() / 55, Color( (HarkonnenCol.r*Mult), (HarkonnenCol.g*Mult), (HarkonnenCol.b*Mult), Aleph/1.3 ))
 
 	surface.SetDrawColor(Color( (HarkonnenCol.r*Mult2), (HarkonnenCol.g*Mult2), (HarkonnenCol.b*Mult2), Aleph*1.9 ))
 	surface.SetMaterial(Material("materials/harkonnen.png"))
 	surface.DrawTexturedRect(ScrW() * 0.5156, ScrH() * 0.0015, ScrW()/21, ScrH()/12)
+
+	-- Status
+	draw.SimpleText(CaptureMessage, "Capturer", ScrW() / 2.03 ,ScrH() *0.12, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
 	--Health Bar
 	--draw.RoundedBox( 4, ScrW() / 5.5, ScrH() / (1.1*35), ScrW() / 1.6, ScrH() / 55, Color(1,1,1,100) )

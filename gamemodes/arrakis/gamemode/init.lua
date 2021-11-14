@@ -6,6 +6,11 @@ include("shared.lua")
 -- When Hotfixing, tell people
 BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(111,155,255),"init.lua ",Color(255,255,255),"reloaded!")]])
 
+-- Netstrings
+util.AddNetworkString("ScoreManip")
+util.AddNetworkString("Capture")
+util.AddNetworkString("Decapture")
+
 -- Resources
 resource.AddFile("materials/atreides.png")
 resource.AddFile("materials/harkonnen.png")
@@ -15,7 +20,6 @@ resource.AddFile("sound/arrakis_ambience.wav")
 
 -- Spice Points
 SPP = {
-	Vector(-2523.754150, 3018.725342, -10246.272461),
 	Vector(-2523.754150, 3018.725342, -10246.272461),
 }
 SPH = {}
@@ -31,7 +35,7 @@ RunConsoleCommand("sv_tfa_cmenu",0)
 CVAR_GrenadeCooldown = CreateConVar( "dune_sv_grenade_cooldown", "7", FCVAR_NONE, "The lower, the faster the Grenade recharges", 0.01)
 CVAR_ShieldInterval = CreateConVar( "dune_sv_recharge_interval", "0.1", FCVAR_NONE, "The lower, the faster the shield recharges", 0.01)
 CVAR_ShieldDelay = CreateConVar( "dune_sv_recharge_delay", "1", FCVAR_NONE, "The lower, the sooner the shield starts recharging", 0.1)
-
+CVAR_Gamemode = CreateConVar( "dune_sv_gamemode", "1", FCVAR_NONE, "1 - DM; 2 - Spice Harvest", 1)
 -- Loadout
 function GM:PlayerLoadout(ply)
 	ply:SetArmor(100)
@@ -75,6 +79,35 @@ for k, v in ipairs(OldHarkonnenAPCs) do
 		v:Remove()
 	end
 end
+
+-- Score Changer
+function ManipScore(iTeam,iScore)
+	if iTeam == 1 then
+		ScoreAtreides = iScore
+	elseif iTeam == 2 then
+		ScoreHarkonnen = iScore
+	end
+	net.Start("ScoreManip")
+		net.WriteInt(iTeam,32)
+		net.WriteInt(iScore,32)
+	net.Broadcast()
+end
+
+-- Capturing Net Messages
+function Capture(iTeam,iHarvester)
+	net.Start("Capture")
+		net.WriteInt(iTeam,32)
+		net.WriteInt(iHarvester,32)
+	net.Broadcast()
+end
+
+function Decapture(iTeam,iHarvester)
+	net.Start("Decapture")
+		net.WriteInt(iTeam,32)
+		net.WriteInt(iHarvester,32)
+	net.Broadcast()
+end
+
 -- Spawners
 HarkonnenVtolEntIndexes = {}
 AtreidesVtolEntIndexes = {}
@@ -267,6 +300,16 @@ function SpawnSpiceFog()
 	Spicestack:SetPos(Vector(0, 0, -9000))
 	Spicestack:Fire("TurnOn")
 end
+
+-- DM Score
+hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
+	if CVAR_Gamemode:GetInt() != 1 || victim == attacker || !attacker:IsPlayer() then return end
+	if attacker:Team() == 1 then
+		ManipScore(1,ScoreAtreides+100)
+	elseif attacker:Team() == 2 then
+		ManipScore(2,ScoreHarkonnen+100)
+	end
+end)
 
 -- Factions
 function jAtreides( ply ) 
