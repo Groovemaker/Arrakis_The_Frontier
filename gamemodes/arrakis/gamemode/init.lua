@@ -18,6 +18,7 @@ resource.AddFile("materials/harkonnen.png")
 resource.AddFile("materials/ability_grenade.png")
 resource.AddFile("sound/arrakis_credits.mp3")
 resource.AddFile("sound/arrakis_ambience.wav")
+resource.AddFile("sound/grenade_recharge.wav")
 
 -- Spice Points
 SPP = {
