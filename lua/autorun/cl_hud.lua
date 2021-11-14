@@ -214,6 +214,14 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 	elseif Abilities.GrenadeCoolBar == 1 then
 		surface.SetDrawColor(Color(200,200,200,200))
 	end
+
+	if Abilities.GrenadeCoolBar == 0 then
+		Abilities.GrenadeDidSound = 0
+	elseif Abilities.GrenadeCoolBar == 1 && Abilities.GrenadeDidSound == 0 then
+		surface.PlaySound("grenade_recharged.wav")
+		Abilities.GrenadeDidSound = 1
+	end
+
 	surface.SetMaterial(Material("materials/ability_grenade.png"))
 	surface.DrawTexturedRect(ScrW() / 40, ScrH() *0.9, ScrW()/44, ScrH()/23)
 	
