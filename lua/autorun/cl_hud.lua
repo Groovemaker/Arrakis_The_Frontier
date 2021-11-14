@@ -319,8 +319,14 @@ hook.Add("HUDPaint", "Dune_DrawHUD", function()
 	-- main body
 	if LocalPlayer():Team() == 1 then
 		BGCol = AtreidesCol
+		surface.SetDrawColor(Color( 111,255,200, 105 ))
+		surface.SetMaterial(Material("materials/atreides.png"))
+		surface.DrawTexturedRect(ScrW() * 0.215 , ScrH() * 0.91, (ScrH()/19), (ScrH()/19))
 	elseif LocalPlayer():Team() == 2 then
 		BGCol = HarkonnenCol
+		surface.SetDrawColor(Color( 255,11,11, 155 ))
+		surface.SetMaterial(Material("materials/harkonnen.png"))
+		surface.DrawTexturedRect(ScrW() * 0.215 , ScrH() * 0.91, (ScrH()/19), (ScrH()/19))
 	end
 
 	--Health Bar
