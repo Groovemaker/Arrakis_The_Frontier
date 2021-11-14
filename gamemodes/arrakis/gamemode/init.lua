@@ -58,8 +58,36 @@ function GM:PlayerLoadout(ply)
 	return true
 end
 
--- Vehicles
+-- Thx to Omni Games on YT!
+function AutoBalance()
+	if table.Count(team.GetPlayers(1)) > table.Count(team.GetPlayers(2)) then
+		return 2
+	elseif table.Count(team.GetPlayers(1)) < table.Count(team.GetPlayers(2)) then
+		return 1
+	else
+		local KDR_Atreides = 0
+		local KDR_Harkonnen = 0
+		for k,v in pairs(team.GetPlayers(1)) do
+			KDR_Atreides = KDR_Atreides + v:Frags()/v:Deaths()
+		end
+		KDR_Atreides = KDR_Atreides/table.Count(team.GetPlayers(1))
 
+		for k,v in pairs(team.GetPlayers(2)) do
+			KDR_Harkonnen = KDR_Harkonnen + v:Frags()/v:Deaths()
+		end
+		KDR_Harkonnen = KDR_Harkonnen/table.Count(team.GetPlayers(2))
+
+		if KDR_Atreides > KDR_Harkonnen then
+			return 2
+		elseif KDR_Atreides < KDR_Harkonnen then
+			return 1
+		else
+			return math.random(0,1)
+		end	
+	end
+end
+
+-- Vehicles
 -- Simfphys compatibility
 function GM:PlayerButtonDown( ply, btn )
 	numpad.Activate( ply, btn )
@@ -475,6 +503,16 @@ hook.Add("PlayerInitialSpawn","Dune_JL",function(ply)
 	ply:ConCommand("dune_team")
 end)
 local PInit = {}
+
+function Rebalance()
+	for k,v in pairs(player.GetAll()) do
+		if AutoBalance() == 1 then
+			jAtreides(v)
+		else
+			jHarkonnen(v)
+		end
+	end
+end
 
 gameevent.Listen("OnRequestFullUpdate")
 

@@ -179,8 +179,42 @@ net.Receive("Decapture", function()
 	local iHarvester = net.ReadInt(32)
 	CaptureMessage = ""
 end)
+
 RoundEnd = false
+
+-- Thx to gmod-o-poly for basic understanding!
+function NameTag()
+	for k, v in pairs( player.GetAll()) do
+	teamcolor = team.GetColor(v:Team())
+		if v:Alive() && v:Team() == LocalPlayer():Team() then
+			if !v:InVehicle() then
+			    if v:Nick() != LocalPlayer():Nick() then
+					if LocalPlayer():GetPos():Distance(v:GetPos()) <= 2000 then
+						pos = v:GetPos()
+						pos.z = pos.z + 70
+						pos = pos:ToScreen()
+						if v:Team() == 1 then
+							surface.SetMaterial(Material("materials/atreides.png"))
+							surface.SetDrawColor(team.GetColor(v:Team()))
+							surface.DrawTexturedRect( pos.x, pos.y - 75, 32, 32 )	
+						end						
+						if v:Team() == 2 then
+							surface.SetMaterial(Material("materials/harkonnen.png"))
+							surface.SetDrawColor(team.GetColor(v:Team()))
+							surface.DrawTexturedRect( pos.x, pos.y - 75, 25, 32 )	
+						end
+						draw.DrawText(v:Name(), "Scorer", pos.x - 10, pos.y -38, team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+						--draw.DrawText(v:GetMoney(), "Trebuchet24", pos.x - 10, pos.y -23, team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+						
+
+					end
+				end
+			end
+		end
+	end
+end
 hook.Add("HUDPaint", "Dune_DrawHUD", function()
+
 	if RoundEnd == true then 
 		local Mult = 2.5
 		local Mult2 = 3.7
@@ -209,6 +243,7 @@ hook.Add("HUDPaint", "Dune_DrawHUD", function()
 		draw.SimpleText(ScoreHarkonnen, "END3", ScrW() * 0.5785 , ScrH() * 0.60, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		return 
 	end
+	NameTag()
 	function GetAmmoForCurrentWeapon( ply )
 		if ( !IsValid( ply ) ) then return -1 end
 
@@ -364,6 +399,26 @@ hook.Add("HUDPaint", "Dune_DrawHUD", function()
 	surface.SetMaterial(Material("materials/ability_grenade.png"))
 	surface.DrawTexturedRect(ScrW() / 40, ScrH() *0.9, ScrW()/44, ScrH()/23)
 end)
+
+
+local function MESPCheck(v)
+	if v:Alive() == true && v:Health() ~= 0 && v:Health() >= 0 && LocalPlayer():Alive() && v:Team() == LocalPlayer():Team() then
+		return true
+	else
+		return false
+	end
+end
+
+hook.Add("PreDrawHalos", "L4DGlow", function()
+	for k,v in pairs(player.GetAll()) do
+		if(MESPCheck(v)) then
+			halo.Add( {v},  team.GetColor(v:Team()), 1, 1, 5, true, true )
+		end
+	end
+end)
+
+
+hook.Add("HUDPaint", "NameTags", NameTag)
 
 function WinRound(iTeam)
 	RoundEnd = true
