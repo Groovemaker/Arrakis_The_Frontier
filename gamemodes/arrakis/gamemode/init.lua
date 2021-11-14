@@ -531,7 +531,7 @@ end
 function WinRound(iTeam)
 	BroadcastLua("WinRound("..iTeam..")")
 	timer.Create("EndRound",7,1,function()
-		RunConsoleCommand("changelevel gm_disten")
+		RunConsoleCommand("changelevel", "gm_disten")
 	end)
 end
 
