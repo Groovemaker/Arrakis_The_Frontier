@@ -343,7 +343,7 @@ hook.Add("HUDPaint", "Dune_DrawHUD", function()
 	end
 
 	if HarvesterClaims[3] == 2 then
-		draw.SimpleText("3", "Harvesters", ScrW() / 6.8 ,ScrH() * 0.1125, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		draw.SimpleText("3", "Harvesters", ScrW() / 0.8925 ,ScrH() * 0.1125, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	else
 		draw.SimpleText("3", "Harvesters", ScrW() * 0.8925 ,ScrH() * 0.1125, Color(144,144,144,111), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
