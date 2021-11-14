@@ -27,4 +27,5 @@ Scores = {
 	ScoreAtreides,
 	ScoreHarkonnen
 }
+
 include("tfa/framework/tfa_loader.lua")

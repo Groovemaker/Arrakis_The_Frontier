@@ -23,6 +23,7 @@ resource.AddFile("sound/grenade_recharged.wav")
 -- Spice Points
 SPP = {
 	Vector(-2523.754150, 3018.725342, -10246.272461),
+	Vector(-3459.514648, -3145.623535, -9957.653320)
 }
 SPH = {}
 
@@ -96,11 +97,13 @@ function ManipScore(iTeam,iScore)
 		net.WriteInt(iScore,32)
 	net.Broadcast()
 end
-
--- Capturing Net Messages
 HarvesterWinners = {}
+-- Capturing Net Messages
+
 CapturingInProgress = {}
-CapturingInProgress[1] = 0
+CapturingTable = {}
+
+
 function WinHarvester(iTeam,iHarvester)
 	HarvesterWinners[iHarvester] = iTeam
 	Decapture(1,1)
@@ -111,11 +114,14 @@ function Capture(iTeam,iHarvester)
 		net.WriteInt(iTeam,32)
 		net.WriteInt(iHarvester,32)
 	net.Broadcast()
-
 	timer.Stop("CaptureStarter"..iHarvester)
 	timer.Create("CaptureStarter"..iHarvester, CVAR_CaptureTime:GetFloat(), 1, function()
 		WinHarvester(iTeam,iHarvester)
 	end)
+end
+
+function UpdateCaptureHUD(iTeam,tHarvester)
+
 end
 
 function Decapture(iTeam,iHarvester)
@@ -153,29 +159,37 @@ AtreidesVtolEntIndexes = {}
 AtreidesAPCEntIndexes = {}
 HarkonnenAPCEntIndexes = {}
 
-hook.Add("Think","HarvesterScan", function()
+timer.Create("HarvesterScan",0.3,0,function()
 	Scores = {
 		ScoreAtreides,
 		ScoreHarkonnen
 	}
 	if CVAR_Gamemode:GetInt() != 2 then return end
-	-- number 1
-	A1 = Vector(-2686.226318, 3014.056885, -10185.661133)
-	People1 = ScanHarvester(A1,1500)
-	--PrintTable(People1)
-	if People1[1] && People1[1]:Team() != HarvesterWinners[1] && People1[1]:Alive() && People1[1]:Health() > 0 then
-		if People1[2] && People1[2]:Team() == HarvesterWinners[1] && People1[2]:Alive() && People1[2]:Health() > 0 then
-			return
+
+		-- B - 1
+		for k,v in pairs(SPP) do
+			local A1 = v
+			local People1 = ScanHarvester(A1,1500)
+			if People1[1] && People1[1]:Team() != HarvesterWinners[k] && People1[1]:Alive() && People1[1]:Health() > 0 then
+				if People1[2] && People1[2]:Team() == HarvesterWinners[k] && People1[2]:Alive() && People1[2]:Health() > 0 then
+					return
+				end
+				if CapturingInProgress[k] == 0 then
+					CapturingInProgress[k] = 1
+					CapturingTable[k] = People1[1]:Team()
+					--PrintTable(CapturingTable)
+					--UpdateCaptureHUD(People1[1]:Team(),CapturingTable)
+					Capture(People1[1]:Team(),k)
+				end
+			else
+				CapturingInProgress[k] = 0
+				table.remove(CapturingTable,k)
+				timer.Stop("CaptureStarter"..k)
+			end
 		end
-		if CapturingInProgress[1] == 0 then
-			CapturingInProgress[1] = 1
-			Capture(People1[1]:Team(),1)
+		if table.IsEmpty(CapturingTable) then
+			Decapture(1,1)
 		end
-	else
-		CapturingInProgress[1] = 0
-		timer.Stop("CaptureStarter1")
-		Decapture(1,1)
-	end
 end)
 
 -- Spawners
@@ -323,6 +337,8 @@ function SpawnHarvesters()
 		Harvester:SetModelScale(5, 0)
 		Harvester:SetPos(v)
 		Harvester:Spawn()
+		CapturingInProgress[k] = 0
+		PrintTable(CapturingInProgress)
 	end
 end
 
@@ -508,6 +524,13 @@ timer.Create("SP_Countspice",0.5,0,function()
 	if HarvesterWinners[1] == 1 || HarvesterWinners[1] == 2 then
 		if Scores[HarvesterWinners[1]] < 5000 then
 			ManipScore(HarvesterWinners[1],Scores[HarvesterWinners[1]]+5)
+		else
+
+		end
+	end
+	if HarvesterWinners[2] == 1 || HarvesterWinners[2] == 2 then
+		if Scores[HarvesterWinners[2]] < 5000 then
+			ManipScore(HarvesterWinners[2],Scores[HarvesterWinners[2]]+5)
 		else
 
 		end

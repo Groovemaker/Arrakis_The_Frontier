@@ -227,7 +227,3 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 	
 end )
 
-local GM = GM or GAMEMODE or gmod.GetGamemode()
-function GM:DrawDeathNotice(x, y)
-	return false
-end
