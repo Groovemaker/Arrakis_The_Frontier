@@ -66,7 +66,7 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 	--Atreides
 
 
-	SpiceAtreides = 2500
+	SpiceAtreides = 0
 	local Mult = 2.5
 	local Mult2 = 3.7
 	local Mult3 = 4.1
@@ -77,17 +77,17 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 
 	surface.SetDrawColor(Color( (AtreidesCol.r*Mult3), (AtreidesCol.g*Mult3), (AtreidesCol.b*Mult3), Aleph*1.9 ))
 	surface.SetMaterial(Material("materials/atreides.png"))
-	surface.DrawTexturedRect(ScrW() * 0.42 , ScrH() * 0.0085, ScrW()/22, ScrH()/14)
+	surface.DrawTexturedRect(ScrW() * 0.42 , ScrH() * 0.0065, ScrW()/22, ScrH()/14)
 
 	--Harkonnen
-	SpiceHarkonnen = 1500
+	SpiceHarkonnen = 0
 	DrawBoxBlur(ScrW() * 0.55 , ScrH() * 0.04, ScrW() * 5000 / 18000, ScrH() / 55,11,4,255)
 	draw.RoundedBox( 4, ScrW() * 0.55 , ScrH() * 0.04, ScrW() * 5000 / 18000, ScrH() / 55, Color(5,5,5,Aleph/1.8) )
 	draw.RoundedBox( 4, ScrW() * 0.55 , ScrH() * 0.04, ScrW() * SpiceHarkonnen / 18000, ScrH() / 55, Color( (HarkonnenCol.r*Mult), (HarkonnenCol.g*Mult), (HarkonnenCol.b*Mult), Aleph/1.3 ))
 
 	surface.SetDrawColor(Color( (HarkonnenCol.r*Mult2), (HarkonnenCol.g*Mult2), (HarkonnenCol.b*Mult2), Aleph*1.9 ))
 	surface.SetMaterial(Material("materials/harkonnen.png"))
-	surface.DrawTexturedRect(ScrW() * 0.513, ScrH() * 0.003, ScrW()/21, ScrH()/12)
+	surface.DrawTexturedRect(ScrW() * 0.5156, ScrH() * 0.0015, ScrW()/21, ScrH()/12)
 
 	--Health Bar
 	--draw.RoundedBox( 4, ScrW() / 5.5, ScrH() / (1.1*35), ScrW() / 1.6, ScrH() / 55, Color(1,1,1,100) )
