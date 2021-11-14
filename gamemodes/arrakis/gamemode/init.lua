@@ -28,6 +28,8 @@ SPP = {
 }
 SPH = {}
 
+-- Round Vars
+RoundHasEnded = 0
 
 -- Set Skyname
 RunConsoleCommand("sv_skyname", "sky_day01_06")
@@ -529,6 +531,7 @@ end
 
 -- Round End
 function WinRound(iTeam)
+	RoundHasEnded = 1
 	BroadcastLua("WinRound("..iTeam..")")
 	timer.Simple(7,function()
 		game.ConsoleCommand("changelevel " .. "gm_disten" ..  "\n")
@@ -537,6 +540,7 @@ end
 
 -- Spice Counter
 timer.Create("SP_Countspice",0.5,0,function()
+	if RoundHasEnded == 1 then return end
 	local SpiceProduction = {0,0}
 	for k,v in pairs(HarvesterWinners) do
 		if v == 1 then
