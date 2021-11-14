@@ -33,11 +33,11 @@ RunConsoleCommand("sv_skyname", "sky_day01_06")
 RunConsoleCommand("sv_tfa_cmenu",0)
 
 -- Set up CVARs
-CVAR_CaptureTime = CreateConVar( "dune_sv_capture_time", "5", FCVAR_NONE, "Time needed to capture harvesters", 0.01)
-CVAR_GrenadeCooldown = CreateConVar( "dune_sv_grenade_cooldown", "7", FCVAR_NONE, "The lower, the faster the Grenade recharges", 0.01)
-CVAR_ShieldInterval = CreateConVar( "dune_sv_recharge_interval", "0.1", FCVAR_NONE, "The lower, the faster the shield recharges", 0.01)
-CVAR_ShieldDelay = CreateConVar( "dune_sv_recharge_delay", "1", FCVAR_NONE, "The lower, the sooner the shield starts recharging", 0.1)
-CVAR_Gamemode = CreateConVar( "dune_sv_gamemode", "1", FCVAR_NONE, "1 - DM; 2 - Spice Harvest", 1,2)
+CVAR_CaptureTime = CreateConVar( "dune_sv_capture_time", "5", FCVAR_NONE+FCVAR_NOTIFY+FCVAR_PROTECTED, "Time needed to capture harvesters", 0.01)
+CVAR_GrenadeCooldown = CreateConVar( "dune_sv_grenade_cooldown", "7", FCVAR_NONE+FCVAR_NOTIFY+FCVAR_PROTECTED, "The lower, the faster the Grenade recharges", 0.01)
+CVAR_ShieldInterval = CreateConVar( "dune_sv_recharge_interval", "0.1", FCVAR_NONE+FCVAR_NOTIFY+FCVAR_PROTECTED, "The lower, the faster the shield recharges", 0.01)
+CVAR_ShieldDelay = CreateConVar( "dune_sv_recharge_delay", "1", FCVAR_NONE+FCVAR_NOTIFY+FCVAR_PROTECTED, "The lower, the sooner the shield starts recharging", 0.1)
+CVAR_Gamemode = CreateConVar( "dune_sv_gamemode", "1", FCVAR_NONE+FCVAR_NOTIFY+FCVAR_PROTECTED, "1 - DM; 2 - Spice Harvest", 1,2)
 
 -- Loadout
 function GM:PlayerLoadout(ply)
@@ -124,6 +124,13 @@ function Decapture(iTeam,iHarvester)
 	net.Broadcast()
 end
 
+function HarvesterManip(iTeam,iCount)
+	net.Start("HarvesterManip")
+		net.WriteInt(iTeam,32)
+		net.WriteInt(iCount,32)
+	net.Broadcast()
+end
+
 function ScanHarvester(vCorner1,radius1)
 	local tEntities = ents.FindInSphere(vCorner1,radius1)
 	local tPlayers = {}
@@ -146,6 +153,7 @@ AtreidesAPCEntIndexes = {}
 HarkonnenAPCEntIndexes = {}
 
 hook.Add("Think","HarvesterScan", function()
+	if CVAR_Gamemode:GetInt() != 2 then return end
 	-- number 1
 	A1 = Vector(-2686.226318, 3014.056885, -10185.661133)
 	People1 = ScanHarvester(A1,1500)
