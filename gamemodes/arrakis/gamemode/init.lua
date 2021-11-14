@@ -53,6 +53,7 @@ CVAR_Gamemode = CreateConVar( "dune_sv_gamemode", "2", FCVAR_NONE+FCVAR_NOTIFY, 
 
 -- Loadout
 function GM:PlayerLoadout(ply)
+	ply:ShouldDropWeapon(1)
 	ply:SetArmor(100)
 	return true
 end
