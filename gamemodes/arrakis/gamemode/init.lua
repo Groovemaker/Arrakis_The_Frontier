@@ -527,6 +527,14 @@ function GM:PlayerHurt(victim, attacker)
 	end)
 end
 
+-- Round End
+function WinRound(iTeam)
+	BroadcastLua("WinRound("..iTeam..")")
+	timer.Create("EndRound",7,1,function()
+		RunConsoleCommand("changelevel gm_disten")
+	end)
+end
+
 -- Spice Counter
 timer.Create("SP_Countspice",0.5,0,function()
 	local SpiceProduction = {0,0}
@@ -540,7 +548,7 @@ timer.Create("SP_Countspice",0.5,0,function()
 			if Scores[v] < 5000 then
 				ManipScore(v,Scores[v]+SpiceProduction[v])
 			else
-
+				WinRound(1)
 			end
 		end
 		if v == 2 then
@@ -552,7 +560,7 @@ timer.Create("SP_Countspice",0.5,0,function()
 			if Scores[v] < 5000 then
 				ManipScore(v,Scores[v]+SpiceProduction[v])
 			else
-
+				WinRound(2)
 			end
 		end
 	end

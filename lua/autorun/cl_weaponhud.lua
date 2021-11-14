@@ -287,17 +287,26 @@ hook_Add("HUDPaint", "GS_WeaponSelector", function()
 		iCurSlot = 0
 		iCurPos = 1
 	end
-end)
 
+end)
+function IdleCloser()
+	timer.Stop("GS_IdleCloser")
+	timer.Create("GS_IdleCloser",1,0,function()
+		iCurSlot = 0
+		iCurPos = 1
+		
+		flSelectTime = RealTime()
+	end)
+end
 hook_Add("PlayerBindPress", "GS_WeaponSelector", function(pPlayer, sBind, bPressed)
 	if (not pPlayer:Alive() or pPlayer:InVehicle() and not pPlayer:GetAllowWeaponsInVehicle()) then
 		return
 	end
-
 	sBind = string_lower(sBind)
 
 	-- Last weapon switch
 	if (sBind == "lastinv") then
+		IdleCloser()
 		if (bPressed) then
 			local pLastWeapon = pPlayer:GetPreviousWeapon()
 
@@ -324,6 +333,7 @@ hook_Add("PlayerBindPress", "GS_WeaponSelector", function(pPlayer, sBind, bPress
 
 	-- Move to the weapon before the current
 	if (sBind == "invprev") then
+		IdleCloser()
 		if (not bPressed) then
 			return true
 		end
@@ -388,6 +398,7 @@ hook_Add("PlayerBindPress", "GS_WeaponSelector", function(pPlayer, sBind, bPress
 
 	-- Move to the weapon after the current
 	if (sBind == "invnext") then
+		IdleCloser()
 		if (not bPressed) then
 			return true
 		end

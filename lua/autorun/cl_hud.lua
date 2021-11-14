@@ -84,6 +84,57 @@ surface.CreateFont("Harvesters",{
 	outline = false,
 })
 
+surface.CreateFont("END1",{
+	font = "Trebuchet24",
+	extended = false,
+	size = 42,
+	weight = 400,
+	blursize = 1.2,
+	scanlines = 2,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+surface.CreateFont("END2",{
+	font = "Trebuchet24",
+	extended = false,
+	size = 32,
+	weight = 100,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+surface.CreateFont("END3",{
+	font = "Trebuchet24",
+	extended = false,
+	size = 42,
+	weight = 400,
+	blursize = 1.2,
+	scanlines = 2,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
 HarvesterClaims = {0,0,0}
 
 net.Receive("ScoreManip", function()
@@ -128,9 +179,36 @@ net.Receive("Decapture", function()
 	local iHarvester = net.ReadInt(32)
 	CaptureMessage = ""
 end)
+RoundEnd = false
+hook.Add("HUDPaint", "Dune_DrawHUD", function()
+	if RoundEnd == true then 
+		local Mult = 2.5
+		local Mult2 = 3.7
+		local Mult3 = 4.1
+		local Aleph = 166
+		DrawBoxBlur(ScrW()*0.05, ScrH()*0.05, ScrW()*0.9, ScrH()*0.85,11,4,255)
+		draw.RoundedBox( 6, ScrW()*0.05, ScrH()*0.05, ScrW()*0.9, ScrH()*0.85, Color(35,35,35,Aleph/1.8) )
 
-hook.Add( "HUDPaint", "Dune_DrawHUD", function()
-	if (InMenu == true) then return end
+		draw.RoundedBox( 8, ScrW()*0.35, ScrH()*0.176, ScrW()*0.2835, ScrH()*0.15, Color(35,35,35,Aleph/1.9) )
+
+		surface.SetDrawColor(Color( 255,255,255, Aleph*1.9 ))
+		--surface.SetMaterial(Material("materials/ability_grenade.png"))
+		--surface.DrawTexturedRect(ScrW() * 0.453 , ScrH() * 0.35, ScrW()/12, ScrH()/8)
+
+		draw.SimpleText("The Battle has Concluded!", "END1", ScrW() / 2.04 ,ScrH() *0.25, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+
+		surface.SetDrawColor(Color( 255,255,255, Aleph/1.3 ))
+		surface.SetMaterial(Material("materials/atreides.png"))
+		surface.DrawTexturedRect(ScrW() * 0.375 , ScrH() * 0.45, (ScrH()/12), (ScrH()/12))
+
+		surface.SetDrawColor(Color( 255,255,255, Aleph/1.3 ))
+		surface.SetMaterial(Material("materials/harkonnen.png"))
+		surface.DrawTexturedRect(ScrW() * 0.555 , ScrH() * 0.443, (ScrH()/12), (ScrH()/10))
+
+		draw.SimpleText(ScoreAtreides, "END3", ScrW() * 0.399 , ScrH() * 0.60, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		draw.SimpleText(ScoreHarkonnen, "END3", ScrW() * 0.5785 , ScrH() * 0.60, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+		return 
+	end
 	function GetAmmoForCurrentWeapon( ply )
 		if ( !IsValid( ply ) ) then return -1 end
 
@@ -286,5 +364,10 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 	surface.SetMaterial(Material("materials/ability_grenade.png"))
 	surface.DrawTexturedRect(ScrW() / 40, ScrH() *0.9, ScrW()/44, ScrH()/23)
 	
-end )
+end)
+
+function WinRound(iTeam)
+	RoundEnd = true
+	WinningTeam = iTeam
+end
 
