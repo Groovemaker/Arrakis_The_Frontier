@@ -84,7 +84,7 @@ surface.CreateFont("Harvesters",{
 	outline = false,
 })
 
-HarvesterClaims = {0,0}
+HarvesterClaims = {0,0,0}
 
 net.Receive("ScoreManip", function()
 	iTeam = net.ReadInt(32)
@@ -226,6 +226,8 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 	DrawBoxBlur(ScrW() / 60.08, ScrH() *0.89, ScrW() / 25, ScrH() / 15 ,11,4,255)
 	draw.RoundedBox( 0, ScrW() / 60.08, ScrH() *0.89, ScrW() / 25, ScrH() / 15 , BGCol)
 
+	-- Claims Atreides
+	DrawBoxBlur(ScrW() / 11 , ScrH() * 0.095, ScrW() / 15, ScrH() / 25, 11,4,255)
 	draw.RoundedBox( 4, ScrW() / 11 , ScrH() * 0.095, ScrW() / 15, ScrH() / 25, Color(5,5,5,Aleph/1.8) )
 
 	if HarvesterClaims[1] == 1 then
@@ -246,10 +248,27 @@ hook.Add( "HUDPaint", "Dune_DrawHUD", function()
 		draw.SimpleText("3", "Harvesters", ScrW() / 6.8 ,ScrH() * 0.1125, Color(144,144,144,111), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	end
 	 	
-	--draw.SimpleText("3", "Harvesters", ScrW() / 6.8 ,ScrH() * 0.1125, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)	
+	-- Claims Harkonnen
+	--DrawBoxBlur(ScrW() / 11 , ScrH() * 0.095, ScrW() / 15, ScrH() / 25, 11,4,255)
+	draw.RoundedBox( 4, ScrW() / 1.1953, ScrH() * 0.095, ScrW() / 15, ScrH() / 25, Color(5,5,5,Aleph/1.8) )
 
+	if HarvesterClaims[1] == 2 then
+		draw.SimpleText("1", "Harvesters", ScrW() * 0.8445 ,ScrH() * 0.1125, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	else
+		draw.SimpleText("1", "Harvesters", ScrW() * 0.8445 ,ScrH() * 0.1125, Color(144,144,144,111), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	end
 
-	--draw.SimpleText("1", "Harvesters", ScrW() / 16.3 ,ScrH() * 0.1, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	if HarvesterClaims[2] == 2 then
+		draw.SimpleText("2", "Harvesters", ScrW() / 1.15 ,ScrH() * 0.1125, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	else
+		draw.SimpleText("2", "Harvesters", ScrW() / 1.15 ,ScrH() * 0.1125, Color(144,144,144,111), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	end
+
+	if HarvesterClaims[3] == 2 then
+		draw.SimpleText("3", "Harvesters", ScrW() / 6.8 ,ScrH() * 0.1125, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	else
+		draw.SimpleText("3", "Harvesters", ScrW() * 0.8925 ,ScrH() * 0.1125, Color(144,144,144,111), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	end
 
 	if Abilities.GrenadeCoolBar == 0 then
 		surface.SetDrawColor(Color(111,111,111,200))
