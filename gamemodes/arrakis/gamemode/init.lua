@@ -22,7 +22,7 @@ resource.AddFile("sound/arrakis_ambience.wav")
 resource.AddFile("sound/grenade_recharged.wav")
 
 resource.AddWorkshop( "1622006977" ) -- Harkonnen VTOL
-resource.AddWorkshop( "2209704927" ) --  Cell Simfphys APC
+resource.AddWorkshop( "831680603" ) --  Simfphys APC
 resource.AddWorkshop( "2334354896" ) -- Atreides/Fremen VTOLs
 resource.AddWorkshop( "2211859288" ) -- Crysis Weapons
 resource.AddWorkshop( "415143062" ) --  TFA Redux
