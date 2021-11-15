@@ -389,9 +389,11 @@ timer.Create("Dune_VehicleLoop",11,0,function()
 	end
 end)
 
+
+
 -- Spawning Spice Harvesters
 function SpawnHarvesters()
-	for k,v in pairs(SPP) do
+	for k,v in pairs(SPH) do
 		if IsValid(SPH[k]) then
 			SPH[k]:Remove()
 		end
@@ -400,16 +402,24 @@ function SpawnHarvesters()
 		SPH[k] = ents.Create("prop_thumper")
 		SPH[k]:SetRenderMode(RENDERMODE_TRANSALPHA)
 		SPH[k]:SetColor(Color(255,255,255,255))
-		SPH[k]:SetAngles(Angle(0,-120,0))
+		SPH[k]:SetAngles(Angle(0,0,0))
 		SPH[k]:Fire("Enable")
-		SPH[k]:SetSolid(1)
 		local Harvester = SPH[k]
 		Harvester:SetModelScale(5, 0)
 		Harvester:SetPos(v)
 		Harvester:Spawn()
+		Harvester:SetCollisionBounds(Vector(-60,-60,0),Vector(60,60,120))
+		Harvester:SetSolid(2)
+		Harvester:SetMoveType(MOVETYPE_NONE)
 		CapturingInProgress[k] = 0
 		PrintTable(CapturingInProgress)
 	end
+end
+
+-- Second Sun
+function SunMod()
+
+
 end
 
 function GM:PostGamemodeLoaded()
@@ -417,11 +427,13 @@ function GM:PostGamemodeLoaded()
 		SpawnVehiclesAtreides()
 		SpawnVehiclesHarkonnen()
 		SpawnHarvesters()
+		SunMod()
 	end)
 	timer.Create("Dune_VehicleLoop",3,0,function()
 		for ix=1,3 do
 			RespawnVehiclesAtreides(ix)
 			RespawnVehiclesHarkonnen(ix)
+
 		end
 	end)
 	SpawnSpiceFog()	

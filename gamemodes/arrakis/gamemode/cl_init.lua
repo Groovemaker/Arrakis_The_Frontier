@@ -253,15 +253,15 @@ local function GraphicsModding()
 	    ["$pp_colour_mulb"] = 0
 	}
 	local colormod_night = {
-	    ["$pp_colour_addr"] = 0.1,
-	    ["$pp_colour_addg"] = 0.05,
-	    ["$pp_colour_addb"] = 0.13,
-	    ["$pp_colour_brightness"] = -0.04,
-	    ["$pp_colour_contrast"] = 0.1,
+	    ["$pp_colour_addr"] = 0.02,
+	    ["$pp_colour_addg"] = 0.01,
+	    ["$pp_colour_addb"] = 0.03,
+	    ["$pp_colour_brightness"] = 0,
+	    ["$pp_colour_contrast"] = 0.17,
 	    ["$pp_colour_colour"] = 1.4,
-	    ["$pp_colour_mulr"] = 1.1,
-	    ["$pp_colour_mulg"] = 1,
-	    ["$pp_colour_mulb"] = 2,
+	    ["$pp_colour_mulr"] = 0.2,
+	    ["$pp_colour_mulg"] = 0.1,
+	    ["$pp_colour_mulb"] = 0.3,
 	}
 
 		    
