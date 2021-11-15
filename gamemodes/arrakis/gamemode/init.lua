@@ -412,7 +412,7 @@ function SpawnHarvesters()
 	for k,v in pairs(SPP) do
 		SPH[k] = ents.Create("prop_thumper")
 		SPH[k]:SetRenderMode(RENDERMODE_TRANSALPHA)
-		SPH[k]:SetColor(Color(255,155,85,255))
+		SPH[k]:SetColor(Color(255,190,111,255))
 		SPH[k]:SetAngles(Angle(0,0,0))
 		SPH[k]:Fire("Enable")
 		local Harvester = SPH[k]
