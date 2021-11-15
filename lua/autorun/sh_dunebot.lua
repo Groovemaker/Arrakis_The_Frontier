@@ -23,7 +23,6 @@ concommand.Add("dune_bot_spawn",function()
 	local NewBot = player.CreateNextBot(Names[math.random(#Names)])
 	NewBot.IsDuneBot = true
 	NewBot:TBotResetAI()
-	NewBot:SetModel("models/player/leet.mdl")
 		
 end)
 

@@ -488,7 +488,7 @@ function jAtreides( ply )
 	ply:StripWeapons()
     ply:SetTeam(1)
     ply:Spawn()
-    ChatAdd("TEAMCHANGE"," joined House Atreides!",{1,ply:Nick()})
+    --ChatAdd("TEAMCHANGE"," joined House Atreides!",{1,ply:Nick()})
 end 
  
 function jHarkonnen( ply )
@@ -496,7 +496,7 @@ function jHarkonnen( ply )
 	ply:StripWeapons()
     ply:SetTeam(2)
     ply:Spawn()
-    ChatAdd("TEAMCHANGE"," joined House Harkonnen!",{2,ply:Nick()})
+   --ChatAdd("TEAMCHANGE"," joined House Harkonnen!",{2,ply:Nick()})
 end 
 
 concommand.Add( "dune_join_atreides", jAtreides )
@@ -578,6 +578,7 @@ function Reposition2(ply)
 end
 
 hook.Add("PlayerInitialSpawn","Dune_JL",function(ply)
+	Rebalance()
 	ChatAdd("JL"," joined the Battlefield!",ply:Nick())
 	ply:ConCommand("dune_team")
 end)
