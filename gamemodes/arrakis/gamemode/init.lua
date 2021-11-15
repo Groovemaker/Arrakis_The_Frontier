@@ -411,6 +411,7 @@ function SpawnHarvesters()
 		Harvester:Activate()
 		Harvester:Spawn()
 		Harvester:SetSolid(2)
+		Harvester:SetName("dune_spiceharvester")
 		Harvester:SetMoveType(MOVETYPE_NONE)
 		CapturingInProgress[k] = 0
 		PrintTable(CapturingInProgress)
@@ -466,7 +467,7 @@ end
 
 -- DM Score
 hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
-	
+
 	net.Start("PlyKill")
 		net.WriteEntity(victim)
 		net.WriteEntity(attacker)
