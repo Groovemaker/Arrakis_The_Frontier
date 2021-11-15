@@ -96,7 +96,7 @@ if CLIENT then
 	local CreateScoreboard = function()
 		Scoreboard = vgui.Create("DFrame")
 		Scoreboard:SetSize(ScrW()*.65, ScrH()*.65)
-		Scoreboard:SetPos((ScrW()*.1745), (ScrH()*.30)*.5)
+		Scoreboard:SetPos((ScrW()*.1743), (ScrH()*.30)*.5)
 		Scoreboard:SetTitle("")
 		Scoreboard:SetDraggable(false)
 		Scoreboard:ShowCloseButton(false)
