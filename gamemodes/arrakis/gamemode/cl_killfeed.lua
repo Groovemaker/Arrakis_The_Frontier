@@ -34,7 +34,6 @@ net.Receive("PlyKill", function()
 	local Tbl = {}
 	Tbl.Victim = net.ReadEntity()
 	Tbl.Player = net.ReadEntity()
-	Tbl.Col = team.GetColor(Tbl.Player:Team())
 	Tbl.Text = "killed"
 	Tbl.Time = CurTime()
 	Tbl.Suicide = 0

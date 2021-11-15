@@ -696,16 +696,16 @@ timer.Create("SP_Countspice",0.5,0,function()
 			end
 		end
 		if v == 2 then
-			if Scores[v] < 5000 then
-				ManipScore(v,Scores[v]+SpiceProduction[v])
-			else
-				Scores[v] = 5000
-				WinRound(2)				
-			end
 			if SpiceProduction[v] == 0 then 
 				SpiceProduction[v] = 5
 			else
 				SpiceProduction[v] = SpiceProduction[v] *2
+			end
+			if Scores[v] < 5000 then
+				ManipScore(v,Scores[v]+SpiceProduction[v])
+			else
+				Scores[v] = 5000
+				WinRound(2)
 			end
 		end
 	end
