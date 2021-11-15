@@ -41,7 +41,7 @@ RoundHasEnded = 0
 
 -- Set Skyname
 RunConsoleCommand("sv_skyname", "sky_day01_06")
-RunConsoleCommand("sv_tfa_cmenu_key","75")
+RunConsoleCommand("sv_tfa_cmenu_key","27")
 RunConsoleCommand("sv_tfa_attachments_enabled","1")
 
 -- Set up CVARs

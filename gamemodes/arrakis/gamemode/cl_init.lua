@@ -305,7 +305,6 @@ end)
 
 
 function GM:DrawDeathNotice( x, y )
-	PrintTable(Deaths)
 	local hud_deathnotice_time = hud_deathnotice_time:GetFloat()
 	
 	x = ScrW() / 12
