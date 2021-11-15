@@ -21,12 +21,6 @@ resource.AddFile("materials/ability_grenade.png")
 resource.AddFile("sound/arrakis_credits.mp3")
 resource.AddFile("sound/arrakis_ambience.wav")
 resource.AddFile("sound/grenade_recharged.wav")
-resource.AddFile("models/arrakis/harvester.mdl")
-resource.AddFile("models/arrakis/harvester.dx80.vtx")
-resource.AddFile("models/arrakis/harvester.dx90.vtx")
-resource.AddFile("models/arrakis/harvester.phy")
-resource.AddFile("models/arrakis/harvester.sw.vtx")
-resource.AddFile("models/arrakis/harvester.vvd")
 
 resource.AddWorkshop( "1622006977" ) -- Harkonnen VTOL
 resource.AddWorkshop( "831680603" ) --  Simfphys APC
@@ -36,9 +30,9 @@ resource.AddWorkshop( "415143062" ) --  TFA Redux
 resource.AddWorkshop( "848490709" ) -- TFA KF2 Melee
 -- Spice Points
 SPP = {
-	Vector(-2523.754150, 3018.725342, -10266.272461),
-	Vector(-3459.514648, -3145.623535, -9977.653320),
-	Vector(-4441.506348, 13682.492188, -8760.583984),
+	Vector(-2523.754150, 3018.725342, -10246.272461),
+	Vector(-3459.514648, -3145.623535, -9957.653320),
+	Vector(-4441.506348, 13682.492188, -8740.583984),
 }
 SPH = {}
 
@@ -418,18 +412,17 @@ function SpawnHarvesters()
 	for k,v in pairs(SPP) do
 		SPH[k] = ents.Create("prop_thumper")
 		SPH[k]:SetRenderMode(RENDERMODE_TRANSALPHA)
-		SPH[k]:SetColor(Color(255,255,255,255))
+		SPH[k]:SetColor(Color(255,155,85,255))
 		SPH[k]:SetAngles(Angle(0,0,0))
 		SPH[k]:Fire("Enable")
 		local Harvester = SPH[k]
-		Harvester:SetModelScale(15, 0)
+		Harvester:SetModelScale(5, 0)
 		Harvester:SetPos(v)
 		Harvester:Activate()
 		Harvester:Spawn()
 		Harvester:SetSolid(2)
 		Harvester:SetName("dune_spiceharvester")
-		Harvester:SetModel("models/arrakis/harvester.mdl")
-		Harvester:SetMaterial("models/weapons/rifle_shell/rifleshellside")
+		Harvester:SetMaterial("valk/crysis/vehicles/vtol/vtol_hull")
 		Harvester:SetMoveType(MOVETYPE_NONE)
 		CapturingInProgress[k] = 0
 		PrintTable(CapturingInProgress)
