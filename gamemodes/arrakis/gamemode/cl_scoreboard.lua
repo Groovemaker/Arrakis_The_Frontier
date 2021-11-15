@@ -33,7 +33,7 @@ if CLIENT then
 			Columns[1] = {name="Player", command=function(self, arg) return tostring(arg:Name()) end}
 			Columns[2] = {name="KDR", command=function(self, arg) 
 			if tostring(arg:Frags()/arg:Deaths()) != "nan" && tostring(arg:Frags()/arg:Deaths()) != "inf" then 
-				return arg:Frags()/arg:Deaths()
+				return math.Round(arg:Frags()/arg:Deaths(),2)
 			else 
 				return "-" 
 			end 
