@@ -55,6 +55,15 @@ CVAR_Gamemode = CreateConVar( "dune_sv_gamemode", "2", FCVAR_NONE+FCVAR_NOTIFY, 
 function GM:PlayerLoadout(ply)
 	ply:SetArmor(100)
 	ply:ShouldDropWeapon(1)
+	timer.Simple(0.3, function() 
+	    for k,v in pairs(ply:GetWeapons()) do
+	    	if v:GetClass() == "tfa_bcry2_gauss" then
+	    		ply:GiveAmmo(25,v:GetPrimaryAmmoType(),true)
+	    	else
+	    		ply:GiveAmmo(150,v:GetPrimaryAmmoType(),true)
+	    	end
+	    end
+	end)
 	return true
 end
 
@@ -381,15 +390,16 @@ function RespawnVehiclesHarkonnen(vIndex)
 	end
 end
 
-timer.Create("Dune_VehicleLoop",11,0,function()
-	for k,v in pairs(SP_Vtols_Atreides) do
-		RespawnVehiclesAtreides(k)
-	end
-	for k,v in pairs(SP_Vtols_Harkonnen) do
-		RespawnVehiclesHarkonnen(k)
-	end
-end)
-
+if timer.Exists("Dune_VehicleLoop") == false then
+	timer.Create("Dune_VehicleLoop",11,0,function()
+		for k,v in pairs(SP_Vtols_Atreides) do
+			RespawnVehiclesAtreides(k)
+		end
+		for k,v in pairs(SP_Vtols_Harkonnen) do
+			RespawnVehiclesHarkonnen(k)
+		end
+	end)
+end
 
 
 -- Spawning Spice Harvesters
@@ -431,13 +441,15 @@ function GM:PostGamemodeLoaded()
 		SpawnHarvesters()
 		SunMod()
 	end)
-	timer.Create("Dune_VehicleLoop",3,0,function()
-		for ix=1,3 do
-			RespawnVehiclesAtreides(ix)
-			RespawnVehiclesHarkonnen(ix)
+	if timer.Exists("Dune_VehicleLoop") == false then
+		timer.Create("Dune_VehicleLoop",3,0,function()
+			for ix=1,3 do
+				RespawnVehiclesAtreides(ix)
+				RespawnVehiclesHarkonnen(ix)
 
-		end
-	end)
+			end
+		end)
+	end
 	SpawnSpiceFog()	
 end
 
@@ -684,16 +696,16 @@ timer.Create("SP_Countspice",0.5,0,function()
 			end
 		end
 		if v == 2 then
-			if SpiceProduction[v] == 0 then 
-				SpiceProduction[v] = 5
-			else
-				SpiceProduction[v] = SpiceProduction[v] *2
-			end
 			if Scores[v] < 5000 then
 				ManipScore(v,Scores[v]+SpiceProduction[v])
 			else
 				Scores[v] = 5000
-				WinRound(2)
+				WinRound(2)				
+			end
+			if SpiceProduction[v] == 0 then 
+				SpiceProduction[v] = 5
+			else
+				SpiceProduction[v] = SpiceProduction[v] *2
 			end
 		end
 	end
