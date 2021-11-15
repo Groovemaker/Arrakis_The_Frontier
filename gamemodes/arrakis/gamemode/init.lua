@@ -36,9 +36,9 @@ resource.AddWorkshop( "415143062" ) --  TFA Redux
 resource.AddWorkshop( "848490709" ) -- TFA KF2 Melee
 -- Spice Points
 SPP = {
-	Vector(-2523.754150, 3018.725342, -10246.272461),
-	Vector(-3459.514648, -3145.623535, -9957.653320),
-	Vector(-4441.506348, 13682.492188, -8740.583984),
+	Vector(-2523.754150, 3018.725342, -10266.272461),
+	Vector(-3459.514648, -3145.623535, -9977.653320),
+	Vector(-4441.506348, 13682.492188, -8760.583984),
 }
 SPH = {}
 
@@ -429,7 +429,7 @@ function SpawnHarvesters()
 		Harvester:SetSolid(2)
 		Harvester:SetName("dune_spiceharvester")
 		Harvester:SetModel("models/arrakis/harvester.mdl")
-		Harvester:SetMaterial("phoenix_storms/metalfloor_2-3")
+		Harvester:SetMaterial("models/weapons/rifle_shell/rifleshellside")
 		Harvester:SetMoveType(MOVETYPE_NONE)
 		CapturingInProgress[k] = 0
 		PrintTable(CapturingInProgress)
