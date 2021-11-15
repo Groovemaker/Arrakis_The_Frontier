@@ -291,7 +291,7 @@ net.Receive("PlyKill", function()
 	Tbl.Victim = net.ReadEntity()
 	Tbl.Player = net.ReadEntity()
 	Tbl.Col = team.GetColor(Tbl.Player:Team())
-	Tbl.Text = "sfdkilled"
+	Tbl.Text = "killed"
 	Tbl.Time = CurTime()
 	Tbl.Suicide = 0
 	
@@ -301,7 +301,6 @@ net.Receive("PlyKill", function()
 	end
 
 	table.insert( Deaths, Tbl )
-	print("abc")
 end)
 
 
@@ -335,21 +334,16 @@ function GM:DrawDeathNotice( x, y )
 			local TCol = team.GetColor(Death.Victim:Team())
 			ACol.a = alpha
 			TCol.a = alpha
-			/*
-			if !Death.Suicide then
-				draw.SimpleText(Death.Player:Nick(), "Killfeed1", x - ( Death.w / 0.4 ), y, ACol, 0)
-				draw.SimpleText(Death.Text, "Killfeed1", x - ( Death.w / 0.75 ) + ( surface.GetTextSize(Death.Player:Nick()) +10 ), y, Color( 255, 255, 255, alpha ), 0)
-				draw.SimpleText(Death.Victim:Nick(), "Killfeed1", x - ( Death.w / 0.75 ) + ( surface.GetTextSize(Death.Player:Nick()) +40 ), y, TCol, 0)
+			--print(Death.Suicide)
+			if Death.Suicide == 0 then
+				draw.SimpleText(Death.Player:Nick(), "Killfeed1", x - 61, y, ACol, TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+				draw.SimpleText(Death.Text, "Killfeed1", (x - 60) + (surface.GetTextSize(Death.Player:Nick())*1.07), y, Color( 255, 255, 255, alpha ), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+				draw.SimpleText(Death.Victim:Nick(), "Killfeed1", (x - 60) + ((surface.GetTextSize(Death.Text)+surface.GetTextSize(Death.Player:Nick()))*1.03), y, TCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
 			else
-				PrintTable(Death)
-				draw.SimpleText(Death.Player:Nick(), "Killfeed1", x - 45, y, ACol, 0)
-				draw.SimpleText(Death.Text, "Killfeed1", x - ( Death.w / 0.75 ), y, Color( 255, 255, 255, alpha ), 0)
+				draw.SimpleText(Death.Player:Nick(), "Killfeed1", x - 61, y, ACol, TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+				draw.SimpleText(Death.Text, "Killfeed1", (x - 60) + (surface.GetTextSize(Death.Player:Nick())*1.07), y, Color( 255, 255, 255, alpha ), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
 			end
-			*/
-			draw.SimpleText(Death.Player:Nick(), "Killfeed1", x - 61, y, ACol, TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
-			draw.SimpleText(Death.Text, "Killfeed1", (x - 60) + (surface.GetTextSize(Death.Player:Nick())*1.07), y, Color( 255, 255, 255, alpha ), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
-			draw.SimpleText(Death.Victim:Nick(), "Killfeed1", (x - 60) + (surface.GetTextSize(Death.Player:Nick())*1.07) + (surface.GetTextSize(Death.Text)*1.03), y, TCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
-			
+		
 			y = y + Death.h * 1.25
 		end
 	end
