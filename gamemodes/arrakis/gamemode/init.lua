@@ -21,6 +21,12 @@ resource.AddFile("materials/ability_grenade.png")
 resource.AddFile("sound/arrakis_credits.mp3")
 resource.AddFile("sound/arrakis_ambience.wav")
 resource.AddFile("sound/grenade_recharged.wav")
+resource.AddFile("models/arrakis/harvester.mdl")
+resource.AddFile("models/arrakis/harvester.dx80.vtx")
+resource.AddFile("models/arrakis/harvester.dx90.vtx")
+resource.AddFile("models/arrakis/harvester.phy")
+resource.AddFile("models/arrakis/harvester.sw.vtx")
+resource.AddFile("models/arrakis/harvester.vvd")
 
 resource.AddWorkshop( "1622006977" ) -- Harkonnen VTOL
 resource.AddWorkshop( "831680603" ) --  Simfphys APC
@@ -310,7 +316,7 @@ end
 function MakeVtolAI()
 	local AllVtols = ents.FindByClass("lfs_crysis_vtol")
 	for k, v in ipairs(AllVtols) do
-		if(IsValid(v)) then
+		if(IsValid(v)) && !v:GetDriver() then
 			v:SetAI(true)
 			v:SetAITEAM(3)
 		end
@@ -416,12 +422,14 @@ function SpawnHarvesters()
 		SPH[k]:SetAngles(Angle(0,0,0))
 		SPH[k]:Fire("Enable")
 		local Harvester = SPH[k]
-		Harvester:SetModelScale(5, 0)
+		Harvester:SetModelScale(15, 0)
 		Harvester:SetPos(v)
 		Harvester:Activate()
 		Harvester:Spawn()
 		Harvester:SetSolid(2)
 		Harvester:SetName("dune_spiceharvester")
+		Harvester:SetModel("models/arrakis/harvester.mdl")
+		Harvester:SetMaterial("phoenix_storms/metalfloor_2-3")
 		Harvester:SetMoveType(MOVETYPE_NONE)
 		CapturingInProgress[k] = 0
 		PrintTable(CapturingInProgress)
