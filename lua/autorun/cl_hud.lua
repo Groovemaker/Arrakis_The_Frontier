@@ -187,27 +187,30 @@ function NameTag()
 	for k, v in pairs( player.GetAll()) do
 	teamcolor = team.GetColor(v:Team())
 		if v:Alive() && v:Team() == LocalPlayer():Team() then
-			if !v:InVehicle() then
-			    if v:Nick() != LocalPlayer():Nick() then
-					if LocalPlayer():GetPos():Distance(v:GetPos()) <= 2000 then
-						pos = v:GetPos()
-						pos.z = pos.z + 70
-						pos = pos:ToScreen()
-						if v:Team() == 1 then
-							surface.SetMaterial(Material("materials/atreides.png"))
-							surface.SetDrawColor(team.GetColor(v:Team()))
-							surface.DrawTexturedRect( pos.x-15, pos.y - 75, 32, 32 )	
-						end						
-						if v:Team() == 2 then
-							surface.SetMaterial(Material("materials/harkonnen.png"))
-							surface.SetDrawColor(team.GetColor(v:Team()))
-							surface.DrawTexturedRect( pos.x-15, pos.y - 75, 25, 32 )	
-						end
-						draw.DrawText(v:Name(), "Scorer", pos.x, pos.y -38, team.GetColor(v:Team()), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-						--draw.DrawText(v:GetMoney(), "Trebuchet24", pos.x - 10, pos.y -23, team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
-						
-
+		    if v:Nick() != LocalPlayer():Nick() then
+		    	if v:InVehicle() then
+		    		DIST = 999999999999
+		    	else
+		    		DIST = 2000
+		    	end
+				if LocalPlayer():GetPos():Distance(v:GetPos()) <= DIST then
+					pos = v:GetPos()
+					pos.z = pos.z + 70
+					pos = pos:ToScreen()
+					if v:Team() == 1 then
+						surface.SetMaterial(Material("materials/atreides.png"))
+						surface.SetDrawColor(team.GetColor(v:Team()))
+						surface.DrawTexturedRect( pos.x-15, pos.y - 75, 32, 32 )	
+					end						
+					if v:Team() == 2 then
+						surface.SetMaterial(Material("materials/harkonnen.png"))
+						surface.SetDrawColor(team.GetColor(v:Team()))
+						surface.DrawTexturedRect( pos.x-15, pos.y - 75, 25, 32 )	
 					end
+					draw.DrawText(v:Name(), "Scorer", pos.x, pos.y -38, team.GetColor(v:Team()), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+					--draw.DrawText(v:GetMoney(), "Trebuchet24", pos.x - 10, pos.y -23, team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+					
+
 				end
 			end
 		end
@@ -407,18 +410,14 @@ hook.Add("HUDPaint", "Dune_DrawHUD", function()
 end)
 
 
-local function MESPCheck(v)
-	if v:Alive() == true && v:Health() ~= 0 && v:Health() >= 0 && LocalPlayer():Alive() && v:Team() == LocalPlayer():Team() && v != LocalPlayer() then
-		return true
-	else
-		return false
-	end
-end
+
 
 hook.Add("PreDrawHalos", "L4DGlow", function()
 	for k,v in pairs(player.GetAll()) do
-		if(MESPCheck(v)) then
+		if v:Alive() == true && v:Health() ~= 0 && v:Health() >= 0 && LocalPlayer():Alive() && v:Team() == LocalPlayer():Team() && v != LocalPlayer() && !v:InVehicle() then
 			halo.Add( {v},  team.GetColor(v:Team()), 1, 1, 5, true, true )
+		elseif v:Alive() == true && v:Health() ~= 0 && v:Health() >= 0 && LocalPlayer():Alive() && v:Team() == LocalPlayer():Team() && v != LocalPlayer() && v:InVehicle() then
+			--halo.Add( {v:GetVehicle()},  team.GetColor(v:Team()), 1, 1, 5, true, true )
 		end
 	end
 end)
