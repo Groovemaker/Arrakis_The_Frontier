@@ -407,8 +407,8 @@ function SpawnHarvesters()
 		local Harvester = SPH[k]
 		Harvester:SetModelScale(5, 0)
 		Harvester:SetPos(v)
+		Harvester:Activate()
 		Harvester:Spawn()
-		Harvester:SetCollisionBounds(Vector(-60,-60,0),Vector(60,60,120))
 		Harvester:SetSolid(2)
 		Harvester:SetMoveType(MOVETYPE_NONE)
 		CapturingInProgress[k] = 0
