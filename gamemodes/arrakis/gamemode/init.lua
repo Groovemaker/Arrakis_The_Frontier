@@ -12,6 +12,7 @@ util.AddNetworkString("ScoreManip")
 util.AddNetworkString("Capture")
 util.AddNetworkString("Decapture")
 util.AddNetworkString("HarvesterManip")
+util.AddNetworkString("PlyKill")
 
 -- Resources
 resource.AddFile("materials/atreides.png")
@@ -465,12 +466,19 @@ end
 
 -- DM Score
 hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
+	
+	net.Start("PlyKill")
+		net.WriteEntity(victim)
+		net.WriteEntity(attacker)
+	net.Broadcast()
+
 	if CVAR_Gamemode:GetInt() != 1 || victim == attacker || !attacker:IsPlayer() then return end
 	if attacker:Team() == 1 then
 		ManipScore(1,ScoreAtreides+100)
 	elseif attacker:Team() == 2 then
 		ManipScore(2,ScoreHarkonnen+100)
 	end
+
 end)
 
 -- Factions

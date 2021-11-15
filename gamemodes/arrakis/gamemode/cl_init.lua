@@ -144,74 +144,7 @@ hook.Add( "HUDShouldDraw", "HideHUD", function( name )
 
 	-- Don't return anything here, it may break other addons that rely on this hook.
 end )
-surface.CreateFont( "EXPFont", {
-	font = "Helvetica", -- Use the font-name which is shown to you by your operating system Font Viewer, not the file name
-	extended = false,
-	size = 100,
-	weight = 1000,
-	blursize = 0,
-	scanlines = 0,
-	antialias = true,
-	underline = false,
-	italic = false,
-	strikeout = false,
-	symbol = false,
-	rotary = false,
-	shadow = false,
-	additive = false,
-	outline = false,
-} )
-surface.CreateFont( "LVLFont", {
-	font = "Helvetica", -- Use the font-name which is shown to you by your operating system Font Viewer, not the file name
-	extended = false,
-	size = 20,
-	weight = 900,
-	blursize = 0,
-	scanlines = 0,
-	antialias = true,
-	underline = false,
-	italic = false,
-	strikeout = false,
-	symbol = false,
-	rotary = false,
-	shadow = false,
-	additive = false,
-	outline = false,
-} )
-surface.CreateFont( "MoneyFont", {
-	font = "Helvetica", -- Use the font-name which is shown to you by your operating system Font Viewer, not the file name
-	extended = false,
-	size = 30,
-	weight = 600,
-	blursize = 0,
-	scanlines = 0,
-	antialias = true,
-	underline = false,
-	italic = false,
-	strikeout = false,
-	symbol = false,
-	rotary = false,
-	shadow = false,
-	additive = false,
-	outline = false,
-} )
-surface.CreateFont( "NameFont", {
-	font = "Helvetica", -- Use the font-name which is shown to you by your operating system Font Viewer, not the file name
-	extended = false,
-	size = 25,
-	weight = 800,
-	blursize = 0,
-	scanlines = 0,
-	antialias = true,
-	underline = false,
-	italic = false,
-	strikeout = false,
-	symbol = false,
-	rotary = false,
-	shadow = false,
-	additive = false,
-	outline = false,
-} )
+
 local function SunBeamMod()
 	if ( !render.SupportsPixelShaders_2_0() ) then return end
 
@@ -319,7 +252,90 @@ local GM = GM or GAMEMODE or gmod.GetGamemode()
 function DrawToyTown()
 	print("0")
 end
-function GM:DrawDeathNotice(x, y)
-	return false
-end
 
+
+local hud_deathnotice_time = CreateConVar( "hud_deathnotice_time", "6", FCVAR_REPLICATED )
+local Deaths = {}
+
+
+
+surface.CreateFont("Killfeed1",{
+	font = "ChatFont",
+	extended = false,
+	size = 20,
+	weight = 800,
+	blursize = 0,
+	scanlines = 0,
+	antialias = false,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = true,
+	additive = false,
+	outline = false,
+})
+
+local Deaths = {}
+
+net.Receive("PlyKill", function()
+	local Tbl = {}
+	Tbl.Victim = net.ReadEntity()
+	Tbl.Player = net.ReadEntity()
+	Tbl.Col = team.GetColor(Tbl.Player:Team())
+	Tbl.Text = "killed"
+	Tbl.Time = CurTime()
+	
+	table.insert( Deaths, Tbl )
+	print("abc")
+end)
+
+
+function GM:DrawDeathNotice( x, y )
+	PrintTable(Deaths)
+	local hud_deathnotice_time = hud_deathnotice_time:GetFloat()
+	
+	x = ScrW() / 12
+	--y = y * ScrH()
+	y = ScrH()*0.3
+	
+	for k, Death in pairs( Deaths ) do
+		if ( Death.Time + hud_deathnotice_time > CurTime() ) then
+			if ( Death.lerp ) then
+				--x = x * 0.3 + Death.lerp.x * 0.7
+				y = y * 0.3 + Death.lerp.y * 0.7
+			end
+			
+			Death.lerp = Death.lerp or {}
+			Death.lerp.x = x
+			Death.lerp.y = y
+			
+			surface.SetFont( "Killfeed1" )
+			Death.w, Death.h = surface.GetTextSize( Death.Text )
+			
+			local fadeout = ( Death.Time + hud_deathnotice_time ) - CurTime()
+			
+			local alpha = math.Clamp( fadeout * 255, 0, 255 )
+			
+			local ACol = team.GetColor(Death.Player:Team())
+			local TCol = team.GetColor(Death.Victim:Team())
+			ACol.a = alpha
+			TCol.a = alpha
+
+			draw.SimpleText(Death.Player:Nick(), "Killfeed1", x - ( Death.w / 0.4 ) + 35, y, ACol, 0)
+			draw.SimpleText(Death.Text, "Killfeed1", x - ( Death.w / 0.75 ) + ( surface.GetTextSize(Death.Player:Nick()) -10 ), y, Color( 255, 255, 255, alpha ), 0)
+			draw.SimpleText(Death.Victim:Nick(), "Killfeed1", x - ( Death.w / 0.75 ) + ( surface.GetTextSize(Death.Player:Nick()) +40 ), y, TCol, 0)
+						
+			y = y + Death.h * 1.25
+		end
+	end
+	
+	for k, Death in pairs( Deaths ) do
+		if ( Death.Time + hud_deathnotice_time > CurTime() ) then
+			return
+		end
+	end
+	
+	Deaths = {}
+end
