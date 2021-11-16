@@ -531,6 +531,11 @@ end
 concommand.Add( "dune_join_atreides", jAtreides )
 concommand.Add( "dune_join_harkonnen", jHarkonnen )
 
+function TestKill(ply)
+	ply:Spawn()
+	ply:Kill()
+end
+
 -- Chatlog Helper
 function ChatAdd(type,message,args)
 	if type == "JL" then
