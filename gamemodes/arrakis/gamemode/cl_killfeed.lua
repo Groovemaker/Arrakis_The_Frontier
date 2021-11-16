@@ -4,12 +4,12 @@ local Deaths = {}
 
 
 surface.CreateFont("Killfeed1",{
-	font = "Roboto Mono",
+	font = "Orbitron",
 	extended = false,
 	size = 20,
-	weight = 400,
-	blursize = 1,
-	scanlines = 2,
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
 	antialias = true,
 	underline = false,
 	italic = false,
