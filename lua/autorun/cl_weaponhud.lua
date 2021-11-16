@@ -41,9 +41,9 @@ HarkonnenCol = Color(255/Div,33/Div,1/Div,150)
 
 
 
-local colLabelTextActive = Color(255, 155, 11, 255)
-local colLabelTextInactive = Color(255, 255, 255, 255)
-local colLabelTextOutline = Color(0, 255, 255, 5)
+local colLabelTextActive = Color(255, 255, 255, 255)
+local colLabelTextInactive = Color(111, 111, 111, 255)
+local colLabelTextOutline = Color(0, 0, 0, 0)
 
 local iWidth, iHeight
 local x, y
@@ -67,12 +67,12 @@ hook.Add("OnScreenSizeChanged", "Dune_WeaponSwitcher_Bevel", ResolutionChanged)
 
 -- Fonts
 surface.CreateFont("Slot",{
-	font = "Helvetica",
+	font = "Roboto Mono",
 	extended = false,
 	size = 55,
 	weight = 1000,
-	blursize = 0,
-	scanlines = 0,
+	blursize = 1.3,
+	scanlines = 2,
 	antialias = true,
 	underline = false,
 	italic = false,
@@ -85,12 +85,12 @@ surface.CreateFont("Slot",{
 })
 
 surface.CreateFont("SlotLabel",{
-	font = "Helvetica",
+	font = "Roboto Mono",
 	extended = false,
 	size = 22,
 	weight = 1000,
-	blursize = 0,
-	scanlines = 0,
+	blursize = 1.3,
+	scanlines = 2,
 	antialias = true,
 	underline = false,
 	italic = false,

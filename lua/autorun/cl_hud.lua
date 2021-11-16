@@ -13,7 +13,7 @@ local function DrawBoxBlur( x, y, w, h, layers, density, alpha )
 	end
 end
 surface.CreateFont("HP",{
-	font = "Trebuchet24",
+	font = "Roboto Mono",
 	extended = false,
 	size = 42,
 	weight = 500,
@@ -49,7 +49,7 @@ surface.CreateFont("Capturer",{
 })
 
 surface.CreateFont("Scorer",{
-	font = "Trebuchet24",
+	font = "Roboto Mono",
 	extended = false,
 	size = 26,
 	weight = 500,
@@ -85,7 +85,7 @@ surface.CreateFont("Harvesters",{
 })
 
 surface.CreateFont("END1",{
-	font = "Trebuchet24",
+	font = "Roboto Mono",
 	extended = false,
 	size = 42,
 	weight = 400,
@@ -102,7 +102,7 @@ surface.CreateFont("END1",{
 	outline = false,
 })
 surface.CreateFont("END2",{
-	font = "Trebuchet24",
+	font = "Roboto Mono",
 	extended = false,
 	size = 32,
 	weight = 100,
@@ -119,7 +119,7 @@ surface.CreateFont("END2",{
 	outline = false,
 })
 surface.CreateFont("END3",{
-	font = "Trebuchet24",
+	font = "Roboto Mono",
 	extended = false,
 	size = 42,
 	weight = 400,
@@ -184,7 +184,9 @@ RoundEnd = false
 
 -- Thx to gmod-o-poly for basic understanding!
 function NameTag()
-	for k, v in pairs( player.GetAll()) do
+
+	-- Players
+	for k, v in pairs(player.GetAll()) do
 	teamcolor = team.GetColor(v:Team())
 		if v:Alive() && v:Team() == LocalPlayer():Team() then
 		    if v:Nick() != LocalPlayer():Nick() then
@@ -208,11 +210,27 @@ function NameTag()
 						surface.DrawTexturedRect( pos.x-15, pos.y - 75, 25, 32 )	
 					end
 					draw.DrawText(v:Name(), "Scorer", pos.x, pos.y -38, team.GetColor(v:Team()), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-					--draw.DrawText(v:GetMoney(), "Trebuchet24", pos.x - 10, pos.y -23, team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+					--draw.DrawText(v:GetMoney(), "Roboto Mono", pos.x - 10, pos.y -23, team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
 					
 
 				end
 			end
+		end
+	end
+
+	-- Harvester Location
+	for k, v in pairs(ents.FindByClass("prop_thumper")) do
+		if LocalPlayer():GetPos():Distance(v:GetPos()) >= 2000 then
+			pos = v:GetPos()
+			pos.z = pos.z + 70
+			pos = pos:ToScreen()
+			local HarvCol = Color(0,0,0,0)
+			if HarvesterClaims[k] == 0 then
+				HarvCol = Color(255,255,255,155)
+			else
+				HarvCol = team.GetColor(HarvesterClaims[k])
+			end
+			draw.DrawText("["..v:GetNWInt("harvester_id").."]", "Scorer", pos.x, pos.y -38, HarvCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 	end
 end
