@@ -473,13 +473,34 @@ function SpawnSpiceFog()
 	Spicestack:SetKeyValue("JetLength","14500")
 	Spicestack:SetKeyValue("Twist","33")
 	Spicestack:SetKeyValue("InitialState","1")
-	Spicestack:SetKeyValue("rendercolor","222 222 188")
-	Spicestack:SetKeyValue("renderamt","87")
+	Spicestack:SetKeyValue("rendercolor","222 222 165")
+	Spicestack:SetKeyValue("renderamt","55")
 
 	Spicestack:Spawn()
 	Spicestack:Activate()
 	Spicestack:SetPos(Vector(0, 0, -9000))
 	Spicestack:Fire("TurnOn")
+
+	if IsValid(Spicestack2) then 
+		Spicestack2:Remove()
+	end
+	Spicestack2 = ents.Create("env_smokestack")
+	Spicestack2:SetKeyValue("SmokeMaterial","particle/particle_glow_05.vmt")
+	Spicestack2:SetKeyValue("StartSize","11")
+	Spicestack2:SetKeyValue("EndSize","444")
+	Spicestack2:SetKeyValue("Rate","77")
+	Spicestack2:SetKeyValue("Speed","555")
+	Spicestack2:SetKeyValue("SpreadSpeed","11600")
+	Spicestack2:SetKeyValue("JetLength","14500")
+	Spicestack2:SetKeyValue("Twist","11")
+	Spicestack2:SetKeyValue("InitialState","1")
+	Spicestack2:SetKeyValue("rendercolor","255 255 255")
+	Spicestack2:SetKeyValue("renderamt","255")
+
+	Spicestack2:Spawn()
+	Spicestack2:Activate()
+	Spicestack2:SetPos(Vector(0, 0, -9000))
+	Spicestack2:Fire("TurnOn")
 end
 
 local SuicideFunnies = {
