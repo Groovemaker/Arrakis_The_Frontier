@@ -23,7 +23,7 @@ function PanelDrawBlur(panel, amount)
 end
 
 function DunePaint_DFrame(w,h)
-	draw.RoundedBox(1, 0, 0, w, h, Color(0,0,0,222))
+	draw.RoundedBox(1, 0, 0, w, h, Color(44,44,44,222))
 end
 
 function D_JAtreides()
@@ -65,27 +65,28 @@ function set_team()
 				color: white;
 				font-size: 50px;
 				font-family:'Orbitron', sans-serif;
-				display: flex;
 			}
-			#header {
+			#header1 {
+				font-size: 40px;
+				margin-bottom: 5%;
 				color: white;
 				font-family:'Orbitron', sans-serif;
-				display: flex;
+			}
+			#header2 {
+				margin-bottom: 5%;
+				color: white;
+				font-family:'Orbitron', sans-serif;
 			}
 			#housedescription {
 				color: white;
 				font-family:'Orbitron', sans-serif;
-				display: flex;
 			}
 			#banner {
-				width: 25%;
-				display: flex;
-
+				width: 30%;
 			}
 			#line {
 				border-top: 3px solid #bbb;
-				margin-bottom: 2%;
-				display: flex;
+				margin-bottom: -4%;
 			}
 			#maincontainer{
 				display: flex;  
@@ -111,16 +112,16 @@ function set_team()
 		<div id="line"></div>
 		<div id="outer">
 			<a onclick='console.log("RUNLUA:D_JAtreides()")'>
+				<h2 id="header1">House Atreides</h2>
 				<img id="banner" src="https://i.imgur.com/KXKOpgk.png"></img>
-				<h2 id="header">House Atreides</h2>
-				<h3 id="header">Came to Arrakis to mine spice after being granted stewardship by the emperor</h3>
+				<h3 id="header2">Came to Arrakis to mine spice after being granted stewardship by the emperor</h3>
 			</a>
 		</div>
 		<div id="outer">
 			<a onclick='console.log("RUNLUA:D_JHarkonnen()")'>
+				<h2 id="header1">House Harkonnen</h2>
 				<img id="banner" src="https://i.imgur.com/miSfIdb.png"></img>
-				<h2 id="header">House Harkonnen</h2>
-				<h3 id="header">Fierce, ruthless warriorkin whom are House Atreides' sworn enemies</h3>
+				<h3 id="header2">Fierce, ruthless warriorkin whom are House Atreides' sworn enemies</h3>
 			</a>
 		</div>
 		<script>
@@ -135,7 +136,7 @@ function set_team()
 		InMenu = false
 	end
  	function TeamFrame:Paint(w,h)
- 		PanelDrawBlur(self, 5)
+ 		PanelDrawBlur(self, 20)
  		DunePaint_DFrame(w,h)
  	end
 end 

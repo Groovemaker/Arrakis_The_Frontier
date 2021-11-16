@@ -235,7 +235,7 @@ function NameTag()
 	end
 end
 hook.Add("HUDPaint", "Dune_DrawHUD", function()
-
+	if InMenu then return end
 	if RoundEnd == true then 
 		local Mult = 2.5
 		local Mult2 = 3.7
@@ -342,7 +342,7 @@ hook.Add("HUDPaint", "Dune_DrawHUD", function()
 		BGCol = AtreidesCol
 		surface.SetDrawColor(Color( 111,255,200, 105 ))
 		surface.SetMaterial(Material("materials/atreides.png"))
-		surface.DrawTexturedRect(ScrW() * 0.215 , ScrH() * 0.91, (ScrH()/19), (ScrH()/19))
+		surface.DrawTexturedRect(ScrW() * 0.215 , ScrH() * 0.91, (ScrH()/17), (ScrH()/19))
 	elseif LocalPlayer():Team() == 2 then
 		BGCol = HarkonnenCol
 		surface.SetDrawColor(Color( 255,11,11, 155 ))
