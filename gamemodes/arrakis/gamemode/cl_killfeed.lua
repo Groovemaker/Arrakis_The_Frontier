@@ -7,7 +7,7 @@ surface.CreateFont("Killfeed1",{
 	font = "Orbitron",
 	extended = false,
 	size = 20,
-	weight = 500,
+	weight = 700,
 	blursize = 0,
 	scanlines = 0,
 	antialias = true,
@@ -16,7 +16,7 @@ surface.CreateFont("Killfeed1",{
 	strikeout = false,
 	symbol = false,
 	rotary = false,
-	shadow = true,
+	shadow = false,
 	additive = false,
 	outline = false,
 })

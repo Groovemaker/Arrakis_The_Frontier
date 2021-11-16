@@ -23,6 +23,7 @@ resource.AddFile("sound/arrakis_ambience.wav")
 resource.AddFile("sound/grenade_recharged.wav")
 resource.AddFile("resource/fonts/RobotoMono.ttf")
 resource.AddFile("resource/fonts/Orbitron.ttf")
+resource.AddFile("resource/fonts/Cairo.ttf")
 
 resource.AddWorkshop( "1622006977" ) -- Harkonnen VTOL
 resource.AddWorkshop( "831680603" ) --  Simfphys APC
