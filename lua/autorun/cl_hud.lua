@@ -13,7 +13,7 @@ local function DrawBoxBlur( x, y, w, h, layers, density, alpha )
 	end
 end
 surface.CreateFont("HP",{
-	font = "Roboto Mono",
+	font = "Orbitron",
 	extended = false,
 	size = 42,
 	weight = 500,
@@ -49,7 +49,25 @@ surface.CreateFont("Capturer",{
 })
 
 surface.CreateFont("Scorer",{
-	font = "Roboto Mono",
+	font = "Orbitron",
+	extended = false,
+	size = 26,
+	weight = 500,
+	blursize = 1.1,
+	scanlines = 2,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+
+surface.CreateFont("HarvesterID",{
+	font = "Trebuchet24",
 	extended = false,
 	size = 26,
 	weight = 500,
@@ -101,6 +119,7 @@ surface.CreateFont("END1",{
 	additive = false,
 	outline = false,
 })
+
 surface.CreateFont("END2",{
 	font = "Trebuchet24",
 	extended = false,
@@ -118,8 +137,27 @@ surface.CreateFont("END2",{
 	additive = false,
 	outline = false,
 })
+
+surface.CreateFont("NametagsFont",{
+	font = "Orbitron",
+	extended = false,
+	size = 21,
+	weight = 500,
+	blursize = 1.1,
+	scanlines = 2,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+
 surface.CreateFont("END3",{
-	font = "Roboto Mono",
+	font = "Orbitron",
 	extended = false,
 	size = 42,
 	weight = 400,
@@ -209,8 +247,8 @@ function NameTag()
 						surface.SetDrawColor(team.GetColor(v:Team()))
 						surface.DrawTexturedRect( pos.x-15, pos.y - 75, 25, 32 )	
 					end
-					draw.DrawText(v:Name(), "Scorer", pos.x, pos.y -38, team.GetColor(v:Team()), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-					--draw.DrawText(v:GetMoney(), "Roboto Mono", pos.x - 10, pos.y -23, team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+					draw.DrawText(v:Name(), "NametagsFont", pos.x, pos.y -38, team.GetColor(v:Team()), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+					--draw.DrawText(v:GetMoney(), "Orbitron", pos.x - 10, pos.y -23, team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
 					
 
 				end
@@ -230,7 +268,7 @@ function NameTag()
 			else
 				HarvCol = team.GetColor(HarvesterClaims[k])
 			end
-			draw.DrawText("["..v:GetNWInt("harvester_id").."]", "Scorer", pos.x, pos.y -38, HarvCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+			draw.DrawText("["..v:GetNWInt("harvester_id").."]", "HarvesterID", pos.x, pos.y -38, HarvCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 	end
 end

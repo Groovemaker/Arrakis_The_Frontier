@@ -43,9 +43,9 @@ if CLIENT then
 		antialias 	= true
 	})
 	surface.CreateFont("Scoreboarder",{
-		font = "Trebuchet24",
+		font = "Orbitron",
 		extended = false,
-		size = 24,
+		size = 20,
 		weight = 500,
 		blursize = 1.05,
 		scanlines = 2,

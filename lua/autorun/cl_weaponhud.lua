@@ -67,7 +67,7 @@ hook.Add("OnScreenSizeChanged", "Dune_WeaponSwitcher_Bevel", ResolutionChanged)
 
 -- Fonts
 surface.CreateFont("Slot",{
-	font = "Roboto Mono",
+	font = "Orbitron",
 	extended = false,
 	size = 55,
 	weight = 1000,
@@ -85,7 +85,7 @@ surface.CreateFont("Slot",{
 })
 
 surface.CreateFont("SlotLabel",{
-	font = "Roboto Mono",
+	font = "Orbitron",
 	extended = false,
 	size = 22,
 	weight = 1000,
