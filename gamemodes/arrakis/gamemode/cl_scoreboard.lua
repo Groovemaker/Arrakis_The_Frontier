@@ -29,16 +29,12 @@ if CLIENT then
 	local InfoBar_BackgroundRoundness = 2
 	local InfoBar_BackgroundColor = Color(35, 35, 35, 56)
 
-	local 	Columns = {}
-			Columns[1] = {name="Player", command=function(self, arg) return tostring(arg:Name()) end}
-			Columns[2] = {name="KDR", command=function(self, arg) 
-			if tostring(arg:Frags()/arg:Deaths()) != "nan" && tostring(arg:Frags()/arg:Deaths()) != "inf" then 
-				return math.Round(arg:Frags()/arg:Deaths(),2)
-			else 
-				return "-" 
-			end 
-			end}
-			Columns[3] = {name="Ping", command=function(self, arg) return tostring(arg:Ping()) end}
+	local Columns = {}
+		Columns[1] = {name="Player", command=function(self, arg) return tostring(arg:Name()) end}
+		Columns[2] = {name="KDR", command=function(self, arg) 
+			return tostring(GetKDR(arg))
+		end}
+		Columns[3] = {name="Ping", command=function(self, arg) return tostring(arg:Ping()) end}
 
 	surface.CreateFont("ScoreboardTitleFont", {
 		font		= "CloseCaption_Normal",
@@ -79,6 +75,10 @@ if CLIENT then
 	-- Thanks to slownls
 	DPANELBlurMat = Material("pp/blurscreen")
 	DPANELBlurMat2 = Material("pp/blurscreen")
+
+	function TeamSort(a,b)
+		return -a:Team()+5+GetKDR(a)/100 > -b:Team()+5+GetKDR(b)/100
+	end
 
 	function PanelDrawBlur(panel, amount) 
 		local tx, ty = panel:LocalToScreen(0, 0) 
@@ -144,7 +144,12 @@ if CLIENT then
 		Scoreboard.NamesListPanel.Refill = function(self)
 			self:Clear()
 
-			for k, pl in pairs(player.GetAll()) do
+			local PlyTable = player.GetAll()
+
+			table.sort(PlyTable, function(a, b) return TeamSort(a,b) end)
+			--table.sort(PlyTable, function(a, b) return GetKDR(a) > GetKDR(b) end)
+
+			for k, pl in pairs(PlyTable) do
 				local ID = tostring(pl:SteamID())
 				self.PlayerBars[ID] = vgui.Create("DPanel")
 				self.PlayerBars[ID]:SetPos(0, 0)
@@ -195,7 +200,7 @@ if CLIENT then
 				if k==1 then
 					surface.SetTextPos((ColumnGap_Half*k)-(w*.41), self:GetTall()*.5-(h*.5))
 				else
-					surface.SetTextPos((ColumnGap_Width*(k-1))+(ColumnGap_Half)-(w*.5), self:GetTall()*.5-(h*.5))
+					surface.SetTextPos((ColumnGap_Width*(k-0.985))+(ColumnGap_Half)-(w*.5), self:GetTall()*.5-(h*.5))
 				end
 				surface.DrawText(v.name)
 			end

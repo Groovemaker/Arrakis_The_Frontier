@@ -73,11 +73,11 @@ function GM:DrawDeathNotice( x, y )
 			
 			if Death.Suicide == 0 then
 				draw.SimpleText(Death.Player:Nick(), "Killfeed1", x - 61, y, ACol, TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
-				draw.SimpleText(Death.Text, "Killfeed1", (x - 60) + (surface.GetTextSize(Death.Player:Nick())*1.07), y, Color( 255, 255, 255, alpha ), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+				draw.SimpleText(Death.Text, "Killfeed1", (x - 60) + (surface.GetTextSize(Death.Player:Nick())*1.1), y, Color( 255, 255, 255, alpha ), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
 				draw.SimpleText(Death.Victim:Nick(), "Killfeed1", (x - 60) + ((surface.GetTextSize(Death.Text)+surface.GetTextSize(Death.Player:Nick()))*1.1), y, TCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
 			else
 				draw.SimpleText(Death.Player:Nick(), "Killfeed1", x - 61, y, ACol, TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
-				draw.SimpleText(Death.Text, "Killfeed1", (x - 60) + (surface.GetTextSize(Death.Player:Nick())*1.07), y, Color( 255, 255, 255, alpha ), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+				draw.SimpleText(Death.Text, "Killfeed1", (x - 60) + (surface.GetTextSize(Death.Player:Nick())*1.1), y, Color( 255, 255, 255, alpha ), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
 			end
 		
 			y = y + Death.h * 1.25

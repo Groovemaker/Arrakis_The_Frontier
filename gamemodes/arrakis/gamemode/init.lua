@@ -488,7 +488,8 @@ local SuicideFunnies = {
 	"thought he was in godmode.",
 	"ate a shoe.",
 	"paid a visit to heaven.",
-	"got eaten by the gits."
+	"got eaten by the gits.",
+	"got run over by a Toyota Corolla."
 }
 
 -- DM Score

@@ -85,7 +85,13 @@ end
 
 -- Replicated CVARs
 CVAR_DAYNIGHT = CreateConVar( "dune_sv_day", "1", FCVAR_REPLICATED, "Day/Night switch", 0,1)
-
+function GetKDR(arg)
+	if tostring(arg:Frags()/arg:Deaths()) != "nan" && tostring(arg:Frags()/arg:Deaths()) != "inf" then 
+		return math.Round(arg:Frags()/arg:Deaths(),2)
+	else 
+		return 0 
+	end
+end
 
 ScoreAtreides = 0
 ScoreHarkonnen = 0
