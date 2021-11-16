@@ -49,15 +49,19 @@ function set_team()
 	local html = vgui.Create("DHTML", TeamFrame)
 	html:Dock(FILL)
 
-	-- Atreides Logo | https://i.imgur.com/OzBDqi0.png | Outlined: https://i.imgur.com/SY2LcM7.png
-	-- Harkonnen Logo | https://i.imgur.com/HGv0kj7.png | Outlined:  https://i.imgur.com/oSyzntH.png
+	-- Atreides Logo | https://i.imgur.com/OzBDqi0.png | Outlined: https://i.imgur.com/SY2LcM7.png | Banner: https://i.imgur.com/KXKOpgk.png
+	-- Harkonnen Logo | https://i.imgur.com/HGv0kj7.png | Outlined:  https://i.imgur.com/oSyzntH.png | Banner: https://i.imgur.com/miSfIdb.png
 
 	html:SetHTML([[
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
 		<style>
+			html {
+				overflow: hidden;
+			}
 			#title {
+				text-align: center;
 				color: white;
 				font-size: 50px;
 				font-family:'Orbitron', sans-serif;
@@ -74,33 +78,47 @@ function set_team()
 				display: flex;
 			}
 			#banner {
-				width: 14%;
+				width: 25%;
 				display: flex;
 
 			}
 			#line {
 				border-top: 3px solid #bbb;
-				margin-bottom: 4%;
+				margin-bottom: 2%;
 				display: flex;
 			}
+			#maincontainer{
+				display: flex;  
+      			flex-direction: row;
+			}
 			#outer {
-			  width:100%;
-			  display: flex;
-			  justify-content: center;
-			  align-items: center;
-			  text-align: center;
+				margin: 5%;
+				float:left;
+				width: 40%;
+				justify-content: center;
+				align-items: center;
+				text-align: center;
+			}
+			#outer2 {
+				float:left;
+				width: 40%;
+				justify-content: center;
+				align-items: center;
+				text-align: center;
 			}
 		</style>
+		<h1 id="title" style="">Choose your Heritage!</h1>
+		<div id="line"></div>
 		<div id="outer">
-			<h1 id="title" style="">Choose your Heritage!</h1>
-			<div id="line"></div>
 			<a onclick='console.log("RUNLUA:D_JAtreides()")'>
-				<img id="banner" src="https://i.imgur.com/SY2LcM7.png"></img>
+				<img id="banner" src="https://i.imgur.com/KXKOpgk.png"></img>
 				<h2 id="header">House Atreides</h2>
 				<h3 id="header">Came to Arrakis to mine spice after being granted stewardship by the emperor</h3>
 			</a>
+		</div>
+		<div id="outer">
 			<a onclick='console.log("RUNLUA:D_JHarkonnen()")'>
-				<img id="banner" src="https://i.imgur.com/oSyzntH.png"></img>
+				<img id="banner" src="https://i.imgur.com/miSfIdb.png"></img>
 				<h2 id="header">House Harkonnen</h2>
 				<h3 id="header">Fierce, ruthless warriorkin whom are House Atreides' sworn enemies</h3>
 			</a>

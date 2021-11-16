@@ -612,8 +612,8 @@ function Reposition2(ply)
 end
 
 hook.Add("PlayerInitialSpawn","Dune_JL",function(ply)
-	Rebalance()
 	ChatAdd("JL"," joined the Battlefield!",ply:Nick())
+	Rebalance()
 	ply:ConCommand("dune_team")
 end)
 local PInit = {}

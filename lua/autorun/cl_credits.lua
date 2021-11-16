@@ -99,6 +99,7 @@ function credits()
 	    		</span>
 	    		<h3>Snippets and additions by</h3>
 	    		<span>slownls - Blur Tricks
+	    		<br /><br />upklyak - Banner Flags
 	    		<br /><br />Kefta - Weapon Hud Basics
 	    		<br /><br />Fred-Tension - HUD Blur Tricks</span>
 	    		<h3>Featuring Music and Sounds by</h3>
