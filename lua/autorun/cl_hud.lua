@@ -85,7 +85,7 @@ surface.CreateFont("Harvesters",{
 })
 
 surface.CreateFont("END1",{
-	font = "Roboto Mono",
+	font = "Trebuchet24",
 	extended = false,
 	size = 42,
 	weight = 400,
@@ -102,7 +102,7 @@ surface.CreateFont("END1",{
 	outline = false,
 })
 surface.CreateFont("END2",{
-	font = "Roboto Mono",
+	font = "Trebuchet24",
 	extended = false,
 	size = 32,
 	weight = 100,
