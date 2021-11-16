@@ -21,6 +21,7 @@ resource.AddFile("materials/ability_grenade.png")
 resource.AddFile("sound/arrakis_credits.mp3")
 resource.AddFile("sound/arrakis_ambience.wav")
 resource.AddFile("sound/grenade_recharged.wav")
+resource.AddFile("resource/fonts/RobotoMono.ttf")
 
 resource.AddWorkshop( "1622006977" ) -- Harkonnen VTOL
 resource.AddWorkshop( "831680603" ) --  Simfphys APC
@@ -478,12 +479,25 @@ function SpawnSpiceFog()
 	Spicestack:Fire("TurnOn")
 end
 
+local SuicideFunnies = {
+	"tried eating sand.",
+	"wiped their ass with spice.",
+	"thought he was a VTOL.",
+	"didn't have the high ground.",
+	"was unborn.",
+	"thought he was in godmode.",
+	"ate a shoe.",
+	"paid a visit to heaven.",
+	"got eaten by the gits."
+}
+
 -- DM Score
 hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
 
 	net.Start("PlyKill")
 		net.WriteEntity(victim)
 		net.WriteEntity(attacker)
+		net.WriteString(SuicideFunnies[math.random(#SuicideFunnies)])
 	net.Broadcast()
 
 	if CVAR_Gamemode:GetInt() != 1 || victim == attacker || !attacker:IsPlayer() then return end

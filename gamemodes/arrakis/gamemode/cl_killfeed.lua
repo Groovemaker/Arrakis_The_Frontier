@@ -4,13 +4,13 @@ local Deaths = {}
 
 
 surface.CreateFont("Killfeed1",{
-	font = "ChatFont",
+	font = "Roboto Mono",
 	extended = false,
 	size = 20,
 	weight = 800,
 	blursize = 0,
 	scanlines = 0,
-	antialias = false,
+	antialias = true,
 	underline = false,
 	italic = false,
 	strikeout = false,
@@ -22,25 +22,19 @@ surface.CreateFont("Killfeed1",{
 })
 
 local Deaths = {}
-local SuicideFunnies = {
-	"tried eating sand.",
-	"wiped their ass with spice.",
-	"thought he was a VTOL.",
-	"didn't have the high ground.",
-	"was unborn.",
-	"thought he was in godmode."
-}
+
 net.Receive("PlyKill", function()
 	local Tbl = {}
 	Tbl.Victim = net.ReadEntity()
 	Tbl.Player = net.ReadEntity()
+	Tbl.SuicideText = net.ReadString()
 	Tbl.Text = "killed"
 	Tbl.Time = CurTime()
 	Tbl.Suicide = 0
 	
 	if Tbl.Victim == Tbl.Player then
 		Tbl.Suicide = 1
-		Tbl.Text = SuicideFunnies[math.random(#SuicideFunnies)]
+		Tbl.Text = Tbl.SuicideText
 	end
 
 	table.insert( Deaths, Tbl )
