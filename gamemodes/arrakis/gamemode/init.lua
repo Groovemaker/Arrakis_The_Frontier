@@ -483,15 +483,16 @@ function SpawnSpiceFog()
 	Spicestack:SetPos(Vector(0, 0, -9000))
 	Spicestack:Fire("TurnOn")
 
+
 	if IsValid(Spicestack2) then 
 		Spicestack2:Remove()
 	end
 	/*
 	Spicestack2 = ents.Create("env_smokestack")
 	Spicestack2:SetKeyValue("SmokeMaterial","particle/particle_glow_05.vmt")
-	Spicestack2:SetKeyValue("StartSize","11")
-	Spicestack2:SetKeyValue("EndSize","444")
-	Spicestack2:SetKeyValue("Rate","77")
+	Spicestack2:SetKeyValue("StartSize","155")
+	Spicestack2:SetKeyValue("EndSize","65")
+	Spicestack2:SetKeyValue("Rate","255")
 	Spicestack2:SetKeyValue("Speed","555")
 	Spicestack2:SetKeyValue("SpreadSpeed","11600")
 	Spicestack2:SetKeyValue("JetLength","14500")
