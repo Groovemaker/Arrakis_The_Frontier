@@ -526,7 +526,11 @@ hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
 
 	net.Start("PlyKill")
 		net.WriteEntity(victim)
-		net.WriteEntity(attacker)
+		if !attacker:IsVehicle() then
+			net.WriteEntity(attacker)
+		else
+			net.WriteEntity(attacker:GetDriver())
+		end
 		net.WriteString(SuicideFunnies[math.random(#SuicideFunnies)])
 	net.Broadcast()
 
