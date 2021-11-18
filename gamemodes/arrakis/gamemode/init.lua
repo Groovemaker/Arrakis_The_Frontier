@@ -31,6 +31,8 @@ resource.AddWorkshop( "2334354896" ) -- Atreides/Fremen VTOLs
 resource.AddWorkshop( "2211859288" ) -- Crysis Weapons
 resource.AddWorkshop( "415143062" ) --  TFA Redux
 resource.AddWorkshop( "848490709" ) -- TFA KF2 Melee
+resource.AddWorkshop( "223357888" ) -- Playermodel Harkonnen
+
 -- Spice Points
 SPP = {
 	Vector(-2523.754150, 3018.725342, -10246.272461),
@@ -484,6 +486,7 @@ function SpawnSpiceFog()
 	if IsValid(Spicestack2) then 
 		Spicestack2:Remove()
 	end
+	/*
 	Spicestack2 = ents.Create("env_smokestack")
 	Spicestack2:SetKeyValue("SmokeMaterial","particle/particle_glow_05.vmt")
 	Spicestack2:SetKeyValue("StartSize","11")
@@ -501,6 +504,7 @@ function SpawnSpiceFog()
 	Spicestack2:Activate()
 	Spicestack2:SetPos(Vector(0, 0, -9000))
 	Spicestack2:Fire("TurnOn")
+	*/
 end
 
 local SuicideFunnies = {
@@ -635,14 +639,18 @@ function Reposition2(ply)
 end
 
 hook.Add("PlayerInitialSpawn","Dune_JL",function(ply)
-	ChatAdd("JL"," joined the Battlefield!",ply:Nick())
-	Rebalance()
+	ChatAdd("JL"," joined the Battlefield! Rebalancing in 5 seconds.",ply:Nick())
+	timer.Stop("DuneRebalanceAfterJoin")
+	timer.Create("DuneRebalanceAfterJoin",5,1,function()
+		Rebalance()
+	end)
 	ply:ConCommand("dune_team")
 end)
 local PInit = {}
 
 function Rebalance()
 	for k,v in pairs(player.GetAll()) do
+		v:ExitVehicle()
 		if AutoBalance() == 1 then
 			jAtreides(v)
 		else
@@ -676,7 +684,7 @@ function GM:PlayerSetModel(ply)
 		--ply:Lock()
 	end
 	Atreides_PlyMDL = "models/player/swat.mdl"
-	Harkonnen_PlyMDL = "models/player/combine_soldier.mdl"
+	Harkonnen_PlyMDL = "models/ninja/rage_enforcer.mdl"
 
 	if ply:Team() == Atreides then
 		ply:Give("tfa_kf2_katana") --melee sword
@@ -692,7 +700,8 @@ function GM:PlayerSetModel(ply)
 	    ply:Give("tfa_bcry2_gauss") --sniper
 	    ply:Give("tfa_bcry2_hammer") --pistol
 	  	ply:Give("tfa_bcry2_hmg") --heavy
-	    ply:Give("tfa_bcry2_scar") --rifle
+	  	ply:Give("tfa_bcry2_fy71") -- rifle without loop glitch til fix
+	    --ply:Give("tfa_bcry2_scar") --rifle
 	    --ply:GiveAmmo(32, "357")
 	    ply:SetModel(Harkonnen_PlyMDL)
 	end
