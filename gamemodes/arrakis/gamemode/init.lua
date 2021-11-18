@@ -542,6 +542,7 @@ end)
 -- Factions
 function jAtreides( ply ) 
 	ply:StripAmmo()
+	ply:ExitVehicle()
 	ply:StripWeapons()
     ply:SetTeam(1)
     ply:Spawn()
@@ -550,6 +551,7 @@ end
  
 function jHarkonnen( ply )
 	ply:StripAmmo()
+	ply:ExitVehicle()
 	ply:StripWeapons()
     ply:SetTeam(2)
     ply:Spawn()
@@ -651,7 +653,7 @@ local PInit = {}
 
 function Rebalance()
 	for k,v in pairs(player.GetAll()) do
-		v:ExitVehicle()
+		
 		if AutoBalance() == 1 then
 			jAtreides(v)
 		else
