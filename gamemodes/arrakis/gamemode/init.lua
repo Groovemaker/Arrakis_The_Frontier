@@ -728,7 +728,7 @@ function WinRound(iTeam)
 	RoundHasEnded = 1
 	BroadcastLua("WinRound("..iTeam..")")
 	timer.Simple(7,function()
-		game.ConsoleCommand("changelevel " .. "gm_disten" ..  "\n")
+		game.ConsoleCommand("changelevel " .. game.GetMap() ..  "\n")
 	end)
 end
 
