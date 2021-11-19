@@ -408,7 +408,16 @@ if timer.Exists("Dune_VehicleLoop") == false then
 	end)
 end
 
-
+if timer.Exists("Dune_Announce1") == false then
+	timer.Create("Dune_Announce1",120,0,function()
+		ChatAdd([[To change team, use the console command: "dune_team"]])
+	end)
+end
+if timer.Exists("Dune_Announce2") == false then
+	timer.Create("Dune_Announce2",180,0,function()
+		ChatAdd([[Check out the team! "dune_credits"]])
+	end)
+end
 -- Spawning Spice Harvesters
 function SpawnHarvesters()
 	for k,v in pairs(SPH) do
@@ -564,7 +573,7 @@ function jHarkonnen( ply )
    --ChatAdd("TEAMCHANGE"," joined House Harkonnen!",{2,ply:Nick()})
 end 
 function jAtreidesPLY( ply )
-	ply:Kill()
+	--ply:Kill()
 	ply:StripAmmo()
 	ply:ExitVehicle()
 	ply:StripWeapons()
@@ -574,7 +583,7 @@ function jAtreidesPLY( ply )
 end 
  
 function jHarkonnenPLY( ply )
-	ply:Kill()
+	--ply:Kill()
 	ply:StripAmmo()
 	ply:ExitVehicle()
 	ply:StripWeapons()
@@ -601,6 +610,8 @@ function ChatAdd(type,message,args)
 		elseif args[1] == 2 then
 			BroadcastLua([[chat.AddText(Color(255,155,50),"[SERVER]: ",Color(255,200,100),"]]..args[2]..[[",Color(155,55,11),"]]..message..[[")]])
 		end
+	elseif type == "LOG" then
+			BroadcastLua([[chat.AddText(Color(255,155,50),"[SERVER]:" ,Color(111,200,155),"]]..message..[[")]])
 	end
 end
 
@@ -672,6 +683,13 @@ end)
 function GM:PlayerShouldTakeDamage(ply,attacker)
 	return attacker:GetClass() == "npc_grenade_frag" || ply == attacker || attacker:IsPlayer() && ply:Team() != attacker:Team() || attacker:IsVehicle() && ply:Team() != attacker:GetDriver():Team()
 end
+
+hook.Add( "EntityTakeDamage", "DMGStats", function( target, dmginfo )
+	if (dmginfo:IsExplosionDamage()) then
+		dmginfo:ScaleDamage( 3 )
+	end
+end )
+
 function GM:PlayerSetModel(ply)
 	if ply:Team() != 1 && ply:Team() != 2 then 
 		ply:SetModel("models/effects/teleporttrail_alyx.mdl")
