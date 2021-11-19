@@ -27,7 +27,7 @@ resource.AddFile("resource/fonts/Cairo.ttf")
 
 Atreides_PlyMDL = "models/player/swat.mdl"
 Harkonnen_PlyMDL = "models/ninja/rage_enforcer.mdl"
-	
+
 resource.AddWorkshop( "1622006977" ) -- Harkonnen VTOL
 resource.AddWorkshop( "831680603" ) --  Simfphys APC
 resource.AddWorkshop( "2334354896" ) -- Atreides/Fremen VTOLs
@@ -35,8 +35,9 @@ resource.AddWorkshop( "2211859288" ) -- Crysis Weapons
 resource.AddWorkshop( "415143062" ) --  TFA Redux
 resource.AddWorkshop( "848490709" ) -- TFA KF2 Melee
 resource.AddWorkshop( "223357888" ) -- Playermodel Harkonnen
-resource.AddWorkshop( "1797517677" ) -- Playermodel Atreides
-resource.AddWorkshop( "677125227" ) -- Enhanced Citizens
+--resource.AddWorkshop( "1797517677" ) -- Playermodel Atreides
+--resource.AddWorkshop( "677125227" ) -- Enhanced Citizens
+
 MapStore = {}
 
 function ReadMapStore()
