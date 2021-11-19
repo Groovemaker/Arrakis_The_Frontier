@@ -87,10 +87,16 @@ function credits()
     			<img id="image1" src="https://i.imgur.com/kBVrgZe.png"></img>
     			<h2>A Tribute to DUNE</h2>
 	    		<h3>And a Fan Game By</h3>
-	    		<span>Runic</span>
+	    		<span>Zeitgeist Studios</span>
 	    		<h3>Featuring Addons powered by</h3>
 	    		<span>TFA<br /><br />
 	    		LFS<br /><br />
+	    		</span>
+	    		<h3>The Team</h3>
+	    		<span>
+	    		Runic - Developer, Management<br /><br />
+	    		Cacurjac - Mapper<br /><br />
+	    		Pendlix - Community Manager / Dev Apprentice<br /><br />
 	    		</span>
 	    		<h3>As well as Addons by</h3>
 	    		<span>

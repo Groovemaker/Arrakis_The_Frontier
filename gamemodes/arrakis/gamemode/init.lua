@@ -33,14 +33,29 @@ resource.AddWorkshop( "415143062" ) --  TFA Redux
 resource.AddWorkshop( "848490709" ) -- TFA KF2 Melee
 resource.AddWorkshop( "223357888" ) -- Playermodel Harkonnen
 
--- Spice Points
-SPP = {
-	Vector(-2523.754150, 3018.725342, -10246.272461),
-	Vector(-3459.514648, -3145.623535, -9957.653320),
-	Vector(-4441.506348, 13682.492188, -8770.583984),
-}
-SPH = {}
+MapStore = {}
 
+function ReadMapStore()
+	-- Make sure you use the same filename as the one in file.Write!
+	local JSONData = file.Read("arrakis/maps/"..game.GetMap()..".rakmap")
+	MapStore = util.JSONToTable(JSONData)
+	print("Loading rakmap Mapstore Data...")
+	PrintTable(MapStore)
+
+end
+
+ReadMapStore()
+
+-- Mapdata
+SPP = MapStore["SPP"]
+SP_Vtols_Harkonnen = MapStore["Harkonnen"]["Vtols"]
+SP_APC_Harkonnen = MapStore["Harkonnen"]["APCs"]
+SP_Vtols_Atreides = MapStore["Atreides"]["Vtols"]
+SP_APC_Atreides = MapStore["Atreides"]["APCs"]
+SP_Harkonnen = MapStore["Harkonnen"]["PlySpawns"]
+SP_Atreides = MapStore["Harkonnen"]["PlySpawns"]
+
+SPH = {}
 -- Round Vars
 RoundHasEnded = 0
 
@@ -55,6 +70,7 @@ CVAR_GrenadeCooldown = CreateConVar( "dune_sv_grenade_cooldown", "7", FCVAR_NONE
 CVAR_ShieldInterval = CreateConVar( "dune_sv_recharge_interval", "0.1", FCVAR_NONE+FCVAR_NOTIFY, "The lower, the faster the shield recharges", 0.01)
 CVAR_ShieldDelay = CreateConVar( "dune_sv_recharge_delay", "1", FCVAR_NONE+FCVAR_NOTIFY, "The lower, the sooner the shield starts recharging", 0.1)
 CVAR_Gamemode = CreateConVar( "dune_sv_gamemode", "2", FCVAR_NONE+FCVAR_NOTIFY, "1 - DM; 2 - Spice Harvest", 1,2)
+--CVAR_Aleph = CreateConVar( "dune_sv_alephmode", "0", FCVAR_NONE+FCVAR_NOTIFY+FCVAR_UNREGISTERED, "Easteregg lol", 0,1)
 
 -- Loadout
 function GM:PlayerLoadout(ply)
@@ -268,30 +284,7 @@ timer.Create("HarvesterScan",0.3,0,function()
 		end
 end)
 
--- Spawners
-SP_Vtols_Harkonnen = {
-	Vector(-12988.833984, 10670.055664, -9034.481445),
-	Vector(-11978.709961, 10691.329102, -9012.096680),
-	Vector(-11006.250000, 11011.807617, -8930.311523),
-}
 
-SP_Vtols_Atreides = {
-	Vector(11965.055664, -6706.582520, -9968.274414),
-	Vector(11477.743164, -7800.555176, -9969.972656),
-	Vector(12658.222656, -8133.210938, -9965.285156),
-}
-
-SP_APC_Atreides = {
-	Vector(11891.732422, -6082.339355, -10317.850586),
-	Vector(12891.853516, -6182.138184, -10342.645508),
-	Vector(14891.222656, -8282.210938, -9935.285156),
-}
-
-SP_APC_Harkonnen ={
-	Vector(-12966.287109, 12066.671875, -9060.109375),
-	Vector(-12759.865234, 11695.660156, -9118.357422),
-	Vector(-12230.449219, 11506.187500, -9137.444336),
-}
 
 function SpawnVehiclesHarkonnen()
 	local OldHarkonnenVtols = ents.FindByName("vtol_harkonnen")
@@ -546,7 +539,6 @@ end)
 
 -- Factions
 function jAtreides( ply )
-	ply:Kill()
 	ply:StripAmmo()
 	ply:ExitVehicle()
 	ply:StripWeapons()
@@ -556,6 +548,24 @@ function jAtreides( ply )
 end 
  
 function jHarkonnen( ply )
+	ply:StripAmmo()
+	ply:ExitVehicle()
+	ply:StripWeapons()
+    ply:SetTeam(2)
+    ply:Spawn()
+   --ChatAdd("TEAMCHANGE"," joined House Harkonnen!",{2,ply:Nick()})
+end 
+function jAtreidesPLY( ply )
+	ply:Kill()
+	ply:StripAmmo()
+	ply:ExitVehicle()
+	ply:StripWeapons()
+    ply:SetTeam(1)
+    ply:Spawn()
+    --ChatAdd("TEAMCHANGE"," joined House Atreides!",{1,ply:Nick()})
+end 
+ 
+function jHarkonnenPLY( ply )
 	ply:Kill()
 	ply:StripAmmo()
 	ply:ExitVehicle()
@@ -565,8 +575,8 @@ function jHarkonnen( ply )
    --ChatAdd("TEAMCHANGE"," joined House Harkonnen!",{2,ply:Nick()})
 end 
 
-concommand.Add( "dune_join_atreides", jAtreides )
-concommand.Add( "dune_join_harkonnen", jHarkonnen )
+concommand.Add("dune_join_atreides", jAtreidesPLY)
+concommand.Add("dune_join_harkonnen", jHarkonnenPLY)
 
 function TestKill(ply)
 	ply:Spawn()
@@ -588,43 +598,6 @@ end
 
 -- Spawn
 hook.Add("PlayerSpawn","Dune_Spawn",function(ply)
-	SP_Atreides = {
-		Vector(12408.885742, -7528.326660, -10543.968750),
-		Vector(12517.307617, -7696.805176, -10551.283203),
-		Vector(12313.879883, -8009.676758, -10550.638672),
-		Vector(11923.995117, -7815.384766, -10501.597656),
-		Vector(11804.260742, -7461.417969, -10472.499023),
-		Vector(11974.820313, -7199.516602, -10497.281250),
-
-	}
-	SP_Harkonnen = {
-		Vector(-12395.594727, 11587.176758, -9147.045898),
-		Vector(-12814.399414, 10839.073242, -9256.389648),
-		Vector(-12302.385742, 10749.623047, -9257.607422),
-		Vector(-12859.300781, 10293.492188, -9312.452148),
-		Vector(-13258.383789, 10780.868164, -9239.381836),
-		Vector(-13702.872070, 10912.717773, -9183.007813),
-		Vector(-12408.049805, 10871.522461, -9248.912109),
-		Vector(-12563.242188, 11068.190430, -9227.535156),
-		Vector(-12549.751953, 11282.626953, -9200.519531),
-		Vector(-12720.125977, 11307.676758, -9165.694336),
-		Vector(-13018.564453, 11271.451172, -9183.962891),
-		Vector(-13161.046875, 11465.410156, -9145.323242),
-		Vector(-13338.786133, 11562.385742, -9094.348633),
-		Vector(-13520.049805, 11406.763672, -9115.936523),
-		Vector(-13667.384766, 11332.346680, -9134.194336),
-		Vector(-13763.358398, 11487.126953, -9108.458984),
-		Vector(-13955.588867, 11483.173828, -9074.961914),
-		Vector(-13925.430664, 10776.501953, -9143.361328),
-		Vector(-14028.125000, 10598.075195, -9125.335938),
-		Vector(-14209.570313, 10552.143555, -9111.168945),
-		Vector(-14374.747070, 10536.320313, -9100.752930),
-		Vector(-14480.989258, 10395.667969, -9104.253906),
-		Vector(-14447.816406, 10211.727539, -9128.330078),
-		Vector(-14326.656250, 10104.264648, -9152.002930),
-		Vector(-14246.605469, 9908.385742, -9181.653320),
-		Vector(-14072.329102, 9926.375000, -9205.023438),
-	}
 	if ply:Team() == 1 then
 		Reposition1(ply)
 		ply:SetEyeAngles(Angle(0, 170, 0))
@@ -660,7 +633,6 @@ local PInit = {}
 
 function Rebalance()
 	for k,v in pairs(player.GetAll()) do
-		
 		if AutoBalance() == 1 then
 			jAtreides(v)
 		else
@@ -695,6 +667,7 @@ function GM:PlayerSetModel(ply)
 	end
 	Atreides_PlyMDL = "models/player/swat.mdl"
 	Harkonnen_PlyMDL = "models/ninja/rage_enforcer.mdl"
+	--Aleph_PlyMDL = "models/tsbb/animals/asian_elephant.mdl"
 
 	if ply:Team() == Atreides then
 		ply:Give("tfa_kf2_katana") --melee sword
@@ -713,7 +686,11 @@ function GM:PlayerSetModel(ply)
 	  	ply:Give("tfa_bcry2_fy71") -- rifle without loop glitch til fix
 	    --ply:Give("tfa_bcry2_scar") --rifle
 	    --ply:GiveAmmo(32, "357")
-	    ply:SetModel(Harkonnen_PlyMDL)
+	    --if CVAR_Aleph:GetInt() != 1 then
+	    	--ply:SetModel(Harkonnen_PlyMDL)
+		--else
+			--ply:SetModel(Aleph_PlyMDL)
+		--end
 	end
 end
 function GM:PlayerHurt(victim, attacker)
