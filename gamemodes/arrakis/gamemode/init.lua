@@ -33,7 +33,7 @@ resource.AddWorkshop( "415143062" ) --  TFA Redux
 resource.AddWorkshop( "848490709" ) -- TFA KF2 Melee
 resource.AddWorkshop( "223357888" ) -- Playermodel Harkonnen
 resource.AddWorkshop( "1797517677" ) -- Playermodel Atreides
-
+resource.AddWorkshop( "677125227" ) -- Enhanced Citizens
 MapStore = {}
 
 function ReadMapStore()
@@ -83,7 +83,7 @@ function GM:PlayerLoadout(ply)
 	    	if v:GetClass() == "tfa_bcry2_gauss" then
 	    		ply:GiveAmmo(25,v:GetPrimaryAmmoType(),true)
 	    	elseif v:GetClass() == "weapon_lfsmissilelauncher" then
-	    		ply:GiveAmmo(5)
+	    		ply:GiveAmmo(5,v:GetPrimaryAmmoType(),true)
 	    	else
 	    		ply:GiveAmmo(150,v:GetPrimaryAmmoType(),true)
 	    	end
@@ -687,6 +687,7 @@ function GM:PlayerSetModel(ply)
 	    ply:Give("weapon_lfsmissilelauncher") -- Rocket Launcher
 	    --ply:GiveAmmo(32, "357")
 	    ply:SetModel(Atreides_PlyMDL)
+	    ply:SetBodygroup(1, 2)
 	    TFAUpdateAttachments()
 	elseif ply:Team() == Harkonnen then
 	    ply:Give("tfa_kf2_pulverizer") --melee hammer
