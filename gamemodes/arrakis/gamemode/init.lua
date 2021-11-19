@@ -32,6 +32,7 @@ resource.AddWorkshop( "2211859288" ) -- Crysis Weapons
 resource.AddWorkshop( "415143062" ) --  TFA Redux
 resource.AddWorkshop( "848490709" ) -- TFA KF2 Melee
 resource.AddWorkshop( "223357888" ) -- Playermodel Harkonnen
+resource.AddWorkshop( "1797517677" ) -- Playermodel Atreides
 
 MapStore = {}
 
@@ -81,6 +82,8 @@ function GM:PlayerLoadout(ply)
 	    for k,v in pairs(ply:GetWeapons()) do
 	    	if v:GetClass() == "tfa_bcry2_gauss" then
 	    		ply:GiveAmmo(25,v:GetPrimaryAmmoType(),true)
+	    	elseif v:GetClass() == "weapon_lfsmissilelauncher" then
+	    		ply:GiveAmmo(5)
 	    	else
 	    		ply:GiveAmmo(150,v:GetPrimaryAmmoType(),true)
 	    	end
@@ -630,6 +633,11 @@ hook.Add("PlayerInitialSpawn","Dune_JL",function(ply)
 	end)
 	ply:ConCommand("dune_team")
 end)
+
+hook.Add( "PlayerDisconnected", "Dune_JL_Disconnect", function(ply)
+    ChatAdd("JL"," has left arrakis!",ply:Nick())
+end )
+
 local PInit = {}
 
 function Rebalance()
@@ -666,7 +674,7 @@ function GM:PlayerSetModel(ply)
 		ply:SetPos(Vector(0,0,-31110))
 		--ply:Lock()
 	end
-	Atreides_PlyMDL = "models/player/swat.mdl"
+	Atreides_PlyMDL = "models/ixscifi/characters/male_07.mdl"
 	Harkonnen_PlyMDL = "models/ninja/rage_enforcer.mdl"
 	--Aleph_PlyMDL = "models/tsbb/animals/asian_elephant.mdl"
 
@@ -676,6 +684,7 @@ function GM:PlayerSetModel(ply)
 	    ply:Give("tfa_bcry2_fy71") --rifle
 	    ply:Give("tfa_bcry2_gauss") --sniper
 	    ply:Give("tfa_bcry2_hmg") --heavy
+	    ply:Give("weapon_lfsmissilelauncher") -- Rocket Launcher
 	    --ply:GiveAmmo(32, "357")
 	    ply:SetModel(Atreides_PlyMDL)
 	    TFAUpdateAttachments()
@@ -685,10 +694,11 @@ function GM:PlayerSetModel(ply)
 	    ply:Give("tfa_bcry2_hammer") --pistol
 	  	ply:Give("tfa_bcry2_hmg") --heavy
 	  	ply:Give("tfa_bcry2_fy71") -- rifle without loop glitch til fix
+	  	ply:Give("weapon_lfsmissilelauncher") -- Rocket Launcher
 	    --ply:Give("tfa_bcry2_scar") --rifle
 	    --ply:GiveAmmo(32, "357")
 	    --if CVAR_Aleph:GetInt() != 1 then
-	    	--ply:SetModel(Harkonnen_PlyMDL)
+	    	ply:SetModel(Harkonnen_PlyMDL)
 		--else
 			--ply:SetModel(Aleph_PlyMDL)
 		--end

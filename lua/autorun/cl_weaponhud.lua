@@ -42,7 +42,7 @@ HarkonnenCol = Color(255/Div,33/Div,1/Div,150)
 
 
 local colLabelTextActive = Color(255, 255, 255, 255)
-local colLabelTextInactive = Color(111, 111, 111, 255)
+local colLabelTextInactive = Color(211, 211, 211, 255)
 local colLabelTextOutline = Color(0, 0, 0, 0)
 
 local iWidth, iHeight
