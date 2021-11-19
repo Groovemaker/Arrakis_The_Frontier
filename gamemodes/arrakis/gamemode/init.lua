@@ -25,6 +25,9 @@ resource.AddFile("resource/fonts/RobotoMono.ttf")
 resource.AddFile("resource/fonts/Orbitron.ttf")
 resource.AddFile("resource/fonts/Cairo.ttf")
 
+Atreides_PlyMDL = "models/player/swat.mdl"
+Harkonnen_PlyMDL = "models/ninja/rage_enforcer.mdl"
+	
 resource.AddWorkshop( "1622006977" ) -- Harkonnen VTOL
 resource.AddWorkshop( "831680603" ) --  Simfphys APC
 resource.AddWorkshop( "2334354896" ) -- Atreides/Fremen VTOLs
@@ -674,8 +677,6 @@ function GM:PlayerSetModel(ply)
 		ply:SetPos(Vector(0,0,-31110))
 		--ply:Lock()
 	end
-	Atreides_PlyMDL = "models/ixscifi/characters/male_07.mdl"
-	Harkonnen_PlyMDL = "models/ninja/rage_enforcer.mdl"
 	--Aleph_PlyMDL = "models/tsbb/animals/asian_elephant.mdl"
 
 	if ply:Team() == Atreides then
