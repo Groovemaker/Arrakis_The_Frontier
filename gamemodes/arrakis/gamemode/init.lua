@@ -684,9 +684,11 @@ function GM:PlayerShouldTakeDamage(ply,attacker)
 	return attacker:GetClass() == "npc_grenade_frag" || ply == attacker || attacker:IsPlayer() && ply:Team() != attacker:Team() || attacker:IsVehicle() && ply:Team() != attacker:GetDriver():Team()
 end
 
-hook.Add( "EntityTakeDamage", "DMGStats", function( target, dmginfo )
+hook.Add( "EntityTakeDamage", "DMGStats", function(target, dmginfo)
 	if (dmginfo:IsExplosionDamage()) then
-		dmginfo:ScaleDamage( 3 )
+		dmginfo:ScaleDamage(3)
+	elseif (dmginfo:GetAttacker():IsPlayer() && dmginfo:GetAttacker():GetActiveWeapon():GetClass() == "tfa_bcry2_gauss") then
+		dmginfo:ScaleDamage(3)
 	end
 end )
 
