@@ -53,7 +53,8 @@ SP_APC_Harkonnen = MapStore["Harkonnen"]["APCs"]
 SP_Vtols_Atreides = MapStore["Atreides"]["Vtols"]
 SP_APC_Atreides = MapStore["Atreides"]["APCs"]
 SP_Harkonnen = MapStore["Harkonnen"]["PlySpawns"]
-SP_Atreides = MapStore["Harkonnen"]["PlySpawns"]
+SP_Atreides = MapStore["Atreides"]["PlySpawns"]
+SpicePos = MapStore["SpicefogPos"]
 
 SPH = {}
 -- Round Vars
@@ -474,7 +475,7 @@ function SpawnSpiceFog()
 
 	Spicestack:Spawn()
 	Spicestack:Activate()
-	Spicestack:SetPos(Vector(0, 0, -9000))
+	Spicestack:SetPos(SpicePos)
 	Spicestack:Fire("TurnOn")
 
 
@@ -497,7 +498,7 @@ function SpawnSpiceFog()
 
 	Spicestack2:Spawn()
 	Spicestack2:Activate()
-	Spicestack2:SetPos(Vector(0, 0, -9000))
+	Spicestack2:SetPos(SpicePos)
 	Spicestack2:Fire("TurnOn")
 	*/
 end
