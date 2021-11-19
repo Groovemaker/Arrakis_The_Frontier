@@ -74,11 +74,12 @@ end
 
 -- Thx to Omni Games on YT!
 function AutoBalance()
+	/*
 	if table.Count(team.GetPlayers(1)) > table.Count(team.GetPlayers(2)) then
 		return 2
 	elseif table.Count(team.GetPlayers(1)) < table.Count(team.GetPlayers(2)) then
 		return 1
-	else
+	else*/
 		local KDR_Atreides = 0
 		local KDR_Harkonnen = 0
 		for k,v in pairs(team.GetPlayers(1)) do
@@ -98,7 +99,7 @@ function AutoBalance()
 		else
 			return math.random(0,1)
 		end	
-	end
+	//end
 end
 
 -- Vehicles
@@ -544,7 +545,8 @@ hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
 end)
 
 -- Factions
-function jAtreides( ply ) 
+function jAtreides( ply )
+	ply:Kill()
 	ply:StripAmmo()
 	ply:ExitVehicle()
 	ply:StripWeapons()
@@ -554,6 +556,7 @@ function jAtreides( ply )
 end 
  
 function jHarkonnen( ply )
+	ply:Kill()
 	ply:StripAmmo()
 	ply:ExitVehicle()
 	ply:StripWeapons()
