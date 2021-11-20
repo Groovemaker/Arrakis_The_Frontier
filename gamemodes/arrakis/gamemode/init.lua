@@ -448,14 +448,15 @@ end
 
 if timer.Exists("Dune_Announce1") == false then
 	timer.Create("Dune_Announce1",120,0,function()
-		ChatAdd([[To change team, use the console command: "dune_team"]])
+		BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(111,155,255),"To change team, use the console command: dune_team")]])
 	end)
 end
 if timer.Exists("Dune_Announce2") == false then
 	timer.Create("Dune_Announce2",180,0,function()
-		ChatAdd([[Check out the team! "dune_credits"]])
+		BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(111,155,255),"To check out the people who worked on this, use the concmd: dune_credits")]])
 	end)
 end
+
 -- Spawning Spice Harvesters
 function SpawnHarvesters()
 	for k,v in pairs(SPH) do
