@@ -41,7 +41,8 @@ Harkonnen_PlyMDL = "models/ninja/rage_enforcer.mdl"
 resource.AddWorkshop("1622006977") -- Harkonnen VTOL
 resource.AddWorkshop("831680603") --  Simfphys APC
 resource.AddWorkshop("2334354896") -- Atreides/Fremen VTOLs
-resource.AddWorkshop("2211859288") -- Crysis Weapons
+--resource.AddWorkshop("2211859288") -- Crysis Weapons
+resource.AddWorkshop("420970650") -- Darkes scifi weaponry
 resource.AddWorkshop("415143062") --  TFA Redux
 resource.AddWorkshop("848490709") -- TFA KF2 Melee
 resource.AddWorkshop("223357888") -- Playermodel Harkonnen
@@ -661,6 +662,10 @@ hook.Add("PlayerInitialSpawn","Dune_JL",function(ply)
 	timer.Create("DuneRebalanceAfterJoin",5,1,function()
 		Rebalance()
 	end)
+	ply:ConCommand("sfw_allow_advanims 0")
+	ply:ConCommand("sfw_allow_viewbob 0")
+	ply:ConCommand("sfw_allow_viewsway 0")
+	ply:ConCommand("sfw_precachemethod 1")
 	ply:ConCommand("dune_team")
 end)
 
@@ -718,20 +723,20 @@ function GM:PlayerSetModel(ply)
 
 	if ply:Team() == Atreides then
 		ply:Give("tfa_kf2_katana") --melee sword
-	    ply:Give("tfa_bcry2_nova") --pistol
-	    ply:Give("tfa_bcry2_fy71") --rifle
-	    ply:Give("tfa_bcry2_gauss") --sniper
-	    ply:Give("tfa_bcry2_hmg") --heavy
+	    ply:Give("sfw_lapis") --pistol
+	    ply:Give("sfw_hwave") --rifle
+	    ply:Give("sfw_phoenix") --sniper
+	    ply:Give("sfw_behemoth") --heavy
 	    ply:Give("weapon_lfsmissilelauncher") -- Rocket Launcher
 
 	    ply:SetModel(Atreides_PlyMDL)
 
 	elseif ply:Team() == Harkonnen then
 	    ply:Give("tfa_kf2_pulverizer") --melee hammer
-	    ply:Give("tfa_bcry2_gauss") --sniper
-	    ply:Give("tfa_bcry2_hammer") --pistol
-	  	ply:Give("tfa_bcry2_hmg") --heavy
-	  	ply:Give("tfa_bcry2_fy71") -- rifle without loop glitch til fix
+	    ply:Give("sfw_phoenix") --sniper
+	    ply:Give("sfw_corruptor") --pistol
+	  	ply:Give("sfw_grinder") --heavy
+	  	ply:Give("sfw_vk21") -- rifle without loop glitch til fix
 	  	ply:Give("weapon_lfsmissilelauncher") -- Rocket Launcher
 	    --ply:Give("tfa_bcry2_scar") --rifle
 
