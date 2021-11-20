@@ -143,7 +143,7 @@ function set_team()
 		InMenu = false
 	end
  	function TeamFrame:Paint(w,h)
- 		PanelDrawBlur(self, 20)
+ 		PanelDrawBlur(self, 15)
  		DunePaint_DFrame(w,h)
  	end
 end 
@@ -249,7 +249,7 @@ function set_class()
 		InMenu = false
 	end
  	function ClassFrame:Paint(w,h)
- 		PanelDrawBlur(self, 5)
+ 		PanelDrawBlur(self, 15)
  		DunePaint_DFrame(w,h)
  	end
 end 
