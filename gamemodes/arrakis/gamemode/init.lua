@@ -7,6 +7,10 @@ include("shared.lua")
 BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(111,155,255),"init.lua ",Color(255,255,255),"reloaded!")]])
 TFA_BASE_VERSION = 1337
 
+-- MetaTables
+_Ply = FindMetaTable("Player")
+_Ply.Class = nil
+
 -- Netstrings
 util.AddNetworkString("ScoreManip")
 util.AddNetworkString("Capture")
@@ -615,6 +619,25 @@ end
 
 concommand.Add("dune_join_atreides", jAtreidesPLY)
 concommand.Add("dune_join_harkonnen", jHarkonnenPLY)
+concommand.Add("dune_setclass", function(ply,cmd,args) 
+	D_SetClass(ply,args[1])
+end)
+
+function D_SetClass(ply,_classId)
+	local classId = tonumber(_classId)
+	if classId == 3 then
+		ply.Class = classId
+	elseif classId == 2 then
+		ply.Class = classId
+	elseif classId == 1 then
+		ply.Class = classId
+	end
+	ply:Spawn()
+end
+
+function _Ply:GetUnitClass()
+	return self.Class
+end
 
 -- Chatlog Helper
 function ChatAdd(type,message,args)
@@ -721,30 +744,45 @@ hook.Add("EntityTakeDamage", "DMGStats", function(target, dmginfo)
 end)
 
 function GM:PlayerSetModel(ply)
+	ply:StripAmmo()
+	ply:ExitVehicle()
+	ply:StripWeapons()
 	if ply:Team() != 1 && ply:Team() != 2 then 
 		ply:SetModel("models/effects/teleporttrail_alyx.mdl")
 		ply:SetPos(Vector(0,0,-31110))
 	end
-
 	if ply:Team() == Atreides then
-		ply:Give("tfa_kf2_katana") --melee sword
-	    ply:Give("sfw_lapis") --pistol
-	    ply:Give("sfw_hwave") --rifle
-	    ply:Give("sfw_phoenix") --sniper
-	    ply:Give("sfw_behemoth") --heavy
-	    ply:Give("weapon_lfsmissilelauncher") -- Rocket Launcher
-
+		if ply.Class == 1 then
+			ply:Give("tfa_kf2_katana") --melee sword
+		    ply:Give("sfw_lapis") --pistol
+		    ply:Give("sfw_hwave") --rifle
+		elseif ply.Class == 2 then
+			ply:Give("tfa_kf2_katana") --melee sword
+		    ply:Give("sfw_lapis") --pistol
+		    ply:Give("sfw_phoenix") --sniper
+		elseif ply.Class == 3 then
+			ply:Give("tfa_kf2_katana") --melee sword
+		    ply:Give("sfw_behemoth") --heavy
+		    ply:Give("weapon_lfsmissilelauncher") -- Rocket Launcher
+		end
 	    ply:SetModel(Atreides_PlyMDL)
 
 	elseif ply:Team() == Harkonnen then
-	    ply:Give("tfa_kf2_pulverizer") --melee hammer
-	    ply:Give("sfw_phoenix") --sniper
-	    ply:Give("sfw_corruptor") --pistol
-	  	ply:Give("sfw_grinder") --heavy
-	  	ply:Give("sfw_vk21") -- rifle without loop glitch til fix
-	  	ply:Give("weapon_lfsmissilelauncher") -- Rocket Launcher
-	    --ply:Give("tfa_bcry2_scar") --rifle
+		if ply.Class == 1 then
+		    ply:Give("tfa_kf2_pulverizer") --melee hammer
+		    ply:Give("sfw_corruptor") --pistol
+		  	ply:Give("sfw_vk21") -- rifle without loop glitch til fix
+		elseif ply.Class == 2 then
+		    ply:Give("tfa_kf2_pulverizer") --melee hammer
+		    ply:Give("sfw_phoenix") --sniper
+		    ply:Give("sfw_corruptor") --pistol
+		elseif ply.Class == 3 then
+		    ply:Give("tfa_kf2_pulverizer") --melee hammer
+		  	ply:Give("sfw_grinder") --heavy
+		  	ply:Give("weapon_lfsmissilelauncher") -- Rocket Launcher
+		end
 
+	    --ply:Give("tfa_bcry2_scar") --rifle
 	    ply:SetModel(Harkonnen_PlyMDL)
 	end
 end
