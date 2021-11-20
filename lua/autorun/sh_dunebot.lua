@@ -14,11 +14,11 @@ concommand.Add("dune_bot_spawn",function()
 	DuneBot.isSpawned = 1
 	BroadcastLua([[DuneBot.isSpawned = 1]])
 	local Names = {
-		"Stormloller6969",
-		"Xx_Slayer69_xX",
-		"Wike",
-		"Prolapser83",
-		"Rübengeist"
+		"[BOT] Stormloller6969",
+		"[BOT] Xx_Slayer69_xX",
+		"[BOT] Wike",
+		"[BOT] Prolapser83",
+		"[BOT] Rübengeist"
 	}
 	local NewBot = player.CreateNextBot(Names[math.random(#Names)])
 	NewBot.IsDuneBot = true
