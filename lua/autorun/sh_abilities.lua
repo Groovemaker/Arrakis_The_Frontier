@@ -32,10 +32,10 @@ if SERVER then
 		 	GrenadeA:SetOwner(ply)
 		 	ply:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_HL2MP_GESTURE_RANGE_ATTACK_GRENADE, true)
 			local phys = GrenadeA:GetPhysicsObject()
-			if ( not phys:IsValid() ) then GrenadeA:Remove() return end
-			aimvec:Mul( 1001 )
-			aimvec:Add( VectorRand( -10, 10 ) ) -- Add a random vector with elements [-10, 10)
-			phys:ApplyForceCenter( aimvec )
+			if (not phys:IsValid()) then GrenadeA:Remove() return end
+			aimvec:Mul(1001) -- Force of throw
+			aimvec:Add(VectorRand(-10, 10))
+			phys:ApplyForceCenter(aimvec)
 			BroadcastLua([[Abilities.Grenade(Player(]]..ply:UserID()..[[))]])
 			ply:SendLua([[Abilities.GrenadeCoolBar = 0]])
 			ply.CanGrenade = false

@@ -28,15 +28,20 @@ resource.AddFile("resource/fonts/Cairo.ttf")
 Atreides_PlyMDL = "models/player/swat.mdl"
 Harkonnen_PlyMDL = "models/ninja/rage_enforcer.mdl"
 
-resource.AddWorkshop( "1622006977" ) -- Harkonnen VTOL
-resource.AddWorkshop( "831680603" ) --  Simfphys APC
-resource.AddWorkshop( "2334354896" ) -- Atreides/Fremen VTOLs
-resource.AddWorkshop( "2211859288" ) -- Crysis Weapons
-resource.AddWorkshop( "415143062" ) --  TFA Redux
-resource.AddWorkshop( "848490709" ) -- TFA KF2 Melee
-resource.AddWorkshop( "223357888" ) -- Playermodel Harkonnen
---resource.AddWorkshop( "1797517677" ) -- Playermodel Atreides
---resource.AddWorkshop( "677125227" ) -- Enhanced Citizens
+resource.AddWorkshop("1622006977") -- Harkonnen VTOL
+resource.AddWorkshop("831680603") --  Simfphys APC
+resource.AddWorkshop("2334354896") -- Atreides/Fremen VTOLs
+resource.AddWorkshop("2211859288") -- Crysis Weapons
+resource.AddWorkshop("415143062") --  TFA Redux
+resource.AddWorkshop("848490709") -- TFA KF2 Melee
+resource.AddWorkshop("223357888") -- Playermodel Harkonnen
+--resource.AddWorkshop("1797517677") -- Playermodel Atreides
+--resource.AddWorkshop("677125227") -- Enhanced Citizens
+
+
+-- This is the new .rakmap format
+-- It allows to port vanilla maps to arrakis gamemode
+-- It is modular
 
 MapStore = {}
 
@@ -48,6 +53,10 @@ function ReadMapStore()
 
 end
 
+-- This is the new .arastat format
+-- It allows to nerf and buff weapons and entities at will
+-- It is modular
+
 StatStore = {}
 
 function ReadStatStore(filename)
@@ -57,10 +66,13 @@ function ReadStatStore(filename)
 	PrintTable(StatStore)
 end
 
+
+-- Read MapStore (rakmap) and StatStore (arastat)
 ReadMapStore()
 ReadStatStore("arrakis/config/default.arastat")
 
--- Mapdata
+
+-- Build up mapdata
 SPP = MapStore["SPP"]
 SP_Vtols_Harkonnen = MapStore["Harkonnen"]["Vtols"]
 SP_APC_Harkonnen = MapStore["Harkonnen"]["APCs"]
@@ -71,6 +83,7 @@ SP_Atreides = MapStore["Atreides"]["PlySpawns"]
 SpicePos = MapStore["SpicefogPos"]
 
 SPH = {}
+
 -- Round Vars
 RoundHasEnded = 0
 
@@ -80,12 +93,12 @@ RunConsoleCommand("sv_tfa_cmenu_key","27")
 RunConsoleCommand("sv_tfa_attachments_enabled","1")
 
 -- Set up CVARs
-CVAR_CaptureTime = CreateConVar( "dune_sv_capture_time", "5", FCVAR_NONE+FCVAR_NOTIFY, "Time needed to capture harvesters", 0.01)
-CVAR_GrenadeCooldown = CreateConVar( "dune_sv_grenade_cooldown", "7", FCVAR_NONE+FCVAR_NOTIFY, "The lower, the faster the Grenade recharges", 0.01)
-CVAR_ShieldInterval = CreateConVar( "dune_sv_recharge_interval", "0.1", FCVAR_NONE+FCVAR_NOTIFY, "The lower, the faster the shield recharges", 0.01)
-CVAR_ShieldDelay = CreateConVar( "dune_sv_recharge_delay", "1", FCVAR_NONE+FCVAR_NOTIFY, "The lower, the sooner the shield starts recharging", 0.1)
-CVAR_Gamemode = CreateConVar( "dune_sv_gamemode", "2", FCVAR_NONE+FCVAR_NOTIFY, "1 - DM; 2 - Spice Harvest", 1,2)
---CVAR_Aleph = CreateConVar( "dune_sv_alephmode", "0", FCVAR_NONE+FCVAR_NOTIFY+FCVAR_UNREGISTERED, "Easteregg lol", 0,1)
+CVAR_CaptureTime = CreateConVar("dune_sv_capture_time", "5", FCVAR_NONE+FCVAR_NOTIFY, "Time needed to capture harvesters", 0.01)
+CVAR_GrenadeCooldown = CreateConVar("dune_sv_grenade_cooldown", "7", FCVAR_NONE+FCVAR_NOTIFY, "The lower, the faster the Grenade recharges", 0.01)
+CVAR_ShieldInterval = CreateConVar("dune_sv_recharge_interval", "0.1", FCVAR_NONE+FCVAR_NOTIFY, "The lower, the faster the shield recharges", 0.01)
+CVAR_ShieldDelay = CreateConVar("dune_sv_recharge_delay", "1", FCVAR_NONE+FCVAR_NOTIFY, "The lower, the sooner the shield starts recharging", 0.1)
+CVAR_Gamemode = CreateConVar("dune_sv_gamemode", "2", FCVAR_NONE+FCVAR_NOTIFY, "1 - DM; 2 - Spice Harvest", 1,2)
+CVAR_Announcer = CreateConVar("dune_sv_announcer", "1", FCVAR_NONE+FCVAR_NOTIFY, "1 - On; 0 - Off", 0,1)
 
 -- Loadout
 function GM:PlayerLoadout(ply)
@@ -108,9 +121,9 @@ end
 -- Thx to Omni Games on YT!
 function AutoBalance()
 	
-	if table.Count(team.GetPlayers(1)) > table.Count(team.GetPlayers(2)) then
+	if #team.GetPlayers(1) > #team.GetPlayers(2) then
 		return 2
-	elseif table.Count(team.GetPlayers(1)) < table.Count(team.GetPlayers(2)) then
+	elseif #team.GetPlayers(1) < #team.GetPlayers(2) then
 		return 1
 	else
 		local KDR_Atreides = 0
@@ -118,12 +131,12 @@ function AutoBalance()
 		for k,v in pairs(team.GetPlayers(1)) do
 			KDR_Atreides = KDR_Atreides + v:Frags()/v:Deaths()
 		end
-		KDR_Atreides = KDR_Atreides/table.Count(team.GetPlayers(1))
+		KDR_Atreides = KDR_Atreides/#team.GetPlayers(1)
 
 		for k,v in pairs(team.GetPlayers(2)) do
 			KDR_Harkonnen = KDR_Harkonnen + v:Frags()/v:Deaths()
 		end
-		KDR_Harkonnen = KDR_Harkonnen/table.Count(team.GetPlayers(2))
+		KDR_Harkonnen = KDR_Harkonnen/#team.GetPlayers(2)
 
 		if KDR_Atreides > KDR_Harkonnen then
 			return 2
@@ -137,12 +150,13 @@ end
 
 -- Vehicles
 -- Simfphys compatibility
-function GM:PlayerButtonDown( ply, btn )
-	numpad.Activate( ply, btn )
+function GM:PlayerButtonDown(ply, btn)
+	numpad.Activate(ply, btn)
 end
-function GM:PlayerButtonUp( ply, btn )
-	numpad.Deactivate( ply, btn )
+function GM:PlayerButtonUp(ply, btn)
+	numpad.Deactivate(ply, btn)
 end
+
 -- When Hotfixing
 local OldHarkonnenVtols = ents.FindByName("vtol_harkonnen")
 for k, v in ipairs(OldHarkonnenVtols) do
@@ -195,6 +209,10 @@ function WinHarvester(iTeam,iHarvester)
 	HarvesterWinners[iHarvester] = iTeam
 	HarvesterManip(iHarvester,iTeam)
 	print("Harvester: "..iHarvester.." -- ".."Team: "..iTeam)
+	if CVAR_Announcer:GetInt() == 1 then
+		local Announcement = "announcers/default/"..iTeam..[[_ex_]]..iHarvester..".wav"
+		BroadcastLua([[surface.PlaySound("]]..Announcement..[[")]])
+	end
 	Decapture(1,1)
 end
 
@@ -233,7 +251,7 @@ function ScanSpawnpoint(ply, vCorner1,radius1)
 	local iPlayers = 0
 	
 	for i = 1, #tEntities do
-		if (tEntities[i]:IsPlayer() && tEntities[i] != ply ) then
+		if (tEntities[i]:IsPlayer() && tEntities[i] != ply) then
 			iPlayers = iPlayers + 1
 			tPlayers[iPlayers] = tEntities[i]
 		end
@@ -248,7 +266,7 @@ function ScanHarvester(vCorner1,radius1)
 	local iPlayers = 0
 	
 	for i = 1, #tEntities do
-		if ( tEntities[ i ]:IsPlayer() ) then
+		if (tEntities[ i ]:IsPlayer()) then
 			iPlayers = iPlayers + 1
 			tPlayers[ iPlayers ] = tEntities[ i ]
 		end
@@ -296,7 +314,7 @@ timer.Create("HarvesterScan",0.3,0,function()
 		for xk,xv in pairs(CapturingTable) do
 			if xv < 1 then Empties = Empties + 1 end
 		end
-		if Empties == table.Count(SPP) then
+		if Empties == #SPP then
 			Decapture(1,1)
 		end
 end)
@@ -356,10 +374,10 @@ function RespawnVehiclesAtreides(vIndex)
 	--sim_fphys_cogtank
 	
 	local OldAtreidesVtols = ents.FindByName("vtol_atreides")
-	iCurAtreidesVtols = table.Count(OldAtreidesVtols)
+	iCurAtreidesVtols = #OldAtreidesVtols
 
 	local OldAtreidesAPCs = ents.FindByName("apc_atreides")
-	iCurAtreidesAPCs = table.Count(OldAtreidesAPCs)
+	iCurAtreidesAPCs = #OldAtreidesAPCs
 
 	if !IsValid(AtreidesAPCEntIndexes[vIndex]) then
 		local APC = simfphys.SpawnVehicleSimple("sim_fphys_conscriptapc_armed", SP_APC_Atreides[vIndex], Angle(0, 170, 0))
@@ -381,10 +399,10 @@ end
 
 function RespawnVehiclesHarkonnen(vIndex)
 	local OldHarkonnenVtols = ents.FindByName("vtol_harkonnen")
-	iCurHarkonnenVtols = table.Count(OldHarkonnenVtols)
+	iCurHarkonnenVtols = #OldHarkonnenVtols
 
 	local OldHarkonnenAPCs = ents.FindByName("apc_harkonnen")
-	iCurHarkonnenAPCs = table.Count(OldHarkonnenAPCs)
+	iCurHarkonnenAPCs = #OldHarkonnenAPCs
 
 	if !IsValid(HarkonnenAPCEntIndexes[vIndex]) then
 		local APC = simfphys.SpawnVehicleSimple("sim_fphys_conscriptapc_armed", SP_APC_Harkonnen[vIndex], Angle(0, 170, 0))
@@ -502,30 +520,6 @@ function SpawnSpiceFog()
 	Spicestack:Activate()
 	Spicestack:SetPos(SpicePos)
 	Spicestack:Fire("TurnOn")
-
-
-	if IsValid(Spicestack2) then 
-		Spicestack2:Remove()
-	end
-	/*
-	Spicestack2 = ents.Create("env_smokestack")
-	Spicestack2:SetKeyValue("SmokeMaterial","particle/particle_glow_05.vmt")
-	Spicestack2:SetKeyValue("StartSize","155")
-	Spicestack2:SetKeyValue("EndSize","65")
-	Spicestack2:SetKeyValue("Rate","255")
-	Spicestack2:SetKeyValue("Speed","555")
-	Spicestack2:SetKeyValue("SpreadSpeed","11600")
-	Spicestack2:SetKeyValue("JetLength","14500")
-	Spicestack2:SetKeyValue("Twist","11")
-	Spicestack2:SetKeyValue("InitialState","1")
-	Spicestack2:SetKeyValue("rendercolor","255 255 255")
-	Spicestack2:SetKeyValue("renderamt","255")
-
-	Spicestack2:Spawn()
-	Spicestack2:Activate()
-	Spicestack2:SetPos(SpicePos)
-	Spicestack2:Fire("TurnOn")
-	*/
 end
 
 local SuicideFunnies = {
@@ -564,7 +558,7 @@ hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
 end)
 
 -- Factions
-function jAtreides( ply )
+function jAtreides(ply)
 	ply:StripAmmo()
 	ply:ExitVehicle()
 	ply:StripWeapons()
@@ -573,7 +567,7 @@ function jAtreides( ply )
     --ChatAdd("TEAMCHANGE"," joined House Atreides!",{1,ply:Nick()})
 end 
  
-function jHarkonnen( ply )
+function jHarkonnen(ply)
 	ply:StripAmmo()
 	ply:ExitVehicle()
 	ply:StripWeapons()
@@ -581,7 +575,7 @@ function jHarkonnen( ply )
     ply:Spawn()
    --ChatAdd("TEAMCHANGE"," joined House Harkonnen!",{2,ply:Nick()})
 end 
-function jAtreidesPLY( ply )
+function jAtreidesPLY(ply)
 	--ply:Kill()
 	ply:StripAmmo()
 	ply:ExitVehicle()
@@ -591,7 +585,7 @@ function jAtreidesPLY( ply )
     --ChatAdd("TEAMCHANGE"," joined House Atreides!",{1,ply:Nick()})
 end 
  
-function jHarkonnenPLY( ply )
+function jHarkonnenPLY(ply)
 	--ply:Kill()
 	ply:StripAmmo()
 	ply:ExitVehicle()
@@ -658,9 +652,9 @@ hook.Add("PlayerInitialSpawn","Dune_JL",function(ply)
 	ply:ConCommand("dune_team")
 end)
 
-hook.Add( "PlayerDisconnected", "Dune_JL_Disconnect", function(ply)
+hook.Add("PlayerDisconnected", "Dune_JL_Disconnect", function(ply)
     ChatAdd("JL"," has left arrakis!",ply:Nick())
-end )
+end)
 
 local PInit = {}
 
@@ -708,9 +702,7 @@ function GM:PlayerSetModel(ply)
 	if ply:Team() != 1 && ply:Team() != 2 then 
 		ply:SetModel("models/effects/teleporttrail_alyx.mdl")
 		ply:SetPos(Vector(0,0,-31110))
-		--ply:Lock()
 	end
-	--Aleph_PlyMDL = "models/tsbb/animals/asian_elephant.mdl"
 
 	if ply:Team() == Atreides then
 		ply:Give("tfa_kf2_katana") --melee sword
@@ -719,10 +711,9 @@ function GM:PlayerSetModel(ply)
 	    ply:Give("tfa_bcry2_gauss") --sniper
 	    ply:Give("tfa_bcry2_hmg") --heavy
 	    ply:Give("weapon_lfsmissilelauncher") -- Rocket Launcher
-	    --ply:GiveAmmo(32, "357")
+
 	    ply:SetModel(Atreides_PlyMDL)
-	    ply:SetBodygroup(1, 2)
-	    TFAUpdateAttachments()
+
 	elseif ply:Team() == Harkonnen then
 	    ply:Give("tfa_kf2_pulverizer") --melee hammer
 	    ply:Give("tfa_bcry2_gauss") --sniper
@@ -731,24 +722,20 @@ function GM:PlayerSetModel(ply)
 	  	ply:Give("tfa_bcry2_fy71") -- rifle without loop glitch til fix
 	  	ply:Give("weapon_lfsmissilelauncher") -- Rocket Launcher
 	    --ply:Give("tfa_bcry2_scar") --rifle
-	    --ply:GiveAmmo(32, "357")
-	    --if CVAR_Aleph:GetInt() != 1 then
-	    	ply:SetModel(Harkonnen_PlyMDL)
-		--else
-			--ply:SetModel(Aleph_PlyMDL)
-		--end
+
+	    ply:SetModel(Harkonnen_PlyMDL)
 	end
 end
 function GM:PlayerHurt(victim, attacker)
 	timer.Stop("Recharge_"..victim:SteamID())
 	timer.Stop("Recharge_Starter_"..victim:SteamID())
-	timer.Create( "Recharge_Starter_"..victim:SteamID(), CVAR_ShieldDelay:GetFloat(), 1, function() 
+	timer.Create("Recharge_Starter_"..victim:SteamID(), CVAR_ShieldDelay:GetFloat(), 1, function() 
 		if victim:Armor() == 0 then
-			timer.Create( "Recharge_"..victim:SteamID(), CVAR_ShieldInterval:GetFloat(), 100, function() 
+			timer.Create("Recharge_"..victim:SteamID(), CVAR_ShieldInterval:GetFloat(), 100, function() 
 				victim:SetArmor(victim:Armor()+1)
 			end)
 		else
-			timer.Create( "Recharge_"..victim:SteamID(), CVAR_ShieldInterval:GetFloat(), 100-victim:Armor(), function() 
+			timer.Create("Recharge_"..victim:SteamID(), CVAR_ShieldInterval:GetFloat(), 100-victim:Armor(), function() 
 				victim:SetArmor(victim:Armor()+1)
 			end)
 		end

@@ -1,6 +1,6 @@
 if !CLIENT then return end
 
--- Kefta Skeleton Weapon HUD
+-- Thanks to Kefta for Skeleton Weapon HUD
 
 local MAX_SLOTS = 6	 -- Max number of weapon slots. Expects Integer [0, inf)
 local CACHE_TIME = 1 -- Time in seconds between updating the weapon cache. RealTime is used for comparisons. Expects Decimal [0, inf]. 0 = update every frame, inf = never update
