@@ -121,6 +121,36 @@ CVAR_Gamemode = CreateConVar("dune_sv_gamemode", "2", FCVAR_NONE+FCVAR_NOTIFY, "
 CVAR_Announcer = CreateConVar("dune_sv_announcer", "1", FCVAR_NONE+FCVAR_NOTIFY, "1 - On; 0 - Off", 0,1)
 CVAR_AnnouncerVoice = CreateConVar("dune_sv_announcer_voice", "default", FCVAR_NONE+FCVAR_NOTIFY, "Folder name in sound/arrakis/announcers/<voice>; Default: default")
 
+
+local function Announce(FileName)
+	local sound
+	local filter
+	if SERVER then
+		filter = RecipientFilter()
+		filter:AddAllPlayers()
+	end
+	if SERVER or !LoadedSounds[FileName] then
+		sound = CreateSound(game.GetWorld(), FileName, filter)
+		if sound then
+			sound:SetSoundLevel(0)
+			if CLIENT then
+				LoadedSounds[FileName] = {sound, filter}
+			end
+		end
+	else
+		sound = LoadedSounds[FileName][1]
+		filter = LoadedSounds[FileName][2]
+	end
+	if sound then
+		if CLIENT then
+			sound:Stop()
+		end
+		sound:Play()
+		sound:ChangeVolume(1)
+	end
+	return sound
+end
+
 -- Loadout
 function GM:PlayerLoadout(ply)
 	ply:SetArmor(100)
@@ -224,7 +254,7 @@ function WinHarvester(iTeam,iHarvester)
 	HarvesterManip(iHarvester,iTeam)
 	if CVAR_Announcer:GetInt() == 1 then
 		local Announcement = [[announcers/]]..CVAR_AnnouncerVoice:GetString()..[[/]]..iTeam..[[_ex_]]..iHarvester..".wav"
-		BroadcastLua([[surface.PlaySound("]]..Announcement..[[")]])
+		Announce(Announcement)
 	end
 	Decapture(1,1)
 end
@@ -741,7 +771,7 @@ function WinRound(iTeam)
 	BroadcastLua("WinRound("..iTeam..")")
 	if CVAR_Announcer:GetInt() == 1 then
 		local Announcement = [[announcers/]]..CVAR_AnnouncerVoice:GetString()..[[/]]..iTeam..[[_win]]..".wav"
-		BroadcastLua([[surface.PlaySound("]]..Announcement..[[")]])
+		Announce(Announcement)
 	end
 	timer.Simple(7,function()
 		game.ConsoleCommand("changelevel " .. game.GetMap() ..  "\n")
