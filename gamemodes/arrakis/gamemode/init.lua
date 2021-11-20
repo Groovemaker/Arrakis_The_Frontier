@@ -25,10 +25,11 @@ resource.AddFile("sound/grenade_recharged.wav")
 resource.AddFile("sound/announcers/default/1_ex_1.wav")
 resource.AddFile("sound/announcers/default/1_ex_2.wav")
 resource.AddFile("sound/announcers/default/1_ex_3.wav")
+resource.AddFile("sound/announcers/default/1_win.wav")
 resource.AddFile("sound/announcers/default/2_ex_1.wav")
 resource.AddFile("sound/announcers/default/2_ex_2.wav")
 resource.AddFile("sound/announcers/default/2_ex_3.wav")
-
+resource.AddFile("sound/announcers/default/2_win.wav")
 resource.AddFile("resource/fonts/RobotoMono.ttf")
 resource.AddFile("resource/fonts/Orbitron.ttf")
 resource.AddFile("resource/fonts/Cairo.ttf")
@@ -754,6 +755,10 @@ end
 function WinRound(iTeam)
 	RoundHasEnded = 1
 	BroadcastLua("WinRound("..iTeam..")")
+	if CVAR_Announcer:GetInt() == 1 then
+		local Announcement = "announcers/default/"..iTeam..[[_win]]..".wav"
+		BroadcastLua([[surface.PlaySound("]]..Announcement..[[")]])
+	end
 	timer.Simple(7,function()
 		game.ConsoleCommand("changelevel " .. game.GetMap() ..  "\n")
 	end)
