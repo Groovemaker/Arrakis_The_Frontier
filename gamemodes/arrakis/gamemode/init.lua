@@ -575,13 +575,14 @@ hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
 		end
 		net.WriteString(SuicideFunnies[math.random(#SuicideFunnies)])
 	net.Broadcast()
-
+	victim:ConCommand("dune_class")
 	if CVAR_Gamemode:GetInt() != 1 || victim == attacker || !attacker:IsPlayer() then return end
 	if attacker:Team() == 1 then
 		ManipScore(1,ScoreAtreides+1)
 	elseif attacker:Team() == 2 then
 		ManipScore(2,ScoreHarkonnen+1)
 	end
+	
 end)
 
 -- Factions
