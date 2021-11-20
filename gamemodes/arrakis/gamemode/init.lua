@@ -22,6 +22,7 @@ resource.AddFile("sound/arrakis_credits.mp3")
 resource.AddFile("sound/arrakis_ambience.wav")
 resource.AddFile("sound/grenade_recharged.wav")
 
+-- Announcer Sounds
 resource.AddFile("sound/announcers/default/1_ex_1.wav")
 resource.AddFile("sound/announcers/default/1_ex_2.wav")
 resource.AddFile("sound/announcers/default/1_ex_3.wav")
@@ -31,31 +32,30 @@ resource.AddFile("sound/announcers/default/2_ex_2.wav")
 resource.AddFile("sound/announcers/default/2_ex_3.wav")
 resource.AddFile("sound/announcers/default/2_win.wav")
 
+-- Sounds
 resource.AddFile("resource/fonts/RobotoMono.ttf")
 resource.AddFile("resource/fonts/Orbitron.ttf")
 resource.AddFile("resource/fonts/Cairo.ttf")
 
+-- Playermodel Setup
 Atreides_PlyMDL = "models/player/swat.mdl"
 Harkonnen_PlyMDL = "models/ninja/rage_enforcer.mdl"
 
+-- Workshop Resource
+--resource.AddWorkshop("2211859288") -- Crysis Weapons -- UNUSED
 resource.AddWorkshop("1622006977") -- Harkonnen VTOL
 resource.AddWorkshop("831680603") --  Simfphys APC
 resource.AddWorkshop("2334354896") -- Atreides/Fremen VTOLs
---resource.AddWorkshop("2211859288") -- Crysis Weapons
 resource.AddWorkshop("420970650") -- Darkes scifi weaponry
 resource.AddWorkshop("415143062") --  TFA Redux
 resource.AddWorkshop("848490709") -- TFA KF2 Melee
 resource.AddWorkshop("223357888") -- Playermodel Harkonnen
---resource.AddWorkshop("1797517677") -- Playermodel Atreides
---resource.AddWorkshop("677125227") -- Enhanced Citizens
-
 
 -- This is the new .rakmap format
 -- It allows to port vanilla maps to arrakis gamemode
 -- It is modular
 
 MapStore = {}
-
 function ReadMapStore()
 	local JSONData = file.Read("arrakis/maps/"..game.GetMap()..".rakmap")
 	MapStore = util.JSONToTable(JSONData)
@@ -69,14 +69,12 @@ end
 -- It is modular
 
 StatStore = {}
-
 function ReadStatStore(filename)
 	local JSONData2 = file.Read(filename)
 	StatStore = util.JSONToTable(JSONData2)
 	print("Loading arastat file: "..filename)
 	PrintTable(StatStore)
 end
-
 
 -- Read MapStore (rakmap) and StatStore (arastat)
 ReadMapStore()
@@ -93,7 +91,18 @@ SP_Harkonnen = MapStore["Harkonnen"]["PlySpawns"]
 SP_Atreides = MapStore["Atreides"]["PlySpawns"]
 SpicePos = MapStore["SpicefogPos"]
 
+
+-- Build up Vars
+HarkonnenVtolEntIndexes = {}
+AtreidesVtolEntIndexes = {}
+AtreidesAPCEntIndexes = {}
+HarkonnenAPCEntIndexes = {}
+CapturingInProgress = {}
+HarvesterWinners = {}
+CapturingTable = {}
 SPH = {}
+
+local PInit = {}
 
 -- Round Vars
 RoundHasEnded = 0
@@ -169,7 +178,6 @@ function GM:PlayerButtonUp(ply, btn)
 	numpad.Deactivate(ply, btn)
 end
 
--- When Hotfixing
 local OldHarkonnenVtols = ents.FindByName("vtol_harkonnen")
 for k, v in ipairs(OldHarkonnenVtols) do
 	if(IsValid(v)) then
@@ -210,17 +218,10 @@ function ManipScore(iTeam,iScore)
 		net.WriteInt(iScore,32)
 	net.Broadcast()
 end
-HarvesterWinners = {}
--- Capturing Net Messages
-
-CapturingInProgress = {}
-CapturingTable = {}
-
 
 function WinHarvester(iTeam,iHarvester)
 	HarvesterWinners[iHarvester] = iTeam
 	HarvesterManip(iHarvester,iTeam)
-	print("Harvester: "..iHarvester.." -- ".."Team: "..iTeam)
 	if CVAR_Announcer:GetInt() == 1 then
 		local Announcement = [[announcers/]]..CVAR_AnnouncerVoice:GetString()..[[/]]..iTeam..[[_ex_]]..iHarvester..".wav"
 		BroadcastLua([[surface.PlaySound("]]..Announcement..[[")]])
@@ -237,10 +238,6 @@ function Capture(iTeam,iHarvester)
 	timer.Create("CaptureStarter"..iHarvester, CVAR_CaptureTime:GetFloat(), 1, function()
 		WinHarvester(iTeam,iHarvester)
 	end)
-end
-
-function UpdateCaptureHUD(iTeam,tHarvester)
-
 end
 
 function Decapture(iTeam,iHarvester)
@@ -287,12 +284,6 @@ function ScanHarvester(vCorner1,radius1)
 	return tPlayers, iPlayers
 end
 
-HarkonnenVtolEntIndexes = {}
-AtreidesVtolEntIndexes = {}
-
-AtreidesAPCEntIndexes = {}
-HarkonnenAPCEntIndexes = {}
-
 timer.Create("HarvesterScan",0.3,0,function()
 	Scores = {
 		ScoreAtreides,
@@ -311,8 +302,6 @@ timer.Create("HarvesterScan",0.3,0,function()
 				if CapturingInProgress[k] == 0 then
 					CapturingInProgress[k] = 1
 					CapturingTable[k] = People1[1]:Team()
-					--PrintTable(CapturingTable)
-					--UpdateCaptureHUD(People1[1]:Team(),CapturingTable)
 					Capture(People1[1]:Team(),k)
 				end
 			else
@@ -383,8 +372,6 @@ function SpawnVehiclesAtreides()
 end
 
 function RespawnVehiclesAtreides(vIndex)
-	--sim_fphys_cogtank
-	
 	local OldAtreidesVtols = ents.FindByName("vtol_atreides")
 	iCurAtreidesVtols = #OldAtreidesVtols
 
@@ -486,12 +473,6 @@ function SpawnHarvesters()
 	end
 end
 
--- Second Sun
-function SunMod()
-
-
-end
-
 function GM:PostGamemodeLoaded()
 	timer.Simple(1,function() 
 		SpawnVehiclesAtreides()
@@ -511,8 +492,8 @@ function GM:PostGamemodeLoaded()
 	SpawnSpiceFog()	
 end
 
+-- Spice Smokestack
 function SpawnSpiceFog()
-	-- Spice Smokestack
 	if IsValid(Spicestack) then 
 		Spicestack:Remove()
 	end
@@ -535,6 +516,7 @@ function SpawnSpiceFog()
 	Spicestack:Fire("TurnOn")
 end
 
+-- Killmsgs
 local SuicideFunnies = {
 	"tried eating sand.",
 	"wiped their ass with spice.",
@@ -550,7 +532,6 @@ local SuicideFunnies = {
 
 -- DM Score
 hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
-
 	net.Start("PlyKill")
 		net.WriteEntity(victim)
 		if !attacker:IsVehicle() then
@@ -563,11 +544,10 @@ hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
 
 	if CVAR_Gamemode:GetInt() != 1 || victim == attacker || !attacker:IsPlayer() then return end
 	if attacker:Team() == 1 then
-		ManipScore(1,ScoreAtreides+100)
+		ManipScore(1,ScoreAtreides+1)
 	elseif attacker:Team() == 2 then
-		ManipScore(2,ScoreHarkonnen+100)
+		ManipScore(2,ScoreHarkonnen+1)
 	end
-
 end)
 
 -- Factions
@@ -577,44 +557,34 @@ function jAtreides(ply)
 	ply:StripWeapons()
     ply:SetTeam(1)
     ply:Spawn()
-    --ChatAdd("TEAMCHANGE"," joined House Atreides!",{1,ply:Nick()})
 end 
- 
+
 function jHarkonnen(ply)
 	ply:StripAmmo()
 	ply:ExitVehicle()
 	ply:StripWeapons()
     ply:SetTeam(2)
     ply:Spawn()
-   --ChatAdd("TEAMCHANGE"," joined House Harkonnen!",{2,ply:Nick()})
 end 
+
 function jAtreidesPLY(ply)
-	--ply:Kill()
 	ply:StripAmmo()
 	ply:ExitVehicle()
 	ply:StripWeapons()
     ply:SetTeam(1)
     ply:Spawn()
-    --ChatAdd("TEAMCHANGE"," joined House Atreides!",{1,ply:Nick()})
 end 
  
 function jHarkonnenPLY(ply)
-	--ply:Kill()
 	ply:StripAmmo()
 	ply:ExitVehicle()
 	ply:StripWeapons()
     ply:SetTeam(2)
     ply:Spawn()
-   --ChatAdd("TEAMCHANGE"," joined House Harkonnen!",{2,ply:Nick()})
 end 
 
 concommand.Add("dune_join_atreides", jAtreidesPLY)
 concommand.Add("dune_join_harkonnen", jHarkonnenPLY)
-
-function TestKill(ply)
-	ply:Spawn()
-	ply:Kill()
-end
 
 -- Chatlog Helper
 function ChatAdd(type,message,args)
@@ -673,8 +643,6 @@ hook.Add("PlayerDisconnected", "Dune_JL_Disconnect", function(ply)
     ChatAdd("JL"," has left arrakis!",ply:Nick())
 end)
 
-local PInit = {}
-
 function Rebalance()
 	for k,v in pairs(player.GetAll()) do
 		if AutoBalance() == 1 then
@@ -682,6 +650,12 @@ function Rebalance()
 		else
 			jHarkonnen(v)
 		end
+	end
+end
+
+function SyncHUD()
+	for k,v in pairs(HarvesterWinners) do
+		HarvesterManip(k,v)
 	end
 end
 
@@ -694,6 +668,7 @@ hook.Add("OnRequestFullUpdate", "Dune_JL2", function(t)
 		Player(t.userid).CanGrenade = true
 		Player(t.userid):SendLua([[Player(]]..Player(t.userid):UserID()..[[).CanGrenade = true]])
 		Player(t.userid):SendLua([[Abilities.GrenadeCoolBar = 1]])
+		SyncHUD()
 	else
 		return
 	end
@@ -761,6 +736,7 @@ end
 
 -- Round End
 function WinRound(iTeam)
+	if RoundHasEnded == 1 then return end
 	RoundHasEnded = 1
 	BroadcastLua("WinRound("..iTeam..")")
 	if CVAR_Announcer:GetInt() == 1 then

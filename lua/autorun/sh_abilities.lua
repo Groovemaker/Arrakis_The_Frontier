@@ -10,7 +10,6 @@ Abilities.GrenadeClassname = "weapon_frag"
 
 if CLIENT then
 	function Abilities.Grenade(ply)
-		print(ply)
 		ply:AnimRestartGesture(GESTURE_SLOT_ATTACK_AND_RELOAD, ACT_HL2MP_GESTURE_RANGE_ATTACK_GRENADE, true)
 	end
 end

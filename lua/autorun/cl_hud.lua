@@ -189,7 +189,7 @@ net.Receive("HarvesterManip", function()
 	local iTeam = net.ReadInt(32)
 	local iHarvester = net.ReadInt(32)
 	HarvesterClaims[iHarvester] = iTeam
-	print("Harvester: "..iHarvester.." -- ".."Team: "..iTeam)
+	--print("Harvester: "..iHarvester.." -- ".."Team: "..iTeam)
 end)
 
 CaptureMessage = ""
