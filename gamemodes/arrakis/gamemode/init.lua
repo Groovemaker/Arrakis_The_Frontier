@@ -582,7 +582,7 @@ hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
 	elseif attacker:Team() == 2 then
 		ManipScore(2,ScoreHarkonnen+1)
 	end
-	
+
 end)
 
 -- Factions
@@ -608,6 +608,7 @@ function jAtreidesPLY(ply)
 	ply:StripWeapons()
     ply:SetTeam(1)
     ply:Spawn()
+	Rebalance()
 end 
  
 function jHarkonnenPLY(ply)
@@ -616,6 +617,7 @@ function jHarkonnenPLY(ply)
 	ply:StripWeapons()
     ply:SetTeam(2)
     ply:Spawn()
+	Rebalance()
 end 
 
 concommand.Add("dune_join_atreides", jAtreidesPLY)
@@ -681,11 +683,7 @@ function Reposition2(ply)
 end
 
 hook.Add("PlayerInitialSpawn","Dune_JL",function(ply)
-	ChatAdd("JL"," joined the Battlefield! Rebalancing in 5 seconds.",ply:Nick())
-	timer.Stop("DuneRebalanceAfterJoin")
-	timer.Create("DuneRebalanceAfterJoin",5,1,function()
-		Rebalance()
-	end)
+	ChatAdd("JL"," joined the Battlefield!",ply:Nick())
 	ply:ConCommand("sfw_allow_advanims 0")
 	ply:ConCommand("sfw_allow_viewbob 0")
 	ply:ConCommand("sfw_allow_viewsway 0")
