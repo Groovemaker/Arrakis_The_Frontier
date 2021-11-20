@@ -1,17 +1,12 @@
 if not CLIENT then return end
-local function DrawBoxBlur( x, y, w, h, layers, density, alpha )
-	local blur = Material( "pp/blurscreen" )
-	surface.SetDrawColor( 255, 255, 255, alpha ) 
-	surface.SetMaterial( blur ) 
-	for i = 1, layers do 
-		blur:SetFloat( "$blur", ( i / layers ) * density ) 
-		blur:Recompute() 
-		render.UpdateScreenEffectTexture() 
-		render.SetScissorRect( x, y, x + w, y + h, true ) 
-		surface.DrawTexturedRect( 0, 0, ScrW(), ScrH() ) 
-		render.SetScissorRect( 0, 0, 0, 0, false ) 
-	end
-end
+
+
+-- Vars
+HarvesterClaims = {0,0,0}
+CaptureMessage = ""
+RoundEnd = false
+
+-- Fonts
 surface.CreateFont("HP",{
 	font = "Orbitron",
 	extended = false,
@@ -173,7 +168,21 @@ surface.CreateFont("END3",{
 	additive = false,
 	outline = false,
 })
-HarvesterClaims = {0,0,0}
+
+-- Blur
+local function DrawBoxBlur( x, y, w, h, layers, density, alpha )
+	local blur = Material( "pp/blurscreen" )
+	surface.SetDrawColor( 255, 255, 255, alpha ) 
+	surface.SetMaterial( blur ) 
+	for i = 1, layers do 
+		blur:SetFloat( "$blur", ( i / layers ) * density ) 
+		blur:Recompute() 
+		render.UpdateScreenEffectTexture() 
+		render.SetScissorRect( x, y, x + w, y + h, true ) 
+		surface.DrawTexturedRect( 0, 0, ScrW(), ScrH() ) 
+		render.SetScissorRect( 0, 0, 0, 0, false ) 
+	end
+end
 
 net.Receive("ScoreManip", function()
 	iTeam = net.ReadInt(32)
@@ -192,7 +201,7 @@ net.Receive("HarvesterManip", function()
 	--print("Harvester: "..iHarvester.." -- ".."Team: "..iTeam)
 end)
 
-CaptureMessage = ""
+
 
 net.Receive("Capture", function()
 	local iTeam = net.ReadInt(32)
@@ -218,12 +227,12 @@ net.Receive("Decapture", function()
 	CaptureMessage = ""
 end)
 
-RoundEnd = false
+
 
 -- Thx to gmod-o-poly for basic understanding!
 function NameTag()
 
-	-- Players
+	-- Player
 	for k, v in pairs(player.GetAll()) do
 	teamcolor = team.GetColor(v:Team())
 		if v:Alive() && v:Team() == LocalPlayer():Team() then
@@ -248,9 +257,6 @@ function NameTag()
 						surface.DrawTexturedRect( pos.x-15, pos.y - 75, 25, 32 )	
 					end
 					draw.DrawText(v:Name(), "NametagsFont", pos.x, pos.y -38, team.GetColor(v:Team()), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-					--draw.DrawText(v:GetMoney(), "Orbitron", pos.x - 10, pos.y -23, team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
-					
-
 				end
 			end
 		end
@@ -271,7 +277,9 @@ function NameTag()
 			draw.DrawText("["..v:GetNWInt("harvester_id").."]", "HarvesterID", pos.x, pos.y -38, HarvCol, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		end
 	end
+
 end
+
 hook.Add("HUDPaint", "Dune_DrawHUD", function()
 	if InMenu then return end
 	if RoundEnd == true then 
@@ -281,13 +289,9 @@ hook.Add("HUDPaint", "Dune_DrawHUD", function()
 		local Aleph = 166
 		DrawBoxBlur(ScrW()*0.05, ScrH()*0.05, ScrW()*0.9, ScrH()*0.85,11,4,255)
 		draw.RoundedBox( 6, ScrW()*0.05, ScrH()*0.05, ScrW()*0.9, ScrH()*0.85, Color(35,35,35,Aleph/1.8) )
-
 		draw.RoundedBox( 8, ScrW()*0.35, ScrH()*0.176, ScrW()*0.2835, ScrH()*0.15, Color(35,35,35,Aleph/1.9) )
 
 		surface.SetDrawColor(Color( 255,255,255, Aleph*1.9 ))
-		--surface.SetMaterial(Material("materials/ability_grenade.png"))
-		--surface.DrawTexturedRect(ScrW() * 0.453 , ScrH() * 0.35, ScrW()/12, ScrH()/8)
-
 		draw.SimpleText("The Battle has Concluded!", "END1", ScrW() / 2.04 ,ScrH() *0.25, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
 		surface.SetDrawColor(Color( 255,255,255, Aleph/1.3 ))
@@ -302,18 +306,17 @@ hook.Add("HUDPaint", "Dune_DrawHUD", function()
 		draw.SimpleText(ScoreHarkonnen, "END3", ScrW() * 0.5785 , ScrH() * 0.60, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 		return 
 	end
-	NameTag()
+
 	function GetAmmoForCurrentWeapon( ply )
 		if ( !IsValid( ply ) ) then return -1 end
-
 		local wep = ply:GetActiveWeapon()
 		if ( !IsValid( wep ) ) then return -1 end
 	 	ammostuff = wep:Clip1() * 5.6
 		return ammostuff
 	end
+
 	function GetMax( ply )
 		if ( !IsValid( ply ) ) then return -1 end
-
 		local wep = ply:GetActiveWeapon()
 		if ( !IsValid( wep ) ) then return -1 end
 	 	maxclip = wep:GetMaxClip1()
@@ -349,7 +352,6 @@ hook.Add("HUDPaint", "Dune_DrawHUD", function()
 	surface.DrawTexturedRect(ScrW() * 0.42 , ScrH() * 0.0065, ScrW()/22, ScrH()/14)
 
 	--Harkonnen
-	DrawBoxBlur(ScrW() / 1.1953, ScrH() * 0.025, ScrW() / 15, ScrH() / 20,11,4,255)
 	draw.RoundedBox( 4, ScrW() / 1.1953, ScrH() * 0.025, ScrW() / 15, ScrH() / 20, Color(5,5,5,Aleph/1.8) )
 
 	DrawBoxBlur(ScrW() * 0.55 , ScrH() * 0.04, ScrW() * 5000 / 18000, ScrH() / 55,11,4,255)
@@ -366,16 +368,10 @@ hook.Add("HUDPaint", "Dune_DrawHUD", function()
 	-- Scores
 	draw.SimpleText(ScoreAtreides, "Scorer", ScrW() / 7.97 ,ScrH() *0.05, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	draw.SimpleText(ScoreHarkonnen, "Scorer", ScrW() / 1.15 ,ScrH() *0.05, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-	
-	--Health Bar
-	--draw.RoundedBox( 4, ScrW() / 5.5, ScrH() / (1.1*35), ScrW() / 1.6, ScrH() / 55, Color(1,1,1,100) )
-	--draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * HP / 161, ScrH() / 73.5, Color(255, 255, 255, 100) )	
 
-	--Shield Bar
-	--draw.RoundedBox( 6, ScrW() / 5.45, ScrH() / (1.025*35), ScrW() * Armor / 161, ScrH() / 73.5, Color(111, 155, 255, 155) )
 
 	local BGCol = Color(1,1,1,1)
-	-- main body
+
 	if LocalPlayer():Team() == 1 then
 		BGCol = AtreidesCol
 		surface.SetDrawColor(Color( 111,255,200, 105 ))
@@ -427,7 +423,7 @@ hook.Add("HUDPaint", "Dune_DrawHUD", function()
 	end
 	 	
 	-- Claims Harkonnen
-	--DrawBoxBlur(ScrW() / 11 , ScrH() * 0.095, ScrW() / 15, ScrH() / 25, 11,4,255)
+	DrawBoxBlur(ScrW() / 1.1953 , ScrH() * 0.095, ScrW() / 15, ScrH() / 25, 11,4,255)
 	draw.RoundedBox( 4, ScrW() / 1.1953, ScrH() * 0.095, ScrW() / 15, ScrH() / 25, Color(5,5,5,Aleph/1.8) )
 
 	if HarvesterClaims[1] == 2 then

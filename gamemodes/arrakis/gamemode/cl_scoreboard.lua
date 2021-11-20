@@ -7,8 +7,8 @@ if CLIENT then
 
 	local Title_Height = 1
 	local Title_Color = Color(255, 255, 255, 111)
-	local Title_Font = "Scoreboarder"
-	local Title_Text = ""
+	local Title_Font = "ScoreboardTitleFont"
+	local Title_Text = GetHostName()
 	local Title_BackgroundRoundness = 2
 	local Title_BackgroundColor = Color(35, 35, 35, 56)
 
@@ -36,11 +36,11 @@ if CLIENT then
 		end}
 		Columns[3] = {name="Ping", command=function(self, arg) return tostring(arg:Ping()) end}
 
-	surface.CreateFont("ScoreboardTitleFont", {
-		font		= "CloseCaption_Normal",
-		size		= 42,
-		weight		= 1000,
-		antialias 	= true
+	surface.CreateFont("ScoreboardTitleFont",{
+		font = "Orbitron",
+		size = 32,
+		weight = 500,
+		antialias = true
 	})
 	surface.CreateFont("Scoreboarder",{
 		font = "Orbitron",
@@ -72,6 +72,7 @@ if CLIENT then
 		weight		= 500,
 		antialias 	= true
 	})
+
 	-- Thanks to slownls
 	DPANELBlurMat = Material("pp/blurscreen")
 	DPANELBlurMat2 = Material("pp/blurscreen")
@@ -92,7 +93,7 @@ if CLIENT then
 			surface.DrawTexturedRect(tx * -1, ty * -1, scrW, scrH) 
 		end
 	end
-----------LAUNCH SEQUENCE----------
+
 	local CreateScoreboard = function()
 		Scoreboard = vgui.Create("DFrame")
 		Scoreboard:SetSize(ScrW()*.65, ScrH()*.65)
@@ -142,6 +143,7 @@ if CLIENT then
 		Scoreboard.NamesListPanel:EnableHorizontal(false)
 		Scoreboard.NamesListPanel:EnableVerticalScrollbar(true)
 		Scoreboard.NamesListPanel.Refill = function(self)
+
 			self:Clear()
 
 			local PlyTable = player.GetAll()
@@ -209,8 +211,6 @@ if CLIENT then
 		Scoreboard.NamesListPanel:Refill()
 	end
 
-
-----------Hooks----------
 	function ScoreboardOpened()
 		if !ValidPanel(Scoreboard) then
 			CreateScoreboard()

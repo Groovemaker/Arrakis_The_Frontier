@@ -1,8 +1,10 @@
+-- CVars
 local hud_deathnotice_time = CreateConVar( "hud_deathnotice_time", "6", FCVAR_REPLICATED )
+
+-- Vars
 local Deaths = {}
 
-
-
+-- Fonts
 surface.CreateFont("Killfeed1",{
 	font = "Orbitron",
 	extended = false,
@@ -21,7 +23,7 @@ surface.CreateFont("Killfeed1",{
 	outline = false,
 })
 
-local Deaths = {}
+
 
 net.Receive("PlyKill", function()
 	local Tbl = {}
