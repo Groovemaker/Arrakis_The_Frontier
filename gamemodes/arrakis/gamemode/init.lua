@@ -41,7 +41,6 @@ resource.AddWorkshop( "223357888" ) -- Playermodel Harkonnen
 MapStore = {}
 
 function ReadMapStore()
-	-- Make sure you use the same filename as the one in file.Write!
 	local JSONData = file.Read("arrakis/maps/"..game.GetMap()..".rakmap")
 	MapStore = util.JSONToTable(JSONData)
 	print("Loading rakmap Mapstore Data...")
@@ -49,7 +48,17 @@ function ReadMapStore()
 
 end
 
+StatStore = {}
+
+function ReadStatStore(filename)
+	local JSONData2 = file.Read(filename)
+	StatStore = util.JSONToTable(JSONData2)
+	print("Loading arastat file: "..filename)
+	PrintTable(StatStore)
+end
+
 ReadMapStore()
+ReadStatStore("arrakis/config/default.arastat")
 
 -- Mapdata
 SPP = MapStore["SPP"]
@@ -98,12 +107,12 @@ end
 
 -- Thx to Omni Games on YT!
 function AutoBalance()
-	/*
+	
 	if table.Count(team.GetPlayers(1)) > table.Count(team.GetPlayers(2)) then
 		return 2
 	elseif table.Count(team.GetPlayers(1)) < table.Count(team.GetPlayers(2)) then
 		return 1
-	else*/
+	else
 		local KDR_Atreides = 0
 		local KDR_Harkonnen = 0
 		for k,v in pairs(team.GetPlayers(1)) do
@@ -123,7 +132,7 @@ function AutoBalance()
 		else
 			return math.random(0,1)
 		end	
-	//end
+	end
 end
 
 -- Vehicles
@@ -684,13 +693,16 @@ function GM:PlayerShouldTakeDamage(ply,attacker)
 	return attacker:GetClass() == "npc_grenade_frag" || ply == attacker || attacker:IsPlayer() && ply:Team() != attacker:Team() || attacker:IsVehicle() && ply:Team() != attacker:GetDriver():Team()
 end
 
-hook.Add( "EntityTakeDamage", "DMGStats", function(target, dmginfo)
+hook.Add("EntityTakeDamage", "DMGStats", function(target, dmginfo)
 	if (dmginfo:IsExplosionDamage()) then
 		dmginfo:ScaleDamage(3)
-	elseif (dmginfo:GetAttacker():IsPlayer() && dmginfo:GetAttacker():GetActiveWeapon():GetClass() == "tfa_bcry2_gauss") then
-		dmginfo:ScaleDamage(3)
 	end
-end )
+	for k, v in pairs(StatStore["weapons"]) do
+		if (dmginfo:GetAttacker():IsPlayer() && dmginfo:GetAttacker():GetActiveWeapon():GetClass() == k) then
+			dmginfo:ScaleDamage(v["damage"])
+		end
+	end
+end)
 
 function GM:PlayerSetModel(ply)
 	if ply:Team() != 1 && ply:Team() != 2 then 

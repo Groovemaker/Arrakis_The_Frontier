@@ -1,0 +1,9 @@
+{
+  "weapons": {
+    "tfa_bcry2_gauss": {
+      "damage":   "3"
+    }
+  },
+  "entities": {
+  }
+}
