@@ -30,6 +30,16 @@ resource.AddFile("sound/announcers/default/2_ex_1.wav")
 resource.AddFile("sound/announcers/default/2_ex_2.wav")
 resource.AddFile("sound/announcers/default/2_ex_3.wav")
 resource.AddFile("sound/announcers/default/2_win.wav")
+
+resource.AddFile("sound/announcers/schwarzenegger/1_ex_1.wav")
+resource.AddFile("sound/announcers/schwarzenegger/1_ex_2.wav")
+resource.AddFile("sound/announcers/schwarzenegger/1_ex_3.wav")
+resource.AddFile("sound/announcers/schwarzenegger/1_win.wav")
+resource.AddFile("sound/announcers/schwarzenegger/2_ex_1.wav")
+resource.AddFile("sound/announcers/schwarzenegger/2_ex_2.wav")
+resource.AddFile("sound/announcers/schwarzenegger/2_ex_3.wav")
+resource.AddFile("sound/announcers/schwarzenegger/2_win.wav")
+
 resource.AddFile("resource/fonts/RobotoMono.ttf")
 resource.AddFile("resource/fonts/Orbitron.ttf")
 resource.AddFile("resource/fonts/Cairo.ttf")
@@ -108,6 +118,7 @@ CVAR_ShieldInterval = CreateConVar("dune_sv_recharge_interval", "0.1", FCVAR_NON
 CVAR_ShieldDelay = CreateConVar("dune_sv_recharge_delay", "1", FCVAR_NONE+FCVAR_NOTIFY, "The lower, the sooner the shield starts recharging", 0.1)
 CVAR_Gamemode = CreateConVar("dune_sv_gamemode", "2", FCVAR_NONE+FCVAR_NOTIFY, "1 - DM; 2 - Spice Harvest", 1,2)
 CVAR_Announcer = CreateConVar("dune_sv_announcer", "1", FCVAR_NONE+FCVAR_NOTIFY, "1 - On; 0 - Off", 0,1)
+CVAR_AnnouncerVoice = CreateConVar("dune_sv_announcer_voice", "default", FCVAR_NONE+FCVAR_NOTIFY, "Folder name in sound/arrakis/announcers/<voice>; Default: default")
 
 -- Loadout
 function GM:PlayerLoadout(ply)
@@ -219,7 +230,7 @@ function WinHarvester(iTeam,iHarvester)
 	HarvesterManip(iHarvester,iTeam)
 	print("Harvester: "..iHarvester.." -- ".."Team: "..iTeam)
 	if CVAR_Announcer:GetInt() == 1 then
-		local Announcement = "announcers/default/"..iTeam..[[_ex_]]..iHarvester..".wav"
+		local Announcement = [[announcers/]]..CVAR_AnnouncerVoice:GetString()..[[/]]..iTeam..[[_ex_]]..iHarvester..".wav"
 		BroadcastLua([[surface.PlaySound("]]..Announcement..[[")]])
 	end
 	Decapture(1,1)
@@ -756,7 +767,7 @@ function WinRound(iTeam)
 	RoundHasEnded = 1
 	BroadcastLua("WinRound("..iTeam..")")
 	if CVAR_Announcer:GetInt() == 1 then
-		local Announcement = "announcers/default/"..iTeam..[[_win]]..".wav"
+		local Announcement = [[announcers/]]..CVAR_AnnouncerVoice:GetString()..[[/]]..iTeam..[[_win]]..".wav"
 		BroadcastLua([[surface.PlaySound("]]..Announcement..[[")]])
 	end
 	timer.Simple(7,function()
