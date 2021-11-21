@@ -651,7 +651,8 @@ function D_SetClass(ply,_classId)
 	local ClassNotAvailable = "You can only hire the allied race if you have at least "..CVAR_AlliedNeeded:GetInt().." kills!"
 	if classId == 4 && ply:Frags() < CVAR_AlliedNeeded:GetInt() && ply.AlliedReady != 1 then
 		ply:SendLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]:" ,Color(255,111,111)," ]]..ClassNotAvailable..[[")]])
-		ply.Class = 1
+		ply.Class = 0
+		ply:ConCommand("dune_class")
 	end
 	if classId == 4 && ply.AlliedReady == 1 then
 		ply.AlliedFrags = 0
