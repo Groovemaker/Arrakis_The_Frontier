@@ -652,7 +652,7 @@ function D_SetClass(ply,_classId)
 	if classId == 4 && ply:Frags() > CVAR_AlliedNeeded:GetInt() -1 then
 		ply.AlliedFrags = 0
 		ply.Class = classId
-		attacker:SendLua([[AlliedReady = 0]])
+		ply:SendLua([[AlliedReady = 0]])
 	elseif classId == 3 then
 		ply.Class = classId
 	elseif classId == 2 then
