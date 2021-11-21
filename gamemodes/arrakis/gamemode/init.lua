@@ -133,20 +133,26 @@ CVAR_AlliedNeeded = CreateConVar("dune_sv_allied_minfrags", "10", FCVAR_NONE+FCV
 CVAR_AnnouncerVoice = CreateConVar("dune_sv_announcer_voice", "default", FCVAR_NONE+FCVAR_NOTIFY, "Folder name in sound/arrakis/announcers/<voice>; Default: default")
 
 -- Spawn Protection
-local function CheckSpawnBubbles(iRadius)
+function CheckSpawnBubbles(iRadius)
 	for k,v in pairs(ents.FindInSphere(SP_AtreidesBubble, iRadius)) do
-		if !v:IsPlayer() then return end
-		if v:Team() == 1 then return end
-		v:TakeDamage(1)
+		if v:IsPlayer() then
+			if v:Team() == 2 then
+				v:SetHealth(v:Health() - 1)
+			end
+		end	
 	end
 	for k,v in pairs(ents.FindInSphere(SP_HarkonnenBubble, iRadius)) do
-		if !v:IsPlayer() then return end
-		if v:Team() == 2 then return end
-		v:TakeDamage(1)		
+		if v:IsPlayer() then
+			if v:Team() == 1 then
+				v:SetHealth(v:Health() - 1)
+			end
+		end	
 	end
 end
 
-if !timer.Exists("Dune_SpawnProtection") then timer.Create("Dune_SpawnProtection",0.5,0,function() CheckSpawnBubbles() end) end
+timer.Create("Dune_SpawnProtection",0.5,0,function() 
+	CheckSpawnBubbles(2555) 
+end)
 
 
 -- Announcer
