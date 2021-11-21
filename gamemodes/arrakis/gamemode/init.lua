@@ -150,8 +150,8 @@ function CheckSpawnBubbles(iRadius)
 	end
 end
 
-timer.Create("Dune_SpawnProtection",0.5,0,function() 
-	CheckSpawnBubbles(3255) 
+timer.Create("Dune_SpawnProtection",0.1,0,function() 
+	CheckSpawnBubbles(3555) 
 end)
 
 
