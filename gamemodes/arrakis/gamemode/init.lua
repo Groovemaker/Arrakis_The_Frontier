@@ -785,7 +785,7 @@ function GM:PlayerSetModel(ply)
 		elseif ply.Class == 4 then
 			ply:Give("sfw_dartgun") -- Pistol
 			ply:Give("sfw_aquamarine") -- Carbine
-			ply:Give("sfw_pulsar") -- Sniper
+			--ply:Give("sfw_pulsar") -- Sniper
 			ply:Give("sfw_storm") -- Shotgun
 		end
 
@@ -811,7 +811,7 @@ function GM:PlayerSetModel(ply)
 		elseif ply.Class == 4 then
 			ply:Give("sfw_ember") -- Pistol
 			ply:Give("sfw_draco") -- Carbine
-			ply:Give("sfw_hellfire") -- Special
+			--ply:Give("sfw_hellfire") -- Special
 			ply:Give("sfw_seraphim") -- Shotgun
 		end
 
