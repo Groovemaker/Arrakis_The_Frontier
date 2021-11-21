@@ -99,7 +99,8 @@ SP_APC_Atreides = MapStore["Atreides"]["APCs"]
 SP_Harkonnen = MapStore["Harkonnen"]["PlySpawns"]
 SP_Atreides = MapStore["Atreides"]["PlySpawns"]
 SpicePos = MapStore["SpicefogPos"]
-
+SP_HarkonnenBubble = MapStore["Harkonnen"]["PlySpawns"][1]
+SP_AtreidesBubble = MapStore["Atreides"]["PlySpawns"][1]
 
 -- Build up Vars
 HarkonnenVtolEntIndexes = {}
@@ -131,7 +132,24 @@ CVAR_Announcer = CreateConVar("dune_sv_announcer", "1", FCVAR_NONE+FCVAR_NOTIFY,
 CVAR_AlliedNeeded = CreateConVar("dune_sv_allied_minfrags", "10", FCVAR_NONE+FCVAR_NOTIFY, "Minimum kills needed for allied race unlocking", 1,1000)
 CVAR_AnnouncerVoice = CreateConVar("dune_sv_announcer_voice", "default", FCVAR_NONE+FCVAR_NOTIFY, "Folder name in sound/arrakis/announcers/<voice>; Default: default")
 
+-- Spawn Protection
+local function CheckSpawnBubbles(iRadius)
+	for k,v in pairs(ents.FindInSphere(SP_AtreidesBubble, iRadius)) do
+		if !v:IsPlayer() then return end
+		if v:Team() == 1 then return end
+		v:TakeDamage(1)
+	end
+	for k,v in pairs(ents.FindInSphere(SP_HarkonnenBubble, iRadius)) do
+		if !v:IsPlayer() then return end
+		if v:Team() == 2 then return end
+		v:TakeDamage(1)		
+	end
+end
 
+if !timer.Exists("Dune_SpawnProtection") then timer.Create("Dune_SpawnProtection",0.5,0,function() CheckSpawnBubbles() end) end
+
+
+-- Announcer
 local function Announce(FileName)
 	local sound
 	local filter
@@ -181,7 +199,6 @@ end
 
 -- Thx to Omni Games on YT!
 function AutoBalance()
-	
 	if #team.GetPlayers(1) > #team.GetPlayers(2) then
 		return 2
 	elseif #team.GetPlayers(1) < #team.GetPlayers(2) then
