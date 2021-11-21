@@ -946,7 +946,6 @@ end)
 
 -- Use Protection
 hook.Add("PlayerUse", "Dune_UseProtection", function(ply, ent)
-	print(ent.DuneTeam)
 	if ent.DuneTeam != nil && ply:Team() != ent.DuneTeam then
 		return false
 	end
