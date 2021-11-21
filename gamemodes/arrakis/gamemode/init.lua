@@ -54,7 +54,7 @@ Sardaukar_PlyMDL = "models/player/combine_soldier.mdl"
 --resource.AddWorkshop("2211859288") -- Crysis Weapons -- UNUSED
 resource.AddWorkshop("1622006977") -- Harkonnen VTOL
 resource.AddWorkshop("831680603") --  Simfphys APC
-resource.AddWorkshop("2334354896") -- Atreides/Fremen VTOLs
+--resource.AddWorkshop("2334354896") -- Atreides/Fremen VTOLs -- UNUSED
 resource.AddWorkshop("420970650") -- Darkes scifi weaponry
 resource.AddWorkshop("415143062") --  TFA Redux
 resource.AddWorkshop("848490709") -- TFA KF2 Melee
@@ -121,6 +121,7 @@ RoundHasEnded = 0
 RunConsoleCommand("sv_skyname", "sky_day01_06")
 RunConsoleCommand("sv_tfa_cmenu_key","27")
 RunConsoleCommand("sv_tfa_attachments_enabled","1")
+RunConsoleCommand("sfw_allow_advanceddamage", "1")
 
 -- Set up CVARs
 CVAR_CaptureTime = CreateConVar("dune_sv_capture_time", "5", FCVAR_NONE+FCVAR_NOTIFY, "Time needed to capture harvesters", 0.01)
