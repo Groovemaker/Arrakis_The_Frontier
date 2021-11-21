@@ -517,7 +517,6 @@ function GM:PostGamemodeLoaded()
 		SpawnVehiclesAtreides()
 		SpawnVehiclesHarkonnen()
 		SpawnHarvesters()
-		SunMod()
 	end)
 	if timer.Exists("Dune_VehicleLoop") == false then
 		timer.Create("Dune_VehicleLoop",3,0,function()
@@ -578,9 +577,9 @@ hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
 			attacker.AlliedFrags = attacker.AlliedFrags + 1
 			if attacker.AlliedFrags > (CVAR_AlliedNeeded:GetInt() -1) then
 				attacker:SendLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]:" ,Color(111,255,155)," ]].."You unlocked one spawn as allied race!"..[[")]])
+				attacker:SendLua([[AlliedReady = 1]])
 			end
 		end
-		print(attacker.AlliedFrags)
 	end
 	net.Start("PlyKill")
 		net.WriteEntity(victim)
@@ -653,6 +652,7 @@ function D_SetClass(ply,_classId)
 	if classId == 4 && ply:Frags() > CVAR_AlliedNeeded:GetInt() -1 then
 		ply.AlliedFrags = 0
 		ply.Class = classId
+		attacker:SendLua([[AlliedReady = 0]])
 	elseif classId == 3 then
 		ply.Class = classId
 	elseif classId == 2 then

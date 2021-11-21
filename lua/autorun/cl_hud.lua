@@ -1,10 +1,10 @@
 if not CLIENT then return end
 
-
 -- Vars
 HarvesterClaims = {0,0,0}
 CaptureMessage = ""
 RoundEnd = false
+AlliedReady = 0
 
 -- Fonts
 surface.CreateFont("HP",{
@@ -29,6 +29,24 @@ surface.CreateFont("Capturer",{
 	font = "Trebuchet24",
 	extended = false,
 	size = 26,
+	weight = 500,
+	blursize = 1.3,
+	scanlines = 2,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+})
+
+surface.CreateFont("Allied",{
+	font = "Trebuchet24",
+	extended = false,
+	size = 37,
 	weight = 500,
 	blursize = 1.3,
 	scanlines = 2,
@@ -369,7 +387,11 @@ hook.Add("HUDPaint", "Dune_DrawHUD", function()
 	draw.SimpleText(ScoreAtreides, "Scorer", ScrW() / 7.97 ,ScrH() *0.05, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	draw.SimpleText(ScoreHarkonnen, "Scorer", ScrW() / 1.15 ,ScrH() *0.05, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
-
+	-- Allied Status
+	local flashAlpha = math.Clamp(math.sin(CurTime() * 11) * 255, 0, 255)
+	if AlliedReady == 1 then
+		draw.SimpleText("Allied Class READY!", "Allied", ScrW() / 1.2 ,ScrH() *0.90, Color(255,255,255, flashAlpha, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER))
+	end
 	local BGCol = Color(1,1,1,1)
 
 	if LocalPlayer():Team() == 1 then

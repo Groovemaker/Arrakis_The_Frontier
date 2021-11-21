@@ -1,6 +1,5 @@
 -- Clientside
 include("shared.lua")
-
 PlyClasses = {}
 
 function SPlayAmbience()
