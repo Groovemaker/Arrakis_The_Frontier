@@ -593,7 +593,7 @@ hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
 		end
 		net.WriteString(SuicideFunnies[math.random(#SuicideFunnies)])
 	net.Broadcast()
-	--victim.Class = 1
+	victim.Class = 1
 	victim:ConCommand("dune_class")
 	if CVAR_Gamemode:GetInt() != 1 || victim == attacker || !attacker:IsPlayer() then return end
 	if attacker:Team() == 1 then
@@ -651,6 +651,7 @@ function D_SetClass(ply,_classId)
 	local ClassNotAvailable = "You can only hire the allied race if you have at least "..CVAR_AlliedNeeded:GetInt().." kills!"
 	if classId == 4 && ply:Frags() < CVAR_AlliedNeeded:GetInt() then
 		ply:SendLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]:" ,Color(255,111,111)," ]]..ClassNotAvailable..[[")]])
+		ply.Class = 1
 	end
 	if classId == 4 && ply:Frags() > CVAR_AlliedNeeded:GetInt() -1 then
 		ply.AlliedFrags = 0
