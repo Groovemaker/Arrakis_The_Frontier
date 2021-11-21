@@ -151,7 +151,7 @@ function CheckSpawnBubbles(iRadius)
 end
 
 timer.Create("Dune_SpawnProtection",0.5,0,function() 
-	CheckSpawnBubbles(2555) 
+	CheckSpawnBubbles(3255) 
 end)
 
 
