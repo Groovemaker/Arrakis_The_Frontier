@@ -13,6 +13,9 @@ _Ply.Class = nil
 _Ply.AlliedFrags = nil
 _Ply.AlliedReady = nil
 
+_ENTSTBL = FindMetaTable("Entity")
+_ENTSTBL.DuneTeam = nil
+
 -- Netstrings
 util.AddNetworkString("ScoreManip")
 util.AddNetworkString("Capture")
@@ -153,7 +156,7 @@ function CheckSpawnBubbles(iRadius)
 end
 
 timer.Create("Dune_SpawnProtection",0.1,0,function() 
-	CheckSpawnBubbles(3555) 
+	CheckSpawnBubbles(6543) 
 end)
 
 
@@ -401,6 +404,7 @@ function SpawnVehiclesHarkonnen()
 		VTOL:SetNWInt("vtol_spawnpoint", k)
 		VTOL:SetName("vtol_harkonnen")
 		VTOL:Spawn()
+		VTOL.DuneTeam = 2
 		VTOL:SetColor(Color(77,55,44))
 		VTOL:SetAngles(Angle(0, -50, 0))
 		HarkonnenVtolEntIndexes[k] = VTOL
@@ -431,6 +435,7 @@ function SpawnVehiclesAtreides()
 		VTOL:SetNWInt("vtol_spawnpoint", k)
 		VTOL:SetName("vtol_atreides")
 		VTOL:Spawn()
+		VTOL.DuneTeam = 1
 		VTOL:SetAngles(Angle(0, 170, 0))
 		AtreidesVtolEntIndexes[k] = VTOL
 	end
@@ -447,6 +452,7 @@ function RespawnVehiclesAtreides(vIndex)
 		local APC = simfphys.SpawnVehicleSimple("sim_fphys_conscriptapc_armed", SP_APC_Atreides[vIndex], Angle(0, 170, 0))
 		APC:SetNWInt("apc_spawnpoint", k)
 		APC:SetName("apc_atreides")
+		APC.DuneTeam = 1
 		AtreidesAPCEntIndexes[vIndex] = APC
 	end
 
@@ -456,6 +462,7 @@ function RespawnVehiclesAtreides(vIndex)
 		VTOL:SetNWInt("vtol_spawnpoint", k)
 		VTOL:SetName("vtol_atreides")
 		VTOL:Spawn()
+		VTOL.DuneTeam = 1
 		VTOL:SetAngles(Angle(0, 170, 0))
 		AtreidesVtolEntIndexes[vIndex] = VTOL
 	end
@@ -472,6 +479,7 @@ function RespawnVehiclesHarkonnen(vIndex)
 		local APC = simfphys.SpawnVehicleSimple("sim_fphys_conscriptapc_armed", SP_APC_Harkonnen[vIndex], Angle(0, 170, 0))
 		APC:SetNWInt("apc_spawnpoint", k)
 		APC:SetName("apc_atreides")
+		APC.DuneTeam = 2
 		APC:SetColor(Color(155,122,111))
 		HarkonnenAPCEntIndexes[vIndex] = APC
 	end
@@ -482,6 +490,7 @@ function RespawnVehiclesHarkonnen(vIndex)
 		VTOL:SetNWInt("vtol_spawnpoint", k)
 		VTOL:SetName("vtol_harkonnen")
 		VTOL:Spawn()
+		VTOL.DuneTeam = 2
 		VTOL:SetColor(Color(77,55,44))
 		VTOL:SetAngles(Angle(0, -50, 0))
 		HarkonnenVtolEntIndexes[vIndex] = VTOL
@@ -499,16 +508,16 @@ if timer.Exists("Dune_VehicleLoop") == false then
 	end)
 end
 
-timer.Create("Dune_Announce1",156,0,function()
+timer.Create("Dune_Announce1",556,0,function()
 	BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(200,200,200),"To change team, use the console command: dune_team")]])
 end)
-timer.Create("Dune_Announce2",251,0,function()
+timer.Create("Dune_Announce2",851,0,function()
 	BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(200,200,200),"To join the Discord: https://discord.gg/XgbQrB7SJ7")]])
 end)
-timer.Create("Dune_Announce3",320,0,function()
+timer.Create("Dune_Announce3",720,0,function()
 	BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(200,200,200),"Remember: Moving into Enemy Spawns will weaken you!")]])
 end)
-timer.Create("Dune_Announce4",434,0,function()
+timer.Create("Dune_Announce4",934,0,function()
 	BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(200,200,200),"This is early access, please help us create a community and tell your friends if you like the gamemode! :)")]])
 end)
 
@@ -932,5 +941,13 @@ timer.Create("SP_Countspice",0.5,0,function()
 				WinRound(2)
 			end
 		end
+	end
+end)
+
+-- Use Protection
+hook.Add("PlayerUse", "Dune_UseProtection", function(ply, ent)
+	print(ent.DuneTeam)
+	if ent.DuneTeam != nil && ply:Team() != ent.DuneTeam then
+		return false
 	end
 end)
