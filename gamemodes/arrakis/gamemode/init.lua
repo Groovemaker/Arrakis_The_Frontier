@@ -908,7 +908,7 @@ timer.Create("SP_Countspice",0.5,0,function()
 	for k,v in pairs(HarvesterWinners) do
 		if v == 1 then
 			if SpiceProduction[v] == 0 then 
-				SpiceProduction[v] = 5
+				SpiceProduction[v] = 2
 			else
 				SpiceProduction[v] = SpiceProduction[v] *2
 			end
@@ -921,7 +921,7 @@ timer.Create("SP_Countspice",0.5,0,function()
 		end
 		if v == 2 then
 			if SpiceProduction[v] == 0 then 
-				SpiceProduction[v] = 5
+				SpiceProduction[v] = 2
 			else
 				SpiceProduction[v] = SpiceProduction[v] *2
 			end
