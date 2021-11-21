@@ -43,7 +43,9 @@ resource.AddFile("resource/fonts/Cairo.ttf")
 
 -- Playermodel Setup
 Atreides_PlyMDL = "models/player/swat.mdl"
+Fremen_PlyMDL = "models/player/guerilla.mdl"
 Harkonnen_PlyMDL = "models/ninja/rage_enforcer.mdl"
+Sardaukar_PlyMDL = "models/player/combine_soldier.mdl"
 
 -- Workshop Resource
 --resource.AddWorkshop("2211859288") -- Crysis Weapons -- UNUSED
@@ -626,9 +628,16 @@ concommand.Add("dune_setclass", function(ply,cmd,args)
 	D_SetClass(ply,args[1])
 end)
 
+-- Class setter
 function D_SetClass(ply,_classId)
 	local classId = tonumber(_classId)
-	if classId == 3 then
+	local ClassNotAvailable = "You can only use the Allied Race if you have no Extractors on your side!"
+	if classId == 4 && !(HarvesterWinners[1] !=  ply:Team() && HarvesterWinners[2] !=  ply:Team() && HarvesterWinners[3] !=  ply:Team()) then
+		ply:SendLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]:" ,Color(255,111,111)," ]]..ClassNotAvailable..[[")]])
+	end
+	if classId == 4 && HarvesterWinners[1] !=  ply:Team() && HarvesterWinners[2] !=  ply:Team() && HarvesterWinners[3] !=  ply:Team() then
+		ply.Class = classId
+	elseif classId == 3 then
 		ply.Class = classId
 	elseif classId == 2 then
 		ply.Class = classId
@@ -764,8 +773,18 @@ function GM:PlayerSetModel(ply)
 			ply:Give("tfa_kf2_katana") --melee sword
 		    ply:Give("sfw_behemoth") --heavy
 		    ply:Give("weapon_lfsmissilelauncher") -- Rocket Launcher
+		elseif ply.Class == 4 then
+			ply:Give("sfw_dartgun") -- Pistol
+			ply:Give("sfw_aquamarine") -- Carbine
+			ply:Give("sfw_pulsar") -- Sniper
+			ply:Give("sfw_storm") -- Shotgun
 		end
-	    ply:SetModel(Atreides_PlyMDL)
+
+		if ply.Class != 4 then
+	    	ply:SetModel(Atreides_PlyMDL)
+		else
+			ply:SetModel(Fremen_PlyMDL)
+		end
 
 	elseif ply:Team() == Harkonnen then
 		if ply.Class == 1 then
@@ -780,10 +799,20 @@ function GM:PlayerSetModel(ply)
 		    ply:Give("tfa_kf2_pulverizer") --melee hammer
 		  	ply:Give("sfw_grinder") --heavy
 		  	ply:Give("weapon_lfsmissilelauncher") -- Rocket Launcher
+		elseif ply.Class == 4 then
+			ply:Give("sfw_ember") -- Pistol
+			ply:Give("sfw_draco") -- Carbine
+			ply:Give("sfw_hellfire") -- Special
+			ply:Give("sfw_seraphim") -- Shotgun
 		end
-
 	    --ply:Give("tfa_bcry2_scar") --rifle
-	    ply:SetModel(Harkonnen_PlyMDL)
+		if ply.Class != 4 then
+	    	ply:SetModel(Harkonnen_PlyMDL)
+			ply:SetSkin(0)
+		else
+			ply:SetModel(Sardaukar_PlyMDL)
+			ply:SetSkin(1)
+		end
 	end
 end
 function GM:PlayerHurt(victim, attacker)

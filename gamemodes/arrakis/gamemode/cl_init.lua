@@ -204,7 +204,7 @@ function set_class()
 				margin: 4%;
 				margin-top: 18%;
 				float:left;
-				width: 25%;
+				width: 17%;
 				justify-content: center;
 				align-items: center;
 				text-align: center;
@@ -238,6 +238,13 @@ function set_class()
 				<h2 id="header1">Specialist</h2>
 				<img id="banner" src="https://i.imgur.com/Crca5Rc.png"></img>
 				<h3 id="header2">You are anger incarnate.</h3>
+			</a>
+		</div>
+		<div id="outer">
+			<a onclick='console.log("RUNLUA:D_SetClass(4)")'>
+				<h2 id="header1">Allied</h2>
+				<img id="banner" src="https://i.imgur.com/Aa8sl1F.png"></img>
+				<h3 id="header2">Fremen fight for Atreides, Sardaukar for Harkonnen.</h3>
 			</a>
 		</div>
 		<script>
