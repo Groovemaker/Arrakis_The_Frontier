@@ -10,6 +10,7 @@ TFA_BASE_VERSION = 1337
 -- MetaTables
 _Ply = FindMetaTable("Player")
 _Ply.Class = nil
+_Ply.AlliedFrags = nil
 
 -- Netstrings
 util.AddNetworkString("ScoreManip")
@@ -126,6 +127,7 @@ CVAR_ShieldInterval = CreateConVar("dune_sv_recharge_interval", "0.1", FCVAR_NON
 CVAR_ShieldDelay = CreateConVar("dune_sv_recharge_delay", "1", FCVAR_NONE+FCVAR_NOTIFY, "The lower, the sooner the shield starts recharging", 0.1)
 CVAR_Gamemode = CreateConVar("dune_sv_gamemode", "2", FCVAR_NONE+FCVAR_NOTIFY, "1 - DM; 2 - Spice Harvest", 1,2)
 CVAR_Announcer = CreateConVar("dune_sv_announcer", "1", FCVAR_NONE+FCVAR_NOTIFY, "1 - On; 0 - Off", 0,1)
+CVAR_AlliedNeeded = CreateConVar("dune_sv_allied_minfrags", "10", FCVAR_NONE+FCVAR_NOTIFY, "Minimum kills needed for allied race unlocking", 1,1000)
 CVAR_AnnouncerVoice = CreateConVar("dune_sv_announcer_voice", "default", FCVAR_NONE+FCVAR_NOTIFY, "Folder name in sound/arrakis/announcers/<voice>; Default: default")
 
 
@@ -569,6 +571,17 @@ local SuicideFunnies = {
 
 -- DM Score
 hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
+	if attacker:IsPlayer() && attacker != victim then
+		if attacker.AlliedFrags == nil then
+			attacker.AlliedFrags = 1
+		else
+			attacker.AlliedFrags = attacker.AlliedFrags + 1
+			if attacker.AlliedFrags > (CVAR_AlliedNeeded:GetInt() -1) then
+				attacker:SendLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]:" ,Color(111,255,155)," ]].."You unlocked one spawn as allied race!"..[[")]])
+			end
+		end
+		print(attacker.AlliedFrags)
+	end
 	net.Start("PlyKill")
 		net.WriteEntity(victim)
 		if !attacker:IsVehicle() then
@@ -633,11 +646,12 @@ end)
 -- Class setter
 function D_SetClass(ply,_classId)
 	local classId = tonumber(_classId)
-	local ClassNotAvailable = "You can only hire the allied race if you have all extractors on your side!"
-	if classId == 4 && (HarvesterWinners[1] !=  ply:Team() && HarvesterWinners[2] !=  ply:Team() && HarvesterWinners[3] !=  ply:Team()) then
+	local ClassNotAvailable = "You can only hire the allied race if you have at least "..CVAR_AlliedNeeded:GetInt().." kills!"
+	if classId == 4 && ply:Frags() < CVAR_AlliedNeeded:GetInt() then
 		ply:SendLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]:" ,Color(255,111,111)," ]]..ClassNotAvailable..[[")]])
 	end
-	if classId == 4 && HarvesterWinners[1] ==  ply:Team() && HarvesterWinners[2] ==  ply:Team() && HarvesterWinners[3] ==  ply:Team() then
+	if classId == 4 && ply:Frags() > CVAR_AlliedNeeded:GetInt() -1 then
+		ply.AlliedFrags = 0
 		ply.Class = classId
 	elseif classId == 3 then
 		ply.Class = classId
