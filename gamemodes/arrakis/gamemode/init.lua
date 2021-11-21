@@ -17,6 +17,7 @@ util.AddNetworkString("Capture")
 util.AddNetworkString("Decapture")
 util.AddNetworkString("HarvesterManip")
 util.AddNetworkString("PlyKill")
+util.AddNetworkString("ClassSync")
 
 -- Resources
 resource.AddFile("materials/atreides.png")
@@ -645,6 +646,7 @@ function D_SetClass(ply,_classId)
 		ply.Class = classId
 	end
 	ply:Spawn()
+	SyncHUD()
 end
 
 function _Ply:GetUnitClass()
@@ -717,6 +719,12 @@ end
 function SyncHUD()
 	for k,v in pairs(HarvesterWinners) do
 		HarvesterManip(k,v)
+	end
+	for k,v in pairs(player.GetAll()) do
+		net.Start("ClassSync")
+			net.WriteEntity(v)
+			net.WriteInt(v.Class, 32)
+		net.Broadcast()
 	end
 end
 
@@ -805,7 +813,7 @@ function GM:PlayerSetModel(ply)
 			ply:Give("sfw_hellfire") -- Special
 			ply:Give("sfw_seraphim") -- Shotgun
 		end
-	    --ply:Give("tfa_bcry2_scar") --rifle
+
 		if ply.Class != 4 then
 	    	ply:SetModel(Harkonnen_PlyMDL)
 			ply:SetSkin(0)
@@ -813,6 +821,7 @@ function GM:PlayerSetModel(ply)
 			ply:SetModel(Sardaukar_PlyMDL)
 			ply:SetSkin(1)
 		end
+
 	end
 end
 function GM:PlayerHurt(victim, attacker)

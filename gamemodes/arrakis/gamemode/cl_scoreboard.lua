@@ -31,10 +31,23 @@ if CLIENT then
 
 	local Columns = {}
 		Columns[1] = {name="Player", command=function(self, arg) return tostring(arg:Name()) end}
-		Columns[2] = {name="KDR", command=function(self, arg) 
+		Columns[2] = {name="Class", command=function(self, arg)
+			local Returnclass = ""
+			if PlyClasses[arg:SteamID()] == 1 then
+				Returnclass = "Assault"
+			elseif PlyClasses[arg:SteamID()] == 2 then
+				Returnclass = "Recon"
+			elseif PlyClasses[arg:SteamID()] == 3 then
+				Returnclass = "Specialist"
+			elseif PlyClasses[arg:SteamID()] == 4 then
+				Returnclass = "Allied"
+			end
+			return Returnclass
+		end}
+		Columns[3] = {name="KDR", command=function(self, arg) 
 			return tostring(GetKDR(arg))
 		end}
-		Columns[3] = {name="Ping", command=function(self, arg) return tostring(arg:Ping()) end}
+		Columns[4] = {name="Ping", command=function(self, arg) return tostring(arg:Ping()) end}
 
 	surface.CreateFont("ScoreboardTitleFont",{
 		font = "Orbitron",

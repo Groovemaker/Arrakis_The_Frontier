@@ -1,6 +1,8 @@
 -- Clientside
 include("shared.lua")
 
+PlyClasses = {}
+
 function SPlayAmbience()
 	surface.PlaySound("arrakis_ambience.wav")
 end
@@ -264,6 +266,12 @@ end
 concommand.Add("dune_team", set_team)
 concommand.Add("dune_class", set_class)
 concommand.Add("dune_credits", credits)
+
+net.Receive("ClassSync", function()
+	local Ply = net.ReadEntity()
+	local ClassID = net.ReadInt(32)
+	PlyClasses[Ply:SteamID()] = ClassID
+end)
 
 -- Hide HUD
 if not CLIENT then return end
