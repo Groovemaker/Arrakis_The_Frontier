@@ -29,6 +29,7 @@ resource.AddFile("sound/arrakis_credits.mp3")
 resource.AddFile("sound/arrakis_ambience.wav")
 resource.AddFile("sound/grenade_recharged.wav")
 
+
 -- Announcer Sounds
 resource.AddFile("sound/announcers/default/1_ex_1.wav")
 resource.AddFile("sound/announcers/default/1_ex_2.wav")
@@ -138,14 +139,14 @@ function CheckSpawnBubbles(iRadius)
 	for k,v in pairs(ents.FindInSphere(SP_AtreidesBubble, iRadius)) do
 		if v:IsPlayer() then
 			if v:Team() == 2 && v:Health() > 0 then
-				v:SetHealth(v:Health() - 1)
+				v:TakeDamage(5, v, v)
 			end
 		end	
 	end
 	for k,v in pairs(ents.FindInSphere(SP_HarkonnenBubble, iRadius)) do
 		if v:IsPlayer() then
 			if v:Team() == 1 && v:Health() > 0 then
-				v:SetHealth(v:Health() - 1)
+				v:TakeDamage(5, v, v)
 			end
 		end	
 	end
@@ -498,16 +499,18 @@ if timer.Exists("Dune_VehicleLoop") == false then
 	end)
 end
 
-if timer.Exists("Dune_Announce1") == false then
-	timer.Create("Dune_Announce1",120,0,function()
-		BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(111,155,255),"To change team, use the console command: dune_team")]])
-	end)
-end
-if timer.Exists("Dune_Announce2") == false then
-	timer.Create("Dune_Announce2",180,0,function()
-		BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(111,155,255),"To check out the people who worked on this, use the concmd: dune_credits")]])
-	end)
-end
+timer.Create("Dune_Announce1",156,0,function()
+	BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(200,200,200),"To change team, use the console command: dune_team")]])
+end)
+timer.Create("Dune_Announce2",251,0,function()
+	BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(200,200,200),"To join the Discord: https://discord.gg/XgbQrB7SJ7")]])
+end)
+timer.Create("Dune_Announce3",320,0,function()
+	BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(200,200,200),"Remember: Moving into Enemy Spawns will weaken you!")]])
+end)
+timer.Create("Dune_Announce4",434,0,function()
+	BroadcastLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]: ",Color(200,200,200),"This is early access, please help us create a community and tell your friends if you like the gamemode! :)")]])
+end)
 
 -- Spawning Spice Harvesters
 function SpawnHarvesters()
