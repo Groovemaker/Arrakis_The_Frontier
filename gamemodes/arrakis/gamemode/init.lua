@@ -578,6 +578,7 @@ hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
 		end
 		net.WriteString(SuicideFunnies[math.random(#SuicideFunnies)])
 	net.Broadcast()
+	victim.Class = 1
 	victim:ConCommand("dune_class")
 	if CVAR_Gamemode:GetInt() != 1 || victim == attacker || !attacker:IsPlayer() then return end
 	if attacker:Team() == 1 then
@@ -632,11 +633,11 @@ end)
 -- Class setter
 function D_SetClass(ply,_classId)
 	local classId = tonumber(_classId)
-	local ClassNotAvailable = "You can only use the Allied Race if you have no Extractors on your side!"
-	if classId == 4 && !(HarvesterWinners[1] !=  ply:Team() && HarvesterWinners[2] !=  ply:Team() && HarvesterWinners[3] !=  ply:Team()) then
+	local ClassNotAvailable = "You can only hire the allied race if you have all extractors on your side!"
+	if classId == 4 && (HarvesterWinners[1] !=  ply:Team() && HarvesterWinners[2] !=  ply:Team() && HarvesterWinners[3] !=  ply:Team()) then
 		ply:SendLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]:" ,Color(255,111,111)," ]]..ClassNotAvailable..[[")]])
 	end
-	if classId == 4 && HarvesterWinners[1] !=  ply:Team() && HarvesterWinners[2] !=  ply:Team() && HarvesterWinners[3] !=  ply:Team() then
+	if classId == 4 && HarvesterWinners[1] ==  ply:Team() && HarvesterWinners[2] ==  ply:Team() && HarvesterWinners[3] ==  ply:Team() then
 		ply.Class = classId
 	elseif classId == 3 then
 		ply.Class = classId

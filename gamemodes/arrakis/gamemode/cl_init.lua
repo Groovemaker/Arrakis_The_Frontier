@@ -273,6 +273,22 @@ net.Receive("ClassSync", function()
 	PlyClasses[Ply:SteamID()] = ClassID
 end)
 
+function PlyGetClass(ply)
+	local Returnclass = ""
+	if PlyClasses[ply:SteamID()] == 1 then
+		Returnclass = "Assault"
+	elseif PlyClasses[ply:SteamID()] == 2 then
+		Returnclass = "Recon"
+	elseif PlyClasses[ply:SteamID()] == 3 then
+		Returnclass = "Specialist"
+	elseif PlyClasses[ply:SteamID()] == 4 && ply:Team() == 1 then
+		Returnclass = "Fremen"
+	elseif PlyClasses[ply:SteamID()] == 4 && ply:Team() == 2 then
+		Returnclass = "Sardaukar"
+	end
+	return Returnclass
+end
+
 -- Hide HUD
 if not CLIENT then return end
 local trace2ent = nil
