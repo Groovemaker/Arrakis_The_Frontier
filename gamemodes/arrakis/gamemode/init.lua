@@ -11,6 +11,7 @@ TFA_BASE_VERSION = 1337
 _Ply = FindMetaTable("Player")
 _Ply.Class = nil
 _Ply.AlliedFrags = nil
+_Ply.AlliedReady = nil
 
 -- Netstrings
 util.AddNetworkString("ScoreManip")
@@ -575,9 +576,11 @@ hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
 			attacker.AlliedFrags = 1
 		else
 			attacker.AlliedFrags = attacker.AlliedFrags + 1
-			if attacker.AlliedFrags > (CVAR_AlliedNeeded:GetInt() -1) then
+			if (attacker.AlliedFrags > (CVAR_AlliedNeeded:GetInt() -1)) && attacker.AlliedReady != 1 then
 				attacker:SendLua([[chat.AddText(Color(255,155,50),"[Arrakis: The Frontier]:" ,Color(111,255,155)," ]].."You unlocked one spawn as allied race!"..[[")]])
 				attacker:SendLua([[AlliedReady = 1]])
+				attacker.AlliedReady = 1
+
 			end
 		end
 	end
@@ -590,7 +593,7 @@ hook.Add("PlayerDeath", "DMScore", function(victim, inflictor, attacker)
 		end
 		net.WriteString(SuicideFunnies[math.random(#SuicideFunnies)])
 	net.Broadcast()
-	victim.Class = 1
+	--victim.Class = 1
 	victim:ConCommand("dune_class")
 	if CVAR_Gamemode:GetInt() != 1 || victim == attacker || !attacker:IsPlayer() then return end
 	if attacker:Team() == 1 then
@@ -653,6 +656,7 @@ function D_SetClass(ply,_classId)
 		ply.AlliedFrags = 0
 		ply.Class = classId
 		ply:SendLua([[AlliedReady = 0]])
+		ply.AlliedReady = 0
 	elseif classId == 3 then
 		ply.Class = classId
 	elseif classId == 2 then
