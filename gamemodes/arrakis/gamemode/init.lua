@@ -197,11 +197,11 @@ function AutoBalance()
 		KDR_Harkonnen = KDR_Harkonnen/#team.GetPlayers(2)
 
 		if KDR_Atreides > KDR_Harkonnen then
-			return 2
+			--return 2
 		elseif KDR_Atreides < KDR_Harkonnen then
-			return 1
+			--return 1
 		else
-			return math.random(0,1)
+			--return math.random(0,1)
 		end	
 	end
 end
