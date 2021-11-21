@@ -136,14 +136,14 @@ CVAR_AnnouncerVoice = CreateConVar("dune_sv_announcer_voice", "default", FCVAR_N
 function CheckSpawnBubbles(iRadius)
 	for k,v in pairs(ents.FindInSphere(SP_AtreidesBubble, iRadius)) do
 		if v:IsPlayer() then
-			if v:Team() == 2 then
+			if v:Team() == 2 && v:Health() > 0 then
 				v:SetHealth(v:Health() - 1)
 			end
 		end	
 	end
 	for k,v in pairs(ents.FindInSphere(SP_HarkonnenBubble, iRadius)) do
 		if v:IsPlayer() then
-			if v:Team() == 1 then
+			if v:Team() == 1 && v:Health() > 0 then
 				v:SetHealth(v:Health() - 1)
 			end
 		end	
