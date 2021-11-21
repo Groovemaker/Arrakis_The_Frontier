@@ -732,7 +732,7 @@ function GM:PlayerShouldTakeDamage(ply,attacker)
 end
 
 hook.Add("EntityTakeDamage", "DMGStats", function(target, dmginfo)
-	if dmginfo:IsExplosionDamage() && !dmginfo:GetAttacker():InVehicle() && !dmginfo:GetAttacker():IsVehicle() then
+	if dmginfo:IsExplosionDamage() && !dmginfo:GetAttacker():IsVehicle() then
 		dmginfo:ScaleDamage(3)
 	end
 	
