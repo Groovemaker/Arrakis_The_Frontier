@@ -3,7 +3,11 @@ include("shared.lua")
 PlyClasses = {}
 
 function SPlayAmbience()
-	surface.PlaySound("arrakis_ambience.wav")
+	if math.random(2) == 1 then
+		surface.PlaySound("arrakis_ambience.wav")
+	else
+		surface.PlaySound("arrakis_music.wav")
+	end
 end
 
 -- Thanks to slownls
